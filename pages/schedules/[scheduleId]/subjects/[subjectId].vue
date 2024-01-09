@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import { MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { type Classroom, type Group, type Lecturer, type Subject, SubjectType } from '~/types'
 
 // Nuxt hooks
@@ -9,6 +9,9 @@ const router = useRouter()
 
 // Data
 const { daysOfWeek } = useData()
+
+const subjects = useSubjects()
+await subjects.get(route.params.scheduleId as string)
 
 const lecturers = useLecturers()
 await lecturers.get()
@@ -19,7 +22,11 @@ await classrooms.get()
 const groups = useGroups()
 await groups.get(route.params.scheduleId as string)
 
-const search = ref('')
+const search = reactive({
+  lecturers: '',
+  classrooms: '',
+  groups: '',
+})
 
 const data = ref<Subject | null>(null)
 
@@ -128,6 +135,15 @@ async function saveChanges() {
   else
     router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
 }
+
+// Dialog
+const deleteDialog = ref(false)
+
+async function handleDelete() {
+  await subjects.delete(route.params.subjectId as string)
+  deleteDialog.value = false
+  router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
+}
 </script>
 
 <template>
@@ -156,7 +172,7 @@ async function saveChanges() {
       </div>
 
       <div class="flex gap-4">
-        <base-button variant="danger" class="h-10">
+        <base-button variant="danger" class="h-10" type="button" @click="deleteDialog = true">
           Usuń zajęcia
         </base-button>
         <base-button variant="primary" class="h-10" type="submit">
@@ -180,10 +196,10 @@ async function saveChanges() {
     </div>
 
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
-      <base-input v-model="search" label="Prowadzący" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search.lecturers" label="Prowadzący" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" />
 
       <div class="rounded-lg border border-gray-200 p-4">
-        <base-table :search="search" :data="lecturers.data" :columns="lecturers.columns">
+        <base-table :search="search.lecturers" :data="lecturers.data" :columns="lecturers.columns">
           <template #firstName="{ cell }">
             <span class="text-base font-medium text-gray-900">{{ cell.academicDegree }} {{ cell.firstName }} {{ cell.surname }}</span>
           </template>
@@ -194,7 +210,7 @@ async function saveChanges() {
 
           <template #actions="{ cell }">
             <button v-if="!data?.lecturers?.some(lecturer => lecturer.id === cell.id)" class="font-medium text-indigo-600" @click="addLecturer(cell)">
-              Dodaj
+              Wybierz
             </button>
             <button v-else class="font-medium text-red-600" @click="removeLecturer(cell)">
               Usuń
@@ -206,17 +222,17 @@ async function saveChanges() {
 
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
       <label class="mb-1 font-medium text-gray-700">Grupy</label>
-      <base-input v-model="search" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search.groups" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" />
 
       <div class="rounded-lg border border-gray-200 p-4">
-        <base-table :search="search" :data="groups.data" :columns="groups.columns">
+        <base-table :search="search.groups" :data="groups.data" :columns="groups.columns">
           <template #name="{ cell }">
             <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
           </template>
 
           <template #actions="{ cell }">
             <button v-if="!data?.groups?.some(group => group.id === cell.id)" class="font-medium text-indigo-600" @click="addGroup(cell)">
-              Dodaj
+              Wybierz
             </button>
             <button v-else class="font-medium text-red-600" @click="removeGroup(cell)">
               Usuń
@@ -228,10 +244,10 @@ async function saveChanges() {
 
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
       <label class="mb-1 font-medium text-gray-700">Sala</label>
-      <base-input v-model="search" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" caption="Zajęcia mogą odbywać się tylko w jednej sali jednocześnie." />
+      <base-input v-model="search.classrooms" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" caption="Zajęcia mogą odbywać się tylko w jednej sali jednocześnie." />
 
       <div class="rounded-lg border border-gray-200 p-4">
-        <base-table :search="search" :data="classrooms.data" :columns="classrooms.columns">
+        <base-table :search="search.classrooms" :data="classrooms.data" :columns="classrooms.columns">
           <template #name="{ cell }">
             <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
           </template>
@@ -246,7 +262,7 @@ async function saveChanges() {
 
           <template #actions="{ cell }">
             <button v-if="data!.classroom!.id !== cell.id" class="font-medium text-indigo-600" @click="addClassroom(cell)">
-              Dodaj
+              Wybierz
             </button>
             <button v-else class="font-medium text-red-600" @click="removeClassroom(cell)">
               Usuń
@@ -258,4 +274,19 @@ async function saveChanges() {
 
     <base-input v-model="data!.comment" label="Komentarz" />
   </form>
+
+  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">
+    <p class="text-base text-gray-700">
+      Czy na pewno chcesz usunąć zajęcia?
+    </p>
+
+    <div class="mt-6 flex justify-end gap-4">
+      <base-button variant="secondary" @click="deleteDialog = false">
+        Zamknij
+      </base-button>
+      <base-button variant="danger" @click="handleDelete">
+        Usuń
+      </base-button>
+    </div>
+  </base-dialog>
 </template>

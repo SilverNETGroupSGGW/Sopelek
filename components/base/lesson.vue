@@ -3,12 +3,22 @@ import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 import { SubjectType } from '~/types'
 
-defineProps<Subject>()
+const props = defineProps<Subject>()
+
+const emits = defineEmits<{
+  (e: 'delete', id: string): void
+}>()
 
 const { lessonTypes } = useData()
 
 const subjects = useSubjects()
 const deleteDialog = ref(false)
+
+function handleDelete() {
+  subjects.delete(props.id)
+  deleteDialog.value = false
+  emits('delete', props.id)
+}
 </script>
 
 <template>
@@ -66,7 +76,7 @@ const deleteDialog = ref(false)
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="subjects.delete(id)">
+      <base-button variant="danger" @click="handleDelete">
         Usuń
       </base-button>
     </div>

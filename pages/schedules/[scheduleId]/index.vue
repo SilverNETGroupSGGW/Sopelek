@@ -72,6 +72,10 @@ const filteredSubjects = computed(() =>
   subjects.value?.filter(subject => route.query.day ? subject.dayOfWeek === route.query.day : subject.dayOfWeek === DayOfWeek.Monday),
 )
 
+function handleDelete(id: string) {
+  subjects.value = subjects.value!.filter(subject => subject.id !== id)
+}
+
 // Hooks
 let onPointerDown: Function | null = null
 let onCreateMove: Function | null = null
@@ -154,7 +158,7 @@ function handleTabChange(index: number) {
 
         <div ref="container" class="relative flex flex-col" @pointerdown.prevent="onCreateMove!">
           <div v-for="(subject, index) in filteredSubjects" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5 hover:cursor-move" @pointerdown.prevent="onPointerDown!($event, subject)">
-            <base-lesson v-bind="subject" />
+            <base-lesson v-bind="subject" @delete="handleDelete" />
           </div>
 
           <div v-for="(group, index) in groups" v-once :key="index" class="flex h-48">
