@@ -3,7 +3,7 @@ import { ViewfinderCircleIcon } from '@heroicons/vue/20/solid'
 import { BriefcaseIcon, CalendarIcon, CloudIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
 
 // Data
-const { courses, studiesDegrees, studiesModes } = useData()
+const { fieldOfStudies, studiesDegrees, studiesModes } = useData()
 
 // Schedules
 const schedules = useSchedule()
@@ -12,7 +12,7 @@ await schedules.get()
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, search, updateDialog } = useCrud(schedules.data)
 
 watchEffect(() => {
-  const course = courses.find(course => course.value.includes(currentItem.value.fieldOfStudy))
+  const course = fieldOfStudies.find(course => course.value.includes(currentItem.value.fieldOfStudy))
   if (course)
     currentItem.value.faculty = course.department
 })
@@ -41,7 +41,7 @@ watchEffect(() => {
 
     <template #info="{ cell }">
       <span class="text-base font-medium text-gray-900">
-        {{ cell.fieldOfStudy }} {{ cell.studyMode }} {{ cell.degreeOfStudy }}
+        {{ fieldOfStudies.find(course => course.value.includes(cell.fieldOfStudy))?.value }} {{ studiesModes.find(mode => mode.type === cell.studyMode)?.value }} {{ studiesDegrees.find(degree => degree.type === cell.degreeOfStudy)?.value }}
       </span>
       <br>
       <span class="text-base text-gray-700">rok {{ cell.year }}, semestr {{ cell.semester }}</span>
@@ -77,7 +77,7 @@ watchEffect(() => {
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-search v-model="currentItem.fieldOfStudy" :options="courses" :icon="ViewfinderCircleIcon" label="Kierunek">
+      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
         <template #options="{ option, active }">
           <span class="text-base font-medium" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.value }}</span>
           <br>
@@ -86,12 +86,8 @@ watchEffect(() => {
           </span>
         </template>
       </base-search>
-      <base-input v-model="currentItem.studyMode" :icon="CloudIcon" label="Tryb studiów" />
-      <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees">
-        <template #options="{ option, active }">
-          <span class="text-base" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.type }}</span>
-        </template>
-      </base-select>
+      <base-select v-model="currentItem.studyMode" :options="studiesModes" :icon="CloudIcon" label="Tryb studiów" />
+      <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
       <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" />
       <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
 
@@ -111,7 +107,7 @@ watchEffect(() => {
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
       <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia" />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-search v-model="currentItem.fieldOfStudy" :options="courses" :icon="ViewfinderCircleIcon" label="Kierunek">
+      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
         <template #options="{ option, active }">
           <span class="text-base font-medium" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.value }}</span>
           <br>

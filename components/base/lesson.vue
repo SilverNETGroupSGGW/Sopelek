@@ -65,6 +65,9 @@ function handleDelete() {
     <small v-if="groups" class="text-xs text-gray-700">
       <b>Grupy: </b> {{ groups.map(x => x.name).join(', ') }}
     </small>
+    <small v-if="comment" class="text-xs text-gray-700">
+      <b>Komentarz: </b> {{ comment }}
+    </small>
   </div>
 
   <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">

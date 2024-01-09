@@ -29,6 +29,10 @@ export const useSchedule = defineStore('schedule', {
       this.data = data
     },
     async create(schedule: Schedule) {
+      const { studiesModes, studiesDegrees } = useData()
+      schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
+      schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
+
       const data = await $fetch<Schedule>('schedules', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',

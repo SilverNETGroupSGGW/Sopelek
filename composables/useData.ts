@@ -1,7 +1,8 @@
-import { DayOfWeek, SubjectType } from '~/types'
+import { DayOfWeek, StudyMode, SubjectType } from '~/types'
+import { DegreeOfStudy } from '~/types/Schedule'
 
 export default function useData() {
-  const courses = [
+  const fieldOfStudies = [
     { department: 'Wydział Biologii i Biotechnologii', value: 'Biologia' },
     { department: 'Wydział Biologii i Biotechnologii', value: 'Biotechnologia' },
     { department: 'Wydział Rolnictwa i Ekologii', value: 'Ekologiczne rolnictwo i produkcja żywności' },
@@ -57,18 +58,20 @@ export default function useData() {
     { value: 'prof. dr hab.' },
   ]
 
+  // Select compatibility
   const studiesModes = [
-    { value: 'FullTimeStudies', type: 'stacjonarne' },
-    { value: 'PartTimeStudies', type: 'niestacjonarne' },
-    { value: 'Unknown', type: 'inne' },
+    { value: 'stacjonarne', type: StudyMode.FullTimeStudies },
+    { value: 'niestacjonarne', type: StudyMode.PartTimeStudies },
+    { value: 'inne', type: StudyMode.Unknown },
   ]
 
+  // Select compatibility
   const studiesDegrees = [
-    { value: 'BachelorsDegree', type: 'licencjackie' },
-    { value: 'MastersDegree', type: 'magisterskie' },
-    { value: 'DoctoralDegree', type: 'doktorskie' },
-    { value: 'CertificatesAndDiplomas', type: 'dyplomowe' },
-    { value: 'OnlineDegrees', type: 'online' },
+    { value: 'licencjackie/inżynierskie', type: DegreeOfStudy.BachelorsDegree },
+    { value: 'magisterskie', type: DegreeOfStudy.MastersDegree },
+    { value: 'doktorskie', type: DegreeOfStudy.DoctoralDegree },
+    { value: 'podyplomowe', type: DegreeOfStudy.CertificatesAndDiplomas },
+    { value: 'online', type: DegreeOfStudy.OnlineDegrees },
   ]
 
   const daysOfWeek = [
@@ -90,7 +93,7 @@ export default function useData() {
   ]
 
   return {
-    courses,
+    fieldOfStudies,
     degrees,
     studiesModes,
     studiesDegrees,
