@@ -35,7 +35,7 @@ function handleDelete() {
     ]"
   >
     <div class="flex w-full items-center justify-between">
-      <small class="text-xs text-gray-600">
+      <small v-if="startTime && duration" class="text-xs text-gray-600">
         {{ startTime.slice(0, -3) }} ({{ duration!.slice(0, -3) }}h)
       </small>
 

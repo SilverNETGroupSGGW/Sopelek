@@ -168,8 +168,7 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
 
   async function onResizeUp() {
     if (mouse.isCreating) {
-      // TODO: Move business logic outside maths
-      await $fetch('subjects', {
+      const subject = await $fetch<Subject>('subjects', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
@@ -177,13 +176,17 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
         body: JSON.stringify(mouse.currentSubject),
       })
+
       mouse.isCreating = false
+      subjects[subjects.length - 1].id = subject.id
     }
 
     mouse.isResizing = false
     mouse.isCreating = false
-    // Drop the ghost class
-    mouse.currentSubject!.ghost = false
+
+    if (mouse.currentSubject)
+      mouse.currentSubject.ghost = false
+
     mouse.currentSubject = null
 
     // Remove event listeners from window
