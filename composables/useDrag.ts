@@ -1,6 +1,8 @@
-import type { Subject } from '~/types'
+import type { Group, Subject } from '~/types'
 
-export default function useDrag(subjects: Subject[], container: Ref<HTMLElement | null>, groupCells: Ref<HTMLElement[]>) {
+export default function useDrag(subjects: Subject[], groups: Group[], container: HTMLDivElement | null) {
+  const { calculateStartTime } = useSubject()
+
   let rafId: number | null = null
   const isDragging = ref(false)
   const currentSubject = ref<Subject | null>(null)
@@ -34,39 +36,25 @@ export default function useDrag(subjects: Subject[], container: Ref<HTMLElement 
       const deltaX = Math.round((event.clientX - dragStart.value.x) / 24) * 24
 
       // snap to groupCells height in Y axis
-      const deltaY = Math.round((event.clientY - dragStart.value.y) / groupCells.value[0].offsetHeight) * groupCells.value[0].offsetHeight
+      const deltaY = Math.round((event.clientY - dragStart.value.y) / 192) * 192
 
       if (deltaX !== 0 || deltaY !== 0) {
         const newX = currentSubject.value!.x! + deltaX
         const newY = currentSubject.value!.y! + deltaY
 
         // Calculate the total height of groupCells
-        const totalHeight = groupCells.value.reduce((sum, cell) => sum + cell.offsetHeight, 0)
+        const totalHeight = 192 * groups.length
 
         // Set boundaries, x and y can't be smaller than 0
         // newY can't be larger than totalHeight - currentSubject.value!.height
-        // newX can't be larger than container.value.offsetWidth - currentSubject.value!.width
-        currentSubject.value!.x = newX >= 0 ? (newX <= container.value!.offsetWidth - currentSubject.value!.width! ? newX : container.value!.offsetWidth! - currentSubject.value!.width!) : 0
+        // newX can't be larger than container.offsetWidth - currentSubject.value!.width
+        currentSubject.value!.x = newX >= 0 ? (newX <= container!.offsetWidth - currentSubject.value!.width! ? newX : container!.offsetWidth! - currentSubject.value!.width!) : 0
         currentSubject.value!.y = newY >= 0 ? (newY <= totalHeight - currentSubject.value!.height! ? newY : totalHeight - currentSubject.value!.height!) : 0
+
+        calculateStartTime(currentSubject.value!)
 
         // Update dragStart based on the actual movement of the element
         dragStart.value = { x: dragStart.value.x + deltaX, y: dragStart.value.y + deltaY }
-
-        currentSubject.value!.overlap = false
-
-        // Check for overlap with other subjects
-        for (const subject of subjects) {
-          if (subject.id !== currentSubject.value!.id) {
-            if (newX < subject.x! + subject.width!
-              && newX + currentSubject.value!.width! > subject.x!
-              && newY < subject.y! + subject.height!
-              && newY + currentSubject.value!.height! > subject.y!) {
-              // Overlap detected
-              currentSubject.value!.overlap = true
-              break
-            }
-          }
-        }
       }
     })
   }

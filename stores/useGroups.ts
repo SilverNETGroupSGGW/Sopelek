@@ -1,17 +1,13 @@
-import type { Lecturer } from '~/types'
+import type { Group } from '~/types'
 
-export const useLecturers = defineStore('lecturers', {
+export const useGroups = defineStore('groups', {
   state: () => ({
     search: '',
-    data: [] as Lecturer[],
+    data: [] as Group[],
     columns: [
       {
-        key: 'firstName',
-        header: 'Imię i nazwisko',
-      },
-      {
-        key: 'email',
-        header: 'Email',
+        key: 'name',
+        header: 'Nazwa',
       },
       {
         key: 'actions',
@@ -20,17 +16,19 @@ export const useLecturers = defineStore('lecturers', {
     ],
   }),
   actions: {
-    async get() {
-      this.data = await $fetch<Lecturer[]>('lecturers', {
+    async get(scheduleId: string) {
+      const data = await $fetch<Group[]>(`Groups/schedule/${scheduleId}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
+
+      this.data = data.sort((a, b) => a.name.localeCompare(b.name))
     },
-    async create(lecturer: Lecturer) {
-      const data = await $fetch<Lecturer>('lecturers', {
+    async create(group: Group) {
+      const data = await $fetch<Group>('Groups', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
-        body: JSON.stringify(lecturer),
+        body: JSON.stringify(group),
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
         },
@@ -38,11 +36,11 @@ export const useLecturers = defineStore('lecturers', {
 
       this.data.push(data)
     },
-    async update(lecturer: Lecturer) {
-      const data = await $fetch<Lecturer>('lecturers', {
+    async update(group: Group) {
+      const data = await $fetch<Group>('Groups', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'PUT',
-        body: JSON.stringify(lecturer),
+        body: JSON.stringify(group),
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
         },
@@ -51,8 +49,8 @@ export const useLecturers = defineStore('lecturers', {
       const index = this.data.findIndex(l => l.id === data.id)
       this.data[index] = data
     },
-    async delete(lecturer: Lecturer) {
-      await $fetch(`lecturers/${lecturer.id}`, {
+    async delete(group: Group) {
+      await $fetch<Group>(`Groups/${group.id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'DELETE',
         headers: {
@@ -60,7 +58,7 @@ export const useLecturers = defineStore('lecturers', {
         },
       })
 
-      this.data = this.data.filter(l => l.id !== lecturer.id)
+      this.data = this.data.filter(l => l.id !== group.id)
     },
   },
 })

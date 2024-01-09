@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Bars3CenterLeftIcon, ChatBubbleOvalLeftEllipsisIcon, PencilIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { Bars3CenterLeftIcon, ChatBubbleOvalLeftEllipsisIcon, UserIcon } from '@heroicons/vue/24/outline'
 
 const tabs = reactive([
   {
     icon: Bars3CenterLeftIcon,
     label: 'Plany zajęć',
-    to: '/plans',
+    to: '/schedules',
   },
   {
     icon: UserIcon,
@@ -14,20 +14,15 @@ const tabs = reactive([
   },
   {
     icon: ChatBubbleOvalLeftEllipsisIcon,
-    label: 'Sale wykładowe',
-    to: '/rooms',
-  },
-  {
-    icon: PencilIcon,
-    label: 'Przedmioty',
-    to: '/courses',
+    label: 'Sale',
+    to: '/classrooms',
   },
 ])
 </script>
 
 <template>
-  <aside class="h-[calc(100dvh-4rem)] w-80 border-r py-9 pl-7 pr-3">
-    <small class="mb-4 block text-sm font-semibold text-gray-900">Panel główny</small>
+  <aside class="h-screen border-r bg-indigo-600 p-9">
+    <logo class="mb-9" />
     <ul>
       <li v-for="tab in tabs" :key="tab.label" class="group mb-2 group-hover:mb-4">
         <base-tab v-bind="tab" />

@@ -1,25 +1,26 @@
-import type { Subject } from '~/types'
+import type { Group, Subject } from '~/types'
 
-export default function useResize(subjects: Subject[], container: Ref<HTMLElement | null>, groupCells: Ref<HTMLElement[]>) {
+export default function useResize(subjects: Subject[], groups: Group[], container: HTMLDivElement | null) {
   const mouse = useMouse()
 
-  const { onDragDown } = useDrag(subjects, container, groupCells)
+  const { onDragDown } = useDrag(subjects, groups, container)
+  const { calculateStartTime } = useSubject()
 
   let rafId: number | null = null
   const initialResizeEdge = ref<null | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right' | 'top' | 'bottom'>(null)
-  const isCreating = ref(false)
-  const isResizing = ref(false)
   const resizeStart = ref({ x: 0, y: 0, width: 0, height: 0 })
 
+  const edgeThreshold = 16
+
   function onPointerDown(event: PointerEvent, subject: Subject) {
-    if (event.button !== 0)
+    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-'))
       return
 
     // Determine if we're dragging or resizing
     const rect = (event.target as HTMLElement).getBoundingClientRect()
-    if (Math.abs(event.clientX - rect.left) < 16 || Math.abs(event.clientX - rect.right) < 16 || Math.abs(event.clientY - rect.top) < 16 || Math.abs(event.clientY - rect.bottom) < 16) {
+    if (Math.abs(event.clientX - rect.left) < edgeThreshold || Math.abs(event.clientX - rect.right) < edgeThreshold || Math.abs(event.clientY - rect.top) < edgeThreshold || Math.abs(event.clientY - rect.bottom) < edgeThreshold) {
       // We're resizing
-      onResizeDown(event, subject, false)
+      onResizeDown(event, subject)
     }
     else {
       // We're dragging
@@ -27,18 +28,18 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
     }
   }
 
-  function onResizeDown(event: PointerEvent, subject: Subject, isCreating: boolean) {
-    isResizing.value = true
+  function onResizeDown(event: PointerEvent, subject: Subject) {
+    mouse.isResizing = true
     resizeStart.value = { x: event.clientX, y: event.clientY, width: subject.width!, height: subject.height! }
     mouse.currentSubject = subject
 
-    if (!isCreating) {
+    if (!mouse.isCreating) {
       // Determine which edge we're resizing
       const rect = (event.target as HTMLElement).getBoundingClientRect()
-      const nearLeft = Math.abs(event.clientX - rect.left) < 16
-      const nearRight = Math.abs(event.clientX - rect.right) < 16
-      const nearTop = Math.abs(event.clientY - rect.top) < 16
-      const nearBottom = Math.abs(event.clientY - rect.bottom) < 16
+      const nearLeft = Math.abs(event.clientX - rect.left) < edgeThreshold
+      const nearRight = Math.abs(event.clientX - rect.right) < edgeThreshold
+      const nearTop = Math.abs(event.clientY - rect.top) < edgeThreshold
+      const nearBottom = Math.abs(event.clientY - rect.bottom) < edgeThreshold
 
       if (nearTop && nearLeft)
         mouse.resizeEdge = 'top-left'
@@ -68,7 +69,7 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
 
   function onResizeMove(event: PointerEvent) {
     // Early return if not resizing or no current subject
-    if (!isResizing.value || !mouse.currentSubject)
+    if (!mouse.isResizing || !mouse.currentSubject)
       return
 
     // Cancel any existing animation frame request
@@ -78,13 +79,12 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
     rafId = requestAnimationFrame(() => {
       // Calculate the change in x and y positions
       const deltaX = Math.round((event.clientX - resizeStart.value.x) / 24) * 24
-      const deltaY = Math.round((event.clientY - resizeStart.value.y) / groupCells.value[0].offsetHeight) * groupCells.value[0].offsetHeight
+      const deltaY = Math.round((event.clientY - resizeStart.value.y) / 192) * 192
 
       let newWidth, newHeight, newX, newY
 
       // Calculate the total height of the group cells
-      const totalHeight = groupCells.value.reduce((sum, cell) => sum + cell.offsetHeight, 0)
-      const minCellHeight = groupCells.value[0].offsetHeight // Assuming all cells have the same height
+      const totalHeight = groups.length * 192
 
       switch (initialResizeEdge.value) {
         case 'top-left':
@@ -101,7 +101,7 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
           break
         case 'top-right':
           newWidth = Math.max(0, resizeStart.value.width + deltaX)
-          newHeight = Math.max(minCellHeight, resizeStart.value.height - deltaY)
+          newHeight = Math.max(192, resizeStart.value.height - deltaY)
           newY = mouse.currentSubject!.y! + (mouse.currentSubject!.height! - newHeight)
           mouse.currentSubject!.width = newWidth
           if (newY >= 0) {
@@ -113,7 +113,7 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
           newWidth = Math.max(0, resizeStart.value.width - deltaX)
           newX = mouse.currentSubject!.x! + (mouse.currentSubject!.width! - newWidth)
           newHeight = Math.max(0, resizeStart.value.height + deltaY)
-          if (newX >= 0 && newX + newWidth <= container.value!.offsetWidth) {
+          if (newX >= 0 && newX + newWidth <= container!.offsetWidth) {
             mouse.currentSubject!.width = newWidth
             mouse.currentSubject!.x = newX
           }
@@ -124,7 +124,7 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
         case 'bottom-right':
           newWidth = Math.max(0, resizeStart.value.width + deltaX)
           newHeight = Math.max(0, resizeStart.value.height + deltaY)
-          if (mouse.currentSubject!.x! + newWidth <= container.value!.offsetWidth)
+          if (mouse.currentSubject!.x! + newWidth <= container!.offsetWidth)
             mouse.currentSubject!.width = newWidth
 
           if (mouse.currentSubject!.y! + newHeight <= totalHeight)
@@ -140,11 +140,11 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
           }
           break
         case 'right':
-          newWidth = Math.min(container.value!.offsetWidth - mouse.currentSubject!.x!, Math.max(0, resizeStart.value.width + deltaX))
+          newWidth = Math.min(container!.offsetWidth - mouse.currentSubject!.x!, Math.max(0, resizeStart.value.width + deltaX))
           mouse.currentSubject!.width = newWidth
           break
         case 'top':
-          newHeight = Math.max(minCellHeight, resizeStart.value.height - deltaY)
+          newHeight = Math.max(192, resizeStart.value.height - deltaY)
           newY = mouse.currentSubject!.y! + (mouse.currentSubject!.height! - newHeight)
           if (newY >= 0) {
             mouse.currentSubject!.height = newHeight
@@ -152,16 +152,36 @@ export default function useResize(subjects: Subject[], container: Ref<HTMLElemen
           }
           break
         case 'bottom':
-          newHeight = Math.min(totalHeight - mouse.currentSubject!.y!, Math.max(minCellHeight, resizeStart.value.height + deltaY))
+          newHeight = Math.min(totalHeight - mouse.currentSubject!.y!, Math.max(192, resizeStart.value.height + deltaY))
           mouse.currentSubject!.height = newHeight
           break
       }
+
+      const hours: number | string = Math.floor(mouse.currentSubject!.width! / 4.8 / 60)
+      const minutes: number | string = Math.round(mouse.currentSubject!.width! / 4.8 % 60)
+      const duration = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:00`
+      mouse.currentSubject!.duration = duration
+
+      calculateStartTime(mouse.currentSubject!)
     })
   }
 
-  function onResizeUp() {
-    isResizing.value = false
-    isCreating.value = false
+  async function onResizeUp() {
+    if (mouse.isCreating) {
+      // TODO: Move business logic outside maths
+      await $fetch('subjects', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
+        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+        body: JSON.stringify(mouse.currentSubject),
+      })
+      mouse.isCreating = false
+    }
+
+    mouse.isResizing = false
+    mouse.isCreating = false
     // Drop the ghost class
     mouse.currentSubject!.ghost = false
     mouse.currentSubject = null

@@ -1,9 +1,14 @@
+<script setup lang="ts">
+const { start } = useLoadingIndicator()
+start()
+</script>
+
 <template>
-  <layout-navbar />
+  <NuxtLoadingIndicator color="#2563eb" />
   <div class="flex">
     <layout-sidebar />
 
-    <main class="h-[calc(100dvh-4rem)] w-full overflow-y-scroll">
+    <main class="h-screen w-full overflow-y-scroll">
       <slot />
     </main>
   </div>

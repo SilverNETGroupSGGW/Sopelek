@@ -1,17 +1,17 @@
-import type { Lecturer } from '~/types'
+import type { Subject } from '~/types'
 
-export const useLecturers = defineStore('lecturers', {
+export const useSubjects = defineStore('subjects', {
   state: () => ({
     search: '',
-    data: [] as Lecturer[],
+    data: [] as Subject[],
     columns: [
       {
-        key: 'firstName',
-        header: 'Imię i nazwisko',
+        key: 'name',
+        header: 'Nazwa',
       },
       {
-        key: 'email',
-        header: 'Email',
+        key: 'lecturers',
+        header: 'Prowadzący',
       },
       {
         key: 'actions',
@@ -20,17 +20,17 @@ export const useLecturers = defineStore('lecturers', {
     ],
   }),
   actions: {
-    async get() {
-      this.data = await $fetch<Lecturer[]>('lecturers', {
+    async get(scheduleId: string) {
+      this.data = await $fetch<Subject[]>(`Subjects/schedule/${scheduleId}/extended`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
     },
-    async create(lecturer: Lecturer) {
-      const data = await $fetch<Lecturer>('lecturers', {
+    async create(subject: Subject) {
+      const data = await $fetch<Subject>('Subjects', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
-        body: JSON.stringify(lecturer),
+        body: JSON.stringify(subject),
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
         },
@@ -38,11 +38,11 @@ export const useLecturers = defineStore('lecturers', {
 
       this.data.push(data)
     },
-    async update(lecturer: Lecturer) {
-      const data = await $fetch<Lecturer>('lecturers', {
+    async update(subject: Subject) {
+      const data = await $fetch<Subject>('Subjects', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'PUT',
-        body: JSON.stringify(lecturer),
+        body: JSON.stringify(subject),
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
         },
@@ -51,8 +51,8 @@ export const useLecturers = defineStore('lecturers', {
       const index = this.data.findIndex(l => l.id === data.id)
       this.data[index] = data
     },
-    async delete(lecturer: Lecturer) {
-      await $fetch(`lecturers/${lecturer.id}`, {
+    async delete(id: string) {
+      await $fetch<Subject>(`Subjects/${id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'DELETE',
         headers: {
@@ -60,7 +60,7 @@ export const useLecturers = defineStore('lecturers', {
         },
       })
 
-      this.data = this.data.filter(l => l.id !== lecturer.id)
+      this.data = this.data.filter(l => l.id !== id)
     },
   },
 })
