@@ -59,11 +59,14 @@ function handleDelete() {
     <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
       <b>{{ lecturers[0].academicDegree }} {{ lecturers[0].firstName }} {{ lecturers[0].surname }}</b>
     </small>
-    <small class="text-xs text-gray-700">
+    <small v-if="classroom" class="text-xs text-gray-700">
       <b>Sala: </b> b. {{ classroom?.building }}, p. {{ classroom?.floor }}, s. {{ classroom?.name }}
     </small>
     <small v-if="groups" class="text-xs text-gray-700">
       <b>Grupy: </b> {{ groups.map(x => x.name).join(', ') }}
+    </small>
+    <small v-if="isRemote" class="text-xs text-gray-700">
+      <b>Zajęcia zdalne</b>
     </small>
     <small v-if="comment" class="text-xs text-gray-700">
       <b>Komentarz: </b> {{ comment }}

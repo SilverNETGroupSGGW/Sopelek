@@ -181,7 +181,11 @@ async function handleDelete() {
       </div>
     </div>
 
-    <div class="mb-6 flex items-end gap-4  rounded-lg border border-gray-200 p-4">
+    <div class="mb-6 rounded-lg border border-gray-200 p-4">
+      <base-checkbox v-model="data!.isRemote" label="Zajęcia zdalne" />
+    </div>
+
+    <div class="mb-6 flex items-end gap-4 rounded-lg border border-gray-200 p-4">
       <base-search v-model="data!.startTime" :options="timeRange" label="Domyślna godzina rozpoczęcia" />
       <base-search v-model="data!.duration" :options="durationRange" label="Czas trwania" />
     </div>
@@ -261,7 +265,7 @@ async function handleDelete() {
           </template>
 
           <template #actions="{ cell }">
-            <button v-if="data!.classroom!.id !== cell.id" class="font-medium text-indigo-600" @click="addClassroom(cell)">
+            <button v-if="data!.classroom?.id !== cell.id" class="font-medium text-indigo-600" @click="addClassroom(cell)">
               Wybierz
             </button>
             <button v-else class="font-medium text-red-600" @click="removeClassroom(cell)">
