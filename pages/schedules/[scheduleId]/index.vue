@@ -12,7 +12,7 @@ router.push({
 })
 
 // Data
-const { daysOfWeek } = useData()
+const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
 // Elements
 let initialContainer: HTMLDivElement | null = null
@@ -101,7 +101,7 @@ function handleTabChange(index: number) {
 </script>
 
 <template>
-  <div class="flex w-full flex-wrap items-start justify-between gap-4 border-b border-b-gray-200 px-12 py-9">
+  <div class="flex w-full flex-wrap items-start justify-between gap-6 border-b border-b-gray-200 px-12 py-9">
     <div>
       <h1 class="text-2xl font-bold leading-9 text-gray-900">
         Kreator planu zajęć
@@ -111,7 +111,10 @@ function handleTabChange(index: number) {
         {{ schedule?.name }}
       </p>
       <p class="text-indigo-600">
-        {{ schedule?.faculty }}, {{ schedule?.fieldOfStudy }}, {{ schedule?.studyMode }}, {{ schedule?.degreeOfStudy }}
+        {{ schedule?.faculty }}, {{ schedule?.fieldOfStudy }}
+      </p>
+      <p class="text-indigo-600">
+        {{ studiesModes.find(x => x.type === schedule?.studyMode)?.value }}, {{ studiesDegrees.find(x => x.type === schedule?.degreeOfStudy)?.value }}
       </p>
       <p class="text-gray-700">
         Rok {{ schedule?.year }}, semestr {{ schedule?.semester }}
