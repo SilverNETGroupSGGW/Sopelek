@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{
+withDefaults(defineProps<{
   modelValue: string | number
   icon?: /* FunctionalComponent */ any
   label?: string
@@ -9,7 +9,9 @@ defineProps<{
   disabled?: boolean
   type?: string
   placeholder?: string
-}>()
+}>(), {
+  type: 'text',
+})
 
 const model = defineModel()
 </script>
