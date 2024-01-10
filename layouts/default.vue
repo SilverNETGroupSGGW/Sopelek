@@ -4,7 +4,7 @@ start()
 </script>
 
 <template>
-  <NuxtLoadingIndicator color="#2563eb" />
+  <NuxtLoadingIndicator color="#4F46E5" />
   <div class="flex">
     <layout-sidebar />
 
