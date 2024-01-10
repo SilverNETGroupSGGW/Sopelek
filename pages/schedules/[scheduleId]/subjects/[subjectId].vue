@@ -119,21 +119,35 @@ while (initialDate.getHours() <= 4) {
 }
 
 // API
-async function saveChanges() {
-  await $fetch<Subject[]>(`subjects`, {
-    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-    method: route.params.subjectId === 'create' ? 'POST' : 'PUT',
-    body: JSON.stringify(data.value),
-    headers: {
-      Authorization: `Bearer ${useCookie('accessToken').value}`,
-    },
-  })
+const error = ref(false)
+const errorMessage = ref('')
 
-  const previousRoute = router.options.history.state.back?.toString()
-  if (previousRoute?.startsWith('/schedules/'))
-    router.push(previousRoute)
-  else
-    router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
+async function saveChanges() {
+  try {
+    await $fetch<Subject[]>(`subjects`, {
+      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+      method: route.params.subjectId === 'create' ? 'POST' : 'PUT',
+      body: JSON.stringify(data.value),
+      headers: {
+        Authorization: `Bearer ${useCookie('accessToken').value}`,
+      },
+    })
+
+    const previousRoute = router.options.history.state.back?.toString()
+    if (previousRoute?.startsWith('/schedules/'))
+      router.push(previousRoute)
+    else
+      router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
+  }
+  catch (e) {
+    error.value = true
+    errorMessage.value = e.data.message as string
+  }
+}
+
+function handleClose() {
+  error.value = false
+  errorMessage.value = ''
 }
 
 // Dialog
@@ -289,4 +303,8 @@ async function handleDelete() {
       </base-button>
     </div>
   </base-dialog>
+
+  <base-toast v-if="error" type="error" @close="handleClose">
+    {{ errorMessage }}
+  </base-toast>
 </template>
