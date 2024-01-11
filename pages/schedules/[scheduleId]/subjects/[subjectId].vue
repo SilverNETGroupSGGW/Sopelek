@@ -8,7 +8,7 @@ const route = useRoute()
 const router = useRouter()
 
 // Data
-const { daysOfWeek } = useData()
+const { daysOfWeek, lessonTypes } = useData()
 
 const subjects = useSubjects()
 await subjects.get(route.params.scheduleId as string)
@@ -146,20 +146,8 @@ async function handleDelete() {
         <base-input v-model="data!.name" dense class="mb-1 text-xl font-semibold" placeholder="Nazwa przedmiotu" />
 
         <div class="mb-8 flex">
-          <base-button type="button" :variant="data!.type === SubjectType.Lecture ? 'primary' : 'secondary'" class="rounded-r-none" @click="data!.type = SubjectType.Lecture">
-            Wykład
-          </base-button>
-          <base-button type="button" :variant="data!.type === SubjectType.PracticalClasses ? 'primary' : 'secondary'" class="rounded-none" @click="data!.type = SubjectType.PracticalClasses">
-            Ćwiczenia
-          </base-button>
-          <base-button type="button" :variant="data!.type === SubjectType.Laboratories ? 'primary' : 'secondary'" class="rounded-none" @click="data!.type = SubjectType.Laboratories">
-            Laboratoria
-          </base-button>
-          <base-button type="button" :variant="data!.type === SubjectType.Faculty ? 'primary' : 'secondary'" class="rounded-none" @click="data!.type = SubjectType.Faculty">
-            Fakultet
-          </base-button>
-          <base-button type="button" :variant="data!.type === SubjectType.Unknown ? 'primary' : 'secondary'" class="rounded-l-none" @click="data!.type = SubjectType.Unknown">
-            Inne
+          <base-button v-for="(type, index) in lessonTypes" :key="index" type="button" :variant="data!.type === type.value ? 'primary' : 'secondary'" :class="index === 0 ? 'rounded-r-none' : index === lessonTypes.length - 1 ? 'rounded-l-none' : 'rounded-none'" @click="data!.type = type.value">
+            {{ type.label }}
           </base-button>
         </div>
       </div>
