@@ -41,7 +41,7 @@ export const useSubjects = defineStore('subjects', {
     async update(subject: Subject) {
       const data = await $fetch<Subject>('Subjects', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-        method: 'PUT',
+        method: subject.id === 'create' ? 'POST' : 'PUT',
         body: JSON.stringify(subject),
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,

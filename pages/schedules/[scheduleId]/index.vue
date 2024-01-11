@@ -121,16 +121,6 @@ function handleTabChange(index: number) {
       </p>
     </div>
 
-    <div class="flex items-center gap-4">
-      <base-button variant="primary" class="shrink-0">
-        Zapisz zmiany
-      </base-button>
-
-      <base-button variant="secondary" class="shrink-0">
-        Anuluj
-      </base-button>
-    </div>
-
     <TabGroup :selected-index="tabIndex" @change="handleTabChange">
       <TabList class="flex w-full gap-2">
         <Tab v-for="(day, index) in daysOfWeek" :key="index" v-slot="{ selected }" as="template">

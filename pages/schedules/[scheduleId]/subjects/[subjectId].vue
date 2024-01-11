@@ -44,7 +44,7 @@ try {
 }
 catch {
   data.value = {
-    id: '',
+    id: 'create',
     scheduleId: route.params.scheduleId as string,
     name: '',
     type: SubjectType.Unknown,
@@ -120,14 +120,7 @@ while (initialDate.getHours() <= 4) {
 
 // API
 async function saveChanges() {
-  await $fetch<Subject[]>(`subjects`, {
-    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-    method: route.params.subjectId === 'create' ? 'POST' : 'PUT',
-    body: JSON.stringify(data.value),
-    headers: {
-      Authorization: `Bearer ${useCookie('accessToken').value}`,
-    },
-  })
+  subjects.update(data.value!)
 
   const previousRoute = router.options.history.state.back?.toString()
   if (previousRoute?.startsWith('/schedules/'))

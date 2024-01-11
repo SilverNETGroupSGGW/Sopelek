@@ -1,6 +1,8 @@
 import type { Group, Subject } from '~/types'
 
 export default function useDrag(subjects: Subject[], groups: Group[], container: HTMLDivElement | null) {
+  const subjectsStore = useSubjects()
+
   const { calculateStartTime } = useSubject()
 
   let rafId: number | null = null
@@ -62,6 +64,12 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
         if (previousGroupIndex !== currentGroupIndex)
           currentSubject.value!.groups = groups.slice(currentGroupIndex, currentGroupIndex + 1)
 
+        currentSubject.value!.groupsIds = currentSubject.value!.groups.map(group => group.id)
+        currentSubject.value!.lecturersIds = currentSubject.value!.lecturers!.map(lecturer => lecturer.id)
+
+        if (currentSubject.value!.classroom)
+          currentSubject.value!.classroomId = currentSubject.value!.classroom!.id
+
         // Update dragStart based on the actual movement of the element
         dragStart.value = { x: dragStart.value.x + deltaX, y: dragStart.value.y + deltaY }
       }
@@ -70,7 +78,11 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
 
   function onDragUp() {
     isDragging.value = false
-    currentSubject.value = null
+
+    if (currentSubject.value) {
+      subjectsStore.update(currentSubject.value)
+      currentSubject.value = null
+    }
 
     // Remove event listeners from window
     window.removeEventListener('pointermove', onDragMove)

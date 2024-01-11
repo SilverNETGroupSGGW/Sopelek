@@ -2,6 +2,7 @@ import type { Group, Subject } from '~/types'
 
 export default function useResize(subjects: Subject[], groups: Group[], container: HTMLDivElement | null) {
   const mouse = useMouse()
+  const subjectsStore = useSubjects()
 
   const { onDragDown } = useDrag(subjects, groups, container)
   const { calculateStartTime } = useSubject()
@@ -190,8 +191,10 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
     mouse.isResizing = false
     mouse.isCreating = false
 
-    if (mouse.currentSubject)
+    if (mouse.currentSubject && !mouse.isCreating) {
       mouse.currentSubject.ghost = false
+      subjectsStore.update(mouse.currentSubject)
+    }
 
     mouse.currentSubject = null
 
