@@ -162,6 +162,11 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
       const duration = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:00`
       mouse.currentSubject!.duration = duration
 
+      // Calculate new groups
+      const currentGroupIndex = Math.floor(mouse.currentSubject!.y! / 192)
+      const newGroupCount = Math.ceil(mouse.currentSubject!.height! / 192)
+      mouse.currentSubject!.groups = groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
+
       calculateStartTime(mouse.currentSubject!)
     })
   }

@@ -53,6 +53,15 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
 
         calculateStartTime(currentSubject.value!)
 
+        // When previous y is smaller than current y, we need to move the subject to the next group
+        // When previous y is larger than current y, we need to move the subject to the previous group
+        const previousGroupIndex = Math.floor((currentSubject.value!.y! - deltaY) / 192)
+        const currentGroupIndex = Math.floor(currentSubject.value!.y! / 192)
+
+        currentSubject.value!.groups = groups.slice(currentGroupIndex, currentGroupIndex + 1)
+        if (previousGroupIndex !== currentGroupIndex)
+          currentSubject.value!.groups = groups.slice(currentGroupIndex, currentGroupIndex + 1)
+
         // Update dragStart based on the actual movement of the element
         dragStart.value = { x: dragStart.value.x + deltaX, y: dragStart.value.y + deltaY }
       }
