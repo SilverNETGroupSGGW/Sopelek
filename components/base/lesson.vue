@@ -32,6 +32,7 @@ function handleDelete() {
       { 'border-indigo-600 bg-indigo-50': type === SubjectType.Lecture },
       { 'border-pink-600 bg-pink-50': type === SubjectType.PracticalClasses },
       { 'border-gray-600 bg-gray-50': type === SubjectType.Unknown },
+      { 'border-4 border-red-600 bg-red-50': conflict },
     ]"
   >
     <div class="flex w-full items-center justify-between">
@@ -70,6 +71,9 @@ function handleDelete() {
     </small>
     <small v-if="comment" class="text-xs text-gray-700">
       <b>Komentarz: </b> {{ comment }}
+    </small>
+    <small v-if="conflict" class="text-xs text-red-600">
+      <b>Konflikt: </b> {{ conflictMessage }}
     </small>
   </div>
 

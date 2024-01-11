@@ -1,4 +1,4 @@
-import type { Subject } from '~/types'
+import type { Subject, SubjectConflict } from '~/types'
 
 export const useSubjects = defineStore('subjects', {
   state: () => ({
@@ -18,6 +18,7 @@ export const useSubjects = defineStore('subjects', {
         header: 'Akcje',
       },
     ],
+    conflicts: [] as SubjectConflict[],
   }),
   actions: {
     async get(scheduleId: string) {
@@ -39,17 +40,27 @@ export const useSubjects = defineStore('subjects', {
       this.data.push(data)
     },
     async update(subject: Subject) {
-      const data = await $fetch<Subject>('Subjects', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-        method: subject.id === 'create' ? 'POST' : 'PUT',
-        body: JSON.stringify(subject),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      try {
+        subject.conflict = false
+        subject.conflictMessage = undefined
 
-      const index = this.data.findIndex(l => l.id === data.id)
-      this.data[index] = data
+        const data = await $fetch<Subject>('Subjects', {
+          baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+          method: subject.id === 'create' ? 'POST' : 'PUT',
+          body: JSON.stringify(subject),
+          headers: {
+            Authorization: `Bearer ${useCookie('accessToken').value}`,
+          },
+        })
+
+        const index = this.data.findIndex(l => l.id === data.id)
+        this.data[index] = data
+      }
+      catch (error) {
+        subject.conflict = true
+        subject.conflictMessage = error.data.message
+        this.conflicts.push((error.data) as SubjectConflict)
+      }
     },
     async delete(id: string) {
       await $fetch<Subject>(`Subjects/${id}`, {

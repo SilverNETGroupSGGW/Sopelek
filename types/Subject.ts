@@ -21,6 +21,16 @@ export enum DayOfWeek {
   Sunday = 'Sunday',
 }
 
+export interface SubjectConflict {
+  message: string
+  conflicts: {
+    mainSubject: Subject
+    otherSubject: Subject
+    conflictStartTime: string
+    conflictDuration: string
+  }[]
+}
+
 export interface Subject {
   classroom?: Classroom
   classroomId?: string
@@ -41,6 +51,8 @@ export interface Subject {
   type?: SubjectType
   updated?: string
 
+  conflict?: boolean
+  conflictMessage?: string
   ghost?: boolean
   height?: number
   width?: number
