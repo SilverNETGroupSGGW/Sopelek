@@ -30,6 +30,8 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
       y = containerRect.height - 192
 
     const newSubject: Subject = {
+      classroom: null,
+      classroomId: null,
       comment: '',
       conflict: false,
       conflictMessage: undefined,
@@ -38,6 +40,7 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
       groupsIds: [target.dataset.group!],
       height: 192,
       id: '',
+      lecturers: [],
       lecturersIds: [],
       name: 'Zajęcia',
       scheduleId,

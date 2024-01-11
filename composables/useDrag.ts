@@ -65,7 +65,9 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
           currentSubject.value!.groups = groups.slice(currentGroupIndex, currentGroupIndex + 1)
 
         currentSubject.value!.groupsIds = currentSubject.value!.groups.map(group => group.id)
-        currentSubject.value!.lecturersIds = currentSubject.value!.lecturers!.map(lecturer => lecturer.id)
+
+        if (currentSubject.value!.lecturers!.length > 0)
+          currentSubject.value!.lecturersIds = currentSubject.value!.lecturers!.map(lecturer => lecturer.id)
 
         if (currentSubject.value!.classroom)
           currentSubject.value!.classroomId = currentSubject.value!.classroom!.id

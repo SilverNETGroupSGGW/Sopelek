@@ -34,8 +34,8 @@ export interface SubjectConflictItem {
 }
 
 export interface Subject {
-  classroom?: Classroom
-  classroomId?: string
+  classroom?: Classroom | null
+  classroomId?: string | null
   comment?: string
   created?: string
   dayOfWeek?: DayOfWeek
