@@ -64,7 +64,7 @@ if (_subjects.value) {
   subjects.value = _subjects.value
     .map((subject) => {
       const { x, y, width, height } = calculatePosition(subject, groups.value!.map(x => x.name))
-      return { ...subject, x, y, width, height }
+      return { ...subject, conflict: false, conflictMessage: '', x, y, width, height }
     })
 }
 

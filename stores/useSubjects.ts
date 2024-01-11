@@ -1,4 +1,4 @@
-import type { Subject, SubjectConflict } from '~/types'
+import type { Subject } from '~/types'
 
 export const useSubjects = defineStore('subjects', {
   state: () => ({
@@ -18,7 +18,6 @@ export const useSubjects = defineStore('subjects', {
         header: 'Akcje',
       },
     ],
-    conflicts: [] as SubjectConflict[],
   }),
   actions: {
     async get(scheduleId: string) {
@@ -58,8 +57,8 @@ export const useSubjects = defineStore('subjects', {
       }
       catch (error) {
         subject.conflict = true
+        // @ts-expect-error unable to type error
         subject.conflictMessage = error.data.message
-        this.conflicts.push((error.data) as SubjectConflict)
       }
     },
     async delete(id: string) {

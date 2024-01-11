@@ -23,12 +23,14 @@ export enum DayOfWeek {
 
 export interface SubjectConflict {
   message: string
-  conflicts: {
-    mainSubject: Subject
-    otherSubject: Subject
-    conflictStartTime: string
-    conflictDuration: string
-  }[]
+  conflicts: SubjectConflictItem[]
+}
+
+export interface SubjectConflictItem {
+  mainSubject: Subject
+  otherSubject: Subject
+  conflictStartTime: string
+  conflictDuration: string
 }
 
 export interface Subject {

@@ -31,6 +31,8 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
 
     const newSubject: Subject = {
       comment: '',
+      conflict: false,
+      conflictMessage: undefined,
       ghost: true,
       groups: [groups.find(group => group.id === target.dataset.group)!],
       groupsIds: [target.dataset.group!],
