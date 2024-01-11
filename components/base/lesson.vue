@@ -63,7 +63,7 @@ function handleDelete() {
       <b>Sala: </b> b. {{ classroom?.building }}, p. {{ classroom?.floor }}, s. {{ classroom?.name }}
     </small>
     <small v-if="groups" class="text-xs text-gray-700">
-      <b>Grupy: </b> {{ groups.map(x => x.name).join(', ') }}
+      <b>Grupy: </b> {{ groups.map(x => x.name).sort().join(', ') }}
     </small>
     <small v-if="isRemote" class="text-xs text-gray-700">
       <b>Zajęcia zdalne</b>
