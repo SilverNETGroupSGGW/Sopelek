@@ -86,6 +86,9 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
       const deltaX = Math.round((event.clientX - resizeStart.value.x) / 24) * 24
       const deltaY = Math.round((event.clientY - resizeStart.value.y) / 192) * 192
 
+      const minWidth = 24
+      const minHeight = 192
+
       let newWidth, newHeight, newX, newY
 
       // Calculate the total height of the group cells
@@ -93,9 +96,9 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
 
       switch (initialResizeEdge.value) {
         case 'top-left':
-          newWidth = Math.max(0, resizeStart.value.width - deltaX)
+          newWidth = Math.max(minWidth, resizeStart.value.width - deltaX)
           newX = mouse.currentSubject!.x! + (mouse.currentSubject!.width! - newWidth)
-          newHeight = Math.max(0, resizeStart.value.height - deltaY)
+          newHeight = Math.max(minHeight, resizeStart.value.height - deltaY)
           newY = mouse.currentSubject!.y! + (mouse.currentSubject!.height! - newHeight)
           if (newX >= 0 && newY >= 0) {
             mouse.currentSubject!.width = newWidth
@@ -105,8 +108,8 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
           }
           break
         case 'top-right':
-          newWidth = Math.max(0, resizeStart.value.width + deltaX)
-          newHeight = Math.max(192, resizeStart.value.height - deltaY)
+          newWidth = Math.max(minWidth, resizeStart.value.width + deltaX)
+          newHeight = Math.max(minHeight, resizeStart.value.height - deltaY)
           newY = mouse.currentSubject!.y! + (mouse.currentSubject!.height! - newHeight)
           mouse.currentSubject!.width = newWidth
           if (newY >= 0) {
@@ -115,9 +118,9 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
           }
           break
         case 'bottom-left':
-          newWidth = Math.max(0, resizeStart.value.width - deltaX)
+          newWidth = Math.max(minWidth, resizeStart.value.width - deltaX)
           newX = mouse.currentSubject!.x! + (mouse.currentSubject!.width! - newWidth)
-          newHeight = Math.max(0, resizeStart.value.height + deltaY)
+          newHeight = Math.max(minHeight, resizeStart.value.height + deltaY)
           if (newX >= 0 && newX + newWidth <= container!.offsetWidth) {
             mouse.currentSubject!.width = newWidth
             mouse.currentSubject!.x = newX
@@ -127,8 +130,8 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
 
           break
         case 'bottom-right':
-          newWidth = Math.max(0, resizeStart.value.width + deltaX)
-          newHeight = Math.max(0, resizeStart.value.height + deltaY)
+          newWidth = Math.max(minWidth, resizeStart.value.width + deltaX)
+          newHeight = Math.max(minHeight, resizeStart.value.height + deltaY)
           if (mouse.currentSubject!.x! + newWidth <= container!.offsetWidth)
             mouse.currentSubject!.width = newWidth
 
@@ -137,7 +140,7 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
 
           break
         case 'left':
-          newWidth = Math.max(0, resizeStart.value.width - deltaX)
+          newWidth = Math.max(minWidth, resizeStart.value.width - deltaX)
           newX = mouse.currentSubject!.x! + (mouse.currentSubject!.width! - newWidth)
           if (newX >= 0) {
             mouse.currentSubject!.width = newWidth
@@ -145,11 +148,11 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
           }
           break
         case 'right':
-          newWidth = Math.min(container!.offsetWidth - mouse.currentSubject!.x!, Math.max(0, resizeStart.value.width + deltaX))
+          newWidth = Math.max(minWidth, resizeStart.value.width + deltaX)
           mouse.currentSubject!.width = newWidth
           break
         case 'top':
-          newHeight = Math.max(192, resizeStart.value.height - deltaY)
+          newHeight = Math.max(minHeight, resizeStart.value.height - deltaY)
           newY = mouse.currentSubject!.y! + (mouse.currentSubject!.height! - newHeight)
           if (newY >= 0) {
             mouse.currentSubject!.height = newHeight
@@ -157,7 +160,7 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
           }
           break
         case 'bottom':
-          newHeight = Math.min(totalHeight - mouse.currentSubject!.y!, Math.max(192, resizeStart.value.height + deltaY))
+          newHeight = Math.max(minHeight, resizeStart.value.height + deltaY)
           mouse.currentSubject!.height = newHeight
           break
       }
