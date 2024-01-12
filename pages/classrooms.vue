@@ -18,7 +18,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     <div class="flex gap-4">
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
       <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
-        Dodaj sale
+        Dodaj salę
       </base-button>
     </div>
   </div>
@@ -46,7 +46,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </template>
   </base-table>
 
-  <base-dialog v-model="createDialog" title="Dodaj sale" :icon="BuildingLibraryIcon">
+  <base-dialog v-model="createDialog" title="Dodaj salę" :icon="BuildingLibraryIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async () => await classrooms.create(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
@@ -65,7 +65,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="updateDialog" title="Edytuj sale" :icon="BuildingLibraryIcon">
+  <base-dialog v-model="updateDialog" title="Edytuj salę" :icon="BuildingLibraryIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await classrooms.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
@@ -84,9 +84,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="deleteDialog" title="Usuń sale" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń salę" :icon="TrashIcon">
     <p class="text-base text-gray-700">
-      Czy na pewno chcesz usunąć sale?
+      Czy na pewno chcesz usunąć salę?
     </p>
 
     <div class="mt-6 flex justify-end gap-4">
