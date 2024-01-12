@@ -27,7 +27,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
-      <span class="text-sm text-gray-700">budynek {{ cell.building }}, piętro {{ cell.floor }}, numer {{ cell.name }}</span>
+      <span class="text-sm text-gray-700">budynek {{ cell.building }}, piętro {{ cell.floor }}</span>
     </template>
 
     <template #capacity="{ cell }">

@@ -38,7 +38,6 @@ try {
 
   subject.groupsIds = subject.groups?.map(group => group.id!)
   subject.lecturersIds = subject.lecturers?.map(lecturer => lecturer.id)
-  subject.classroomId = subject.classroom?.id
 
   data.value = subject
 }
@@ -75,14 +74,14 @@ function removeLecturer(lecturer: Lecturer) {
 }
 
 function addClassroom(classroom: Classroom) {
-  if (data.value!.classroom!.id !== classroom.id) {
+  if (data.value!.classroom?.id !== classroom.id) {
     data.value!.classroom = classroom
     data.value!.classroomId = classroom.id
   }
 }
 
 function removeClassroom(classroom: Classroom) {
-  if (data.value!.classroom!.id === classroom.id) {
+  if (data.value!.classroom?.id === classroom.id) {
     data.value!.classroom = undefined
     data.value!.classroomId = undefined
   }
@@ -215,6 +214,10 @@ async function handleDelete() {
             <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
           </template>
 
+          <template #capacity="{ cell }">
+            <span class="text-base text-gray-900">{{ cell.capacity }}</span>
+          </template>
+
           <template #actions="{ cell }">
             <button v-if="!data?.groups?.some(group => group.id === cell.id)" class="font-medium text-indigo-600" @click="addGroup(cell)">
               Wybierz
@@ -235,18 +238,16 @@ async function handleDelete() {
         <base-table :search="search.classrooms" :data="classrooms.data" :columns="classrooms.columns">
           <template #name="{ cell }">
             <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
+            <br>
+            <span class="text-sm text-gray-700">budynek {{ cell.building }}, piętro {{ cell.floor }}</span>
           </template>
 
-          <template #building="{ cell }">
-            <span class="text-base font-medium text-gray-900">{{ cell.building }}</span>
-          </template>
-
-          <template #floor="{ cell }">
-            <span class="text-base font-medium text-gray-900">{{ cell.floor }}</span>
+          <template #capacity="{ cell }">
+            <span class="text-base text-gray-900">{{ cell.capacity }}</span>
           </template>
 
           <template #actions="{ cell }">
-            <button v-if="data!.classroom?.id !== cell.id" class="font-medium text-indigo-600" @click="addClassroom(cell)">
+            <button v-if="data!.classroom?.id !== cell.id" class="font-medium text-indigo-600" @click.prevent="addClassroom(cell)">
               Wybierz
             </button>
             <button v-else class="font-medium text-red-600" @click="removeClassroom(cell)">
