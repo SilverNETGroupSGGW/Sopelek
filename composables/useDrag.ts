@@ -67,7 +67,9 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
         if (previousGroupIndex !== currentGroupIndex)
           mouse.currentSubject!.groups = groups.slice(currentGroupIndex, currentGroupIndex + 1)
 
-        mouse.currentSubject!.groupsIds = mouse.currentSubject!.groups.map(group => group.id)
+        mouse.currentSubject!.groupsIds = mouse.currentSubject!.groups!.length > 0
+          ? mouse.currentSubject!.groups!.map(group => group.id)
+          : []
 
         mouse.currentSubject!.lecturersIds = mouse.currentSubject!.lecturers!.length > 0
           ? mouse.currentSubject!.lecturers!.map(lecturer => lecturer.id)

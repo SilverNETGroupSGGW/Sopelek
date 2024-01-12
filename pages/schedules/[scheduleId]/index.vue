@@ -43,12 +43,15 @@ while (initialDate.getHours() < 20) {
 // Subjects
 const { calculatePosition } = useSubject()
 
+const schedule = ref<Schedule | null>()
 const groups = ref<Group[] | null>()
 const subjects = ref<Subject[] | null>(null)
 
-const { data: schedule } = await useFetch<Schedule>(`Schedules/${route.params.scheduleId}`, {
+const { data: _schedule } = await useFetch<Schedule>(`Schedules/${route.params.scheduleId}`, {
   baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
 })
+
+schedule.value = _schedule.value
 
 const { data: _groups } = await useFetch<Group[]>(`Groups/Schedule/${route.params.scheduleId}`, {
   baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
@@ -64,7 +67,20 @@ if (_subjects.value) {
   subjects.value = _subjects.value
     .map((subject) => {
       const { x, y, width, height } = calculatePosition(subject, groups.value!.map(x => x.name))
-      return { ...subject, conflict: false, conflictMessage: '', x, y, width, height }
+      return {
+        ...subject,
+        conflict: false,
+        conflictMessage: '',
+
+        classroomId: subject.classroom?.id ?? null,
+        lecturersIds: subject.lecturers?.map(lecturer => lecturer.id) ?? [],
+        groupsIds: subject.groups?.map(group => group.id!) ?? [],
+
+        x,
+        y,
+        width,
+        height,
+      }
     })
 }
 
