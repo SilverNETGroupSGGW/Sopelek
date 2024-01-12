@@ -172,8 +172,8 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
         mouse.currentSubject.duration = duration
 
         // Calculate new groups
-        const currentGroupIndex = Math.floor(mouse.currentSubject.y! / 192)
-        const newGroupCount = Math.ceil(mouse.currentSubject.height! / 192)
+        const currentGroupIndex = mouse.currentSubject.y! / 192
+        const newGroupCount = mouse.currentSubject.height! / 192
         mouse.currentSubject.groups = groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
 

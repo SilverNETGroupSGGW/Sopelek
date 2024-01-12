@@ -31,8 +31,15 @@ export default function useSubject() {
     subject.startTime = `${hours}:${minutes}:00`
   }
 
+  function calculateGroups(subject: Subject) {
+    const currentGroupIndex = subject.y! / 192
+    const newGroupCount = subject.height! / 192
+    subject.groups = subject.groups!.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
+  }
+
   return {
     calculatePosition,
     calculateStartTime,
+    calculateGroups,
   }
 }

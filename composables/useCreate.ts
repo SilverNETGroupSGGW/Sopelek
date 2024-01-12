@@ -17,7 +17,7 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
       return
 
     let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / 24) * 24
-    let y = Math.round((event.clientY - container!.getBoundingClientRect().top) / 192) * 192
+    let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / 192) * 192
 
     // Check if x or y is outside the bounds and set them to the closest boundary
     const containerRect = container!.getBoundingClientRect()
@@ -46,7 +46,7 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
       name: 'Zajęcia',
       scheduleId,
       startTime: target.dataset.time!,
-      duration: '01:30:00',
+      duration: '00:05:00',
       type: SubjectType.Unknown,
       dayOfWeek: DayOfWeek.Monday,
       width: 24,

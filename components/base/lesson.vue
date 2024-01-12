@@ -36,7 +36,7 @@ function handleDelete() {
       { 'border-4 border-red-600 bg-red-50': conflict },
     ]"
   >
-    <div class="flex w-full items-center justify-between">
+    <div class="flex w-full flex-wrap items-center justify-between">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
         {{ startTime.slice(0, -3) }} ({{ duration!.slice(0, -3) }}h)
       </small>
