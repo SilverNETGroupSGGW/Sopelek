@@ -24,6 +24,7 @@ function handleDelete() {
 <template>
   <div
     :id="id"
+    data-lesson
     class="flex h-full w-full flex-col items-start rounded-md border p-4 text-left outline-none"
     :class="[
       { 'opacity-50': ghost },

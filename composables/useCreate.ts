@@ -12,7 +12,8 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
     const target = event.target as HTMLElement
 
     // Prevent creating a new subject when clicking on an existing subject
-    if (target.id)
+    // If nearest target parent has data-lesson, it means we're clicking on an existing subject
+    if (target.closest('[data-lesson]'))
       return
 
     let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / 24) * 24

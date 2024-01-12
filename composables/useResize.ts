@@ -14,7 +14,11 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
   const edgeThreshold = 16
 
   function onPointerDown(event: PointerEvent, subject: Subject) {
-    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-'))
+    // Cleanup existing window event listeners
+    window.removeEventListener('pointermove', onResizeMove)
+    window.removeEventListener('pointerup', onResizeUp)
+
+    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-') || !(event.target as HTMLElement).id)
       return
 
     // Determine if we're dragging or resizing
@@ -158,18 +162,20 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
           break
       }
 
-      const hours: number | string = Math.floor(mouse.currentSubject!.width! / 4.8 / 60)
-      const minutes: number | string = Math.round(mouse.currentSubject!.width! / 4.8 % 60)
-      const duration = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:00`
-      mouse.currentSubject!.duration = duration
+      if (mouse.currentSubject) {
+        const hours: number | string = Math.floor(mouse.currentSubject.width! / 4.8 / 60)
+        const minutes: number | string = Math.round(mouse.currentSubject.width! / 4.8 % 60)
+        const duration = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:00`
+        mouse.currentSubject.duration = duration
 
-      // Calculate new groups
-      const currentGroupIndex = Math.floor(mouse.currentSubject!.y! / 192)
-      const newGroupCount = Math.ceil(mouse.currentSubject!.height! / 192)
-      mouse.currentSubject!.groups = groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
-      mouse.currentSubject!.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
+        // Calculate new groups
+        const currentGroupIndex = Math.floor(mouse.currentSubject.y! / 192)
+        const newGroupCount = Math.ceil(mouse.currentSubject.height! / 192)
+        mouse.currentSubject.groups = groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
+        mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
 
-      calculateStartTime(mouse.currentSubject!)
+        calculateStartTime(mouse.currentSubject)
+      }
     })
   }
 
