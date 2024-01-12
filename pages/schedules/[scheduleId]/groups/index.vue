@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, UserGroupIcon } from '@heroicons/vue/20/solid'
+import { KeyIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon, UserGroupIcon } from '@heroicons/vue/20/solid'
 
 // Nuxt hooks
 const route = useRoute()
@@ -37,6 +37,10 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
     </template>
 
+    <template #capacity="{ cell }">
+      <span class="text-base text-gray-900">{{ cell.capacity }}</span>
+    </template>
+
     <template #actions="{ cell }">
       <div class="flex gap-4">
         <base-button variant="primary" @click="handleDialogOpen('update', cell.id!)">
@@ -54,6 +58,7 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
       <base-input v-model="currentItem.scheduleId" :icon="KeyIcon" label="ID planu" disabled />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
+      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -71,6 +76,7 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
       <base-input v-model="currentItem.scheduleId" :icon="KeyIcon" label="ID planu" disabled />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
+      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">

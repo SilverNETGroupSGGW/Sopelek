@@ -10,6 +10,10 @@ export const useGroups = defineStore('groups', {
         header: 'Nazwa',
       },
       {
+        key: 'capacity',
+        header: 'Pojemność',
+      },
+      {
         key: 'actions',
         header: 'Akcje',
       },

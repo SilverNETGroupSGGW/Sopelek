@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BuildingLibraryIcon, HomeIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { BuildingLibraryIcon, HomeIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
 
 const classrooms = useClassrooms()
 await classrooms.get()
@@ -26,14 +26,12 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
   <base-table :search="search" :data="classrooms.data" :columns="classrooms.columns">
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
+      <br>
+      <span class="text-sm text-gray-700">budynek {{ cell.building }}, piętro {{ cell.floor }}, numer {{ cell.name }}</span>
     </template>
 
-    <template #building="{ cell }">
-      <span class="text-base font-medium text-gray-900">{{ cell.building }}</span>
-    </template>
-
-    <template #floor="{ cell }">
-      <span class="text-base font-medium text-gray-900">{{ cell.floor }}</span>
+    <template #capacity="{ cell }">
+      <span class="text-base text-gray-900">{{ cell.capacity }}</span>
     </template>
 
     <template #actions="{ cell }">
@@ -54,6 +52,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
       <base-input v-model="currentItem.building" :icon="BuildingLibraryIcon" label="Budynek" />
       <base-input v-model="currentItem.floor" :icon="HomeIcon" label="Piętro" />
+      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -72,6 +71,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
       <base-input v-model="currentItem.building" :icon="BuildingLibraryIcon" label="Budynek" />
       <base-input v-model="currentItem.floor" :icon="HomeIcon" label="Piętro" />
+      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">

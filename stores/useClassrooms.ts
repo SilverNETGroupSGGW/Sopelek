@@ -10,12 +10,8 @@ export const useClassrooms = defineStore('classrooms', {
         header: 'Nazwa',
       },
       {
-        key: 'floor',
-        header: 'Piętro',
-      },
-      {
-        key: 'building',
-        header: 'Budynek',
+        key: 'capacity',
+        header: 'Pojemność',
       },
       {
         key: 'actions',
