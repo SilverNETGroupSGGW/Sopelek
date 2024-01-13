@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList } from '@headlessui/vue'
-import { DayOfWeek, type Group, type Schedule, type Subject } from '~/types'
+import { DayOfWeek, type Schedule } from '~/types'
 
 // Nuxt hooks
 const route = useRoute()
@@ -44,29 +44,17 @@ while (initialDate.getHours() < 20) {
 const { calculatePosition } = useSubject()
 
 const schedule = ref<Schedule | null>()
-const groups = ref<Group[] | null>()
-const subjects = ref<Subject[] | null>(null)
 
-const { data: _schedule } = await useFetch<Schedule>(`Schedules/${route.params.scheduleId}`, {
+const { data } = await useFetch<Schedule>(`schedules/${route.params.scheduleId}/extended`, {
   baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
 })
 
-schedule.value = _schedule.value
+schedule.value = data.value
 
-const { data: _groups } = await useFetch<Group[]>(`Groups/Schedule/${route.params.scheduleId}`, {
-  baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-})
-
-groups.value = _groups.value!.sort((a, b) => a.name.localeCompare(b.name)) /* temp client-side sorting */
-
-const { data: _subjects } = await useFetch<Subject[]>(`Subjects/schedule/${route.params.scheduleId}/extended`, {
-  baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-})
-
-if (_subjects.value) {
-  subjects.value = _subjects.value
+if (schedule.value) {
+  schedule.value.subjects = schedule.value.subjects
     .map((subject) => {
-      const { x, y, width, height } = calculatePosition(subject, groups.value!.map(x => x.name))
+      const { x, y, width, height } = calculatePosition(subject, schedule.value!.groups.map(x => x.name))
       return {
         ...subject,
         conflict: false,
@@ -85,11 +73,11 @@ if (_subjects.value) {
 }
 
 const filteredSubjects = computed(() =>
-  subjects.value?.filter(subject => route.query.day ? subject.dayOfWeek === route.query.day : subject.dayOfWeek === DayOfWeek.Monday),
+  schedule.value!.subjects.filter(subject => route.query.day ? subject.dayOfWeek === route.query.day : subject.dayOfWeek === DayOfWeek.Monday),
 )
 
 function handleDelete(id: string) {
-  subjects.value = subjects.value!.filter(subject => subject.id !== id)
+  schedule.value!.subjects = schedule.value!.subjects.filter(subject => subject.id !== id)
 }
 
 // Hooks
@@ -97,9 +85,9 @@ let onPointerDown: Function | null = null
 let onCreateMove: Function | null = null
 
 watchEffect(() => {
-  if (container.value) {
-    ({ onPointerDown } = useResize(subjects.value!, groups.value!, initialContainer));
-    ({ onCreateMove } = useCreate(subjects.value!, groups.value!, initialContainer, route.params.scheduleId as string))
+  if (container.value && schedule.value) {
+    ({ onPointerDown } = useResize(schedule.value, initialContainer));
+    ({ onCreateMove } = useCreate(schedule.value, initialContainer, route.params.scheduleId as string))
   }
 })
 
@@ -170,7 +158,7 @@ function handleTabChange(index: number) {
 
       <div class="flex">
         <div class="flex h-full w-fit flex-col">
-          <div v-for="(group, index) in groups" v-once :id="group.id" :key="index" class="flex h-48 w-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
+          <div v-for="(group, index) in schedule!.groups" v-once :id="group.id" :key="index" class="flex h-48 w-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
             {{ group.name }}
           </div>
         </div>
@@ -180,7 +168,7 @@ function handleTabChange(index: number) {
             <base-lesson v-bind="subject" @delete="handleDelete" />
           </div>
 
-          <div v-for="(group, index) in groups" v-once :key="index" class="flex h-48">
+          <div v-for="(group, index) in schedule!.groups" v-once :key="index" class="flex h-48">
             <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-48 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
           </div>
         </div>

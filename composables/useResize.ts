@@ -1,10 +1,10 @@
-import type { Group, Subject } from '~/types'
+import type { Schedule, Subject } from '~/types'
 
-export default function useResize(subjects: Subject[], groups: Group[], container: HTMLDivElement | null) {
+export default function useResize(schedule: Schedule, container: HTMLDivElement | null) {
   const mouse = useMouse()
   const subjectsStore = useSubjects()
 
-  const { onDragDown } = useDrag(subjects, groups, container)
+  const { onDragDown } = useDrag(schedule, container)
   const { calculateStartTime } = useSubject()
 
   let rafId: number | null = null
@@ -92,7 +92,7 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
       let newWidth, newHeight, newX, newY
 
       // Calculate the total height of the group cells
-      const totalHeight = groups.length * 192
+      const totalHeight = schedule.groups.length * 192
 
       switch (initialResizeEdge.value) {
         case 'top-left':
@@ -174,7 +174,7 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
         // Calculate new groups
         const currentGroupIndex = mouse.currentSubject.y! / 192
         const newGroupCount = mouse.currentSubject.height! / 192
-        mouse.currentSubject.groups = groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
+        mouse.currentSubject.groups = schedule.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
 
         calculateStartTime(mouse.currentSubject)
@@ -194,7 +194,7 @@ export default function useResize(subjects: Subject[], groups: Group[], containe
       })
 
       mouse.isCreating = false
-      subjects[subjects.length - 1].id = subject.id
+      schedule.subjects[schedule.subjects.length - 1].id = subject.id
     }
 
     mouse.isResizing = false

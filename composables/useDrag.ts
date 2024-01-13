@@ -1,6 +1,6 @@
-import type { Group, Subject } from '~/types'
+import type { Schedule } from '~/types'
 
-export default function useDrag(subjects: Subject[], groups: Group[], container: HTMLDivElement | null) {
+export default function useDrag(schedule: Schedule, container: HTMLDivElement | null) {
   const mouse = useMouse()
   const subjectsStore = useSubjects()
 
@@ -16,7 +16,7 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
 
     isDragging.value = true
     dragStart.value = { x: event.clientX, y: event.clientY }
-    mouse.currentSubject! = subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
+    mouse.currentSubject! = schedule.subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
 
     // Add event listeners to window
     window.addEventListener('pointermove', onDragMove)
@@ -31,7 +31,7 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
       cancelAnimationFrame(rafId)
 
     if (!mouse.currentSubject!)
-      mouse.currentSubject! = subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
+      mouse.currentSubject! = schedule.subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
 
     rafId = requestAnimationFrame(() => {
       // snap to 24px grid in X axis
@@ -48,7 +48,7 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
         const newY = mouse.currentSubject!.y! + deltaY
 
         // Calculate the total height of groupCells
-        const totalHeight = 192 * groups.length
+        const totalHeight = 192 * schedule.groups.length
 
         // Set boundaries, x and y can't be smaller than 0
         // newY can't be larger than totalHeight - mouse.currentSubject!!.height
@@ -61,8 +61,8 @@ export default function useDrag(subjects: Subject[], groups: Group[], container:
         // Calculate new groups
         const currentGroupIndex = mouse.currentSubject.y! / 192
         const newGroupCount = mouse.currentSubject.height! / 192
-        mouse.currentSubject.groups = groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
-        mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
+        mouse.currentSubject.groups = schedule.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
+        mouse.currentSubject.groupsIds = mouse.currentSubject?.groups!.map(group => group.id)
 
         mouse.currentSubject!.lecturersIds = mouse.currentSubject!.lecturers!.length > 0
           ? mouse.currentSubject!.lecturers!.map(lecturer => lecturer.id)

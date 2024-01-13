@@ -1,3 +1,4 @@
+import type { Group } from './Group'
 import type { Subject } from './Subject'
 
 export enum DegreeOfStudy {
@@ -19,6 +20,7 @@ export interface Schedule {
   degreeOfStudy: DegreeOfStudy
   faculty: string
   fieldOfStudy: string
+  groups: Group[]
   id: string
   name: string
   semester: number

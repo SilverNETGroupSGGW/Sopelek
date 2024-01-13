@@ -1,9 +1,9 @@
-import { DayOfWeek, type Group, type Subject, SubjectType } from '~/types'
+import { DayOfWeek, type Schedule, type Subject, SubjectType } from '~/types'
 
-export default function useCreate(subjects: Subject[], groups: Group[], container: HTMLDivElement | null, scheduleId: string) {
+export default function useCreate(schedule: Schedule, container: HTMLDivElement | null, scheduleId: string) {
   const mouse = useMouse()
 
-  const { onResizeDown } = useResize(subjects, groups, container)
+  const { onResizeDown } = useResize(schedule, container)
 
   function onCreateMove(event: PointerEvent) {
     if (event.button !== 0)
@@ -37,7 +37,7 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
       conflict: false,
       conflictMessage: undefined,
       ghost: true,
-      groups: [groups.find(group => group.id === target.dataset.group)!],
+      groups: [schedule.groups.find(group => group.id === target.dataset.group)!],
       groupsIds: [target.dataset.group!],
       height: 192,
       id: '',
@@ -59,7 +59,7 @@ export default function useCreate(subjects: Subject[], groups: Group[], containe
     mouse.isCreating = true
 
     // Add the new subject to the subjects array
-    subjects.push(newSubject)
+    schedule.subjects.push(newSubject)
 
     // Trigger the resize event
     onResizeDown(event, newSubject)
