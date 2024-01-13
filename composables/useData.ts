@@ -1,4 +1,4 @@
-import { DayOfWeek, StudyMode, SubjectType } from '~/types'
+import { AcademicDegree, DayOfWeek, StudyMode, SubjectType } from '~/types'
 import { DegreeOfStudy } from '~/types/Schedule'
 
 export default function useData() {
@@ -49,23 +49,19 @@ export default function useData() {
   ]
 
   const degrees = [
-    { value: 'mgr inż.' },
-    { value: 'mgr' },
-    { value: 'inż.' },
-    { value: 'lic.' },
-    { value: 'dr' },
-    { value: 'dr hab.' },
-    { value: 'prof. dr hab.' },
+    { value: 'lic.', type: AcademicDegree.AssociateDegree },
+    { value: 'inż.', type: AcademicDegree.BachelorsDegree },
+    { value: 'mgr', type: AcademicDegree.MastersDegree },
+    { value: 'dr', type: AcademicDegree.DoctoralDegree },
+    { value: 'prof.', type: AcademicDegree.ProfessionalDegrees },
   ]
 
-  // Select compatibility
   const studiesModes = [
     { value: 'stacjonarne', type: StudyMode.FullTimeStudies },
     { value: 'niestacjonarne', type: StudyMode.PartTimeStudies },
     { value: 'inne', type: StudyMode.Unknown },
   ]
 
-  // Select compatibility
   const studiesDegrees = [
     { value: 'licencjackie/inżynierskie', type: DegreeOfStudy.BachelorsDegree },
     { value: 'magisterskie', type: DegreeOfStudy.MastersDegree },
@@ -98,6 +94,6 @@ export default function useData() {
     studiesModes,
     studiesDegrees,
     daysOfWeek,
-    lessonTypes
+    lessonTypes,
   }
 }

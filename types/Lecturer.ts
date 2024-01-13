@@ -1,7 +1,15 @@
-import type { Subject } from "./Subject"
+import type { Subject } from './Subject'
+
+export enum AcademicDegree {
+  AssociateDegree = 'AssociateDegree',
+  BachelorsDegree = 'BachelorsDegree',
+  MastersDegree = 'MastersDegree',
+  DoctoralDegree = 'DoctoralDegree',
+  ProfessionalDegrees = 'ProfessionalDegrees',
+}
 
 export interface Lecturer {
-  academicDegree: string
+  academicDegree: AcademicDegree
   created?: string
   email: string
   firstName: string
