@@ -87,7 +87,7 @@ let onCreateMove: Function | null = null
 watchEffect(() => {
   if (container.value && schedule.value) {
     ({ onPointerDown } = useResize(schedule.value, initialContainer));
-    ({ onCreateMove } = useCreate(schedule.value, initialContainer, route.params.scheduleId as string))
+    ({ onCreateMove } = useCreate(schedule.value, initialContainer, route.query.day as DayOfWeek || DayOfWeek.Monday, route.params.scheduleId as string))
   }
 })
 

@@ -1,6 +1,7 @@
-import { DayOfWeek, type Schedule, type Subject, SubjectType } from '~/types'
+import { SubjectType } from '~/types'
+import type { DayOfWeek, Schedule, Subject } from '~/types'
 
-export default function useCreate(schedule: Schedule, container: HTMLDivElement | null, scheduleId: string) {
+export default function useCreate(schedule: Schedule, container: HTMLDivElement | null, dayOfWeek: DayOfWeek, scheduleId: string) {
   const mouse = useMouse()
 
   const { onResizeDown } = useResize(schedule, container)
@@ -48,7 +49,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       startTime: target.dataset.time!,
       duration: '00:05:00',
       type: SubjectType.Unknown,
-      dayOfWeek: DayOfWeek.Monday,
+      dayOfWeek,
       width: 24,
       x,
       y,
