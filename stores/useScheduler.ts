@@ -45,7 +45,7 @@ export const useScheduler = defineStore('scheduler', {
         method: 'POST',
         body: JSON.stringify({
           scheduleId,
-          groups: [...new Set(this.schedule!.subjects.map(subject => subject.groupsIds).flat())],
+          groups: this.schedule?.groups.map(group => group.id) ?? [],
           dayOfWeek,
         }),
       })

@@ -48,8 +48,8 @@ onMounted(() => {
   initialContainer = container.value
 
   if (initialContainer) {
-    ({ onPointerDown } = useResize(scheduler.schedule!, route.query.day as DayOfWeek || DayOfWeek.Monday, initialContainer));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer, route.query.day as DayOfWeek || DayOfWeek.Monday, route.params.scheduleId as string))
+    ({ onPointerDown } = useResize(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
+    ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer, route.query.day as DayOfWeek, route.params.scheduleId as string))
   }
 })
 

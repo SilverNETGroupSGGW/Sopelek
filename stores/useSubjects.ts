@@ -27,17 +27,6 @@ export const useSubjects = defineStore('subjects', {
         method: 'GET',
       })
     },
-    async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
-      this.conflicts = await $fetch<SubjectConflict[]>(`Subjects/check-conflict`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-        method: 'POST',
-        body: JSON.stringify({
-          scheduleId,
-          groups: [...new Set(this.data.map(subject => subject.groupsIds).flat())],
-          dayOfWeek,
-        }),
-      })
-    },
     async create(subject: Subject) {
       const data = await $fetch<Subject>('Subjects', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
