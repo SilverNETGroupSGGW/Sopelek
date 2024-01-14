@@ -45,8 +45,8 @@ const { currentItem, deleteDialog, handleDelete, handleDialogOpen, search } = us
       <div class="text-sm text-gray-700">
         <span>{{ daysOfWeek.find(x => x.value === cell.dayOfWeek)?.label }}</span>
 
-        <span v-if="cell.startTime">, {{ cell.startTime }}</span>
-        <span v-if="cell.duration"> ({{ cell.duration }} min)</span>
+        <span v-if="cell.startTime">, {{ cell.startTime.slice(0, -3) }}</span>
+        <span v-if="cell.duration"> ({{ cell.duration.slice(0, -3) }}h)</span>
       </div>
 
       <div v-if="cell.classroom" class="text-sm text-gray-700">
