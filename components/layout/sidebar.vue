@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import { PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
 
+const route = useRoute()
+
 const tabs = reactive([
   {
     icon: RectangleGroupIcon,
     label: 'Plany zajęć',
     to: '/',
+    active: route.path === '/' || route.path.startsWith('/schedules'),
   },
   {
     icon: UserIcon,
     label: 'Wykładowcy',
     to: '/lecturers',
+    active: route.path === '/lecturers',
   },
   {
     icon: PresentationChartBarIcon,
     label: 'Sale',
     to: '/classrooms',
+    active: route.path === '/classrooms',
   },
 ])
 </script>
