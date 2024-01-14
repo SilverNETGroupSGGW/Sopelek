@@ -1,10 +1,10 @@
-import type { Schedule, Subject } from '~/types'
+import type { DayOfWeek, Schedule, Subject } from '~/types'
 
-export default function useResize(schedule: Schedule, container: HTMLDivElement | null) {
+export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, container: HTMLDivElement | null) {
   const mouse = useMouse()
   const subjectsStore = useSubjects()
 
-  const { onDragDown } = useDrag(schedule, container)
+  const { onDragDown } = useDrag(schedule, dayOfWeek, container)
   const { calculateStartTime } = useSubject()
 
   let rafId: number | null = null

@@ -1,9 +1,10 @@
-import type { Subject } from '~/types'
+import type { DayOfWeek, Subject, SubjectConflict } from '~/types'
 
 export const useSubjects = defineStore('subjects', {
   state: () => ({
     search: '',
     data: [] as Subject[],
+    conflicts: [] as SubjectConflict[],
     columns: [
       {
         key: 'name',
@@ -26,6 +27,17 @@ export const useSubjects = defineStore('subjects', {
         method: 'GET',
       })
     },
+    async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
+      this.conflicts = await $fetch<SubjectConflict[]>(`Subjects/check-conflict`, {
+        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        method: 'POST',
+        body: JSON.stringify({
+          scheduleId,
+          groups: [...new Set(this.data.map(subject => subject.groupsIds).flat())],
+          dayOfWeek,
+        }),
+      })
+    },
     async create(subject: Subject) {
       const data = await $fetch<Subject>('Subjects', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
@@ -40,9 +52,6 @@ export const useSubjects = defineStore('subjects', {
     },
     async update(subject: Subject) {
       try {
-        subject.conflict = false
-        subject.conflictMessage = undefined
-
         const data = await $fetch<Subject>('Subjects', {
           baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
           method: subject.id === 'create' ? 'POST' : 'PUT',
@@ -56,9 +65,6 @@ export const useSubjects = defineStore('subjects', {
         this.data[index] = data
       }
       catch (error) {
-        subject.conflict = true
-        // @ts-expect-error unable to type error
-        subject.conflictMessage = error.data.message
       }
     },
     async delete(id: string) {
