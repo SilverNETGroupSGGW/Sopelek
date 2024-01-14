@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Bars3CenterLeftIcon, ChatBubbleOvalLeftEllipsisIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
 
 const tabs = reactive([
   {
-    icon: Bars3CenterLeftIcon,
+    icon: RectangleGroupIcon,
     label: 'Plany zajęć',
-    to: '/schedules',
+    to: '/',
   },
   {
     icon: UserIcon,
@@ -13,7 +13,7 @@ const tabs = reactive([
     to: '/lecturers',
   },
   {
-    icon: ChatBubbleOvalLeftEllipsisIcon,
+    icon: PresentationChartBarIcon,
     label: 'Sale',
     to: '/classrooms',
   },
