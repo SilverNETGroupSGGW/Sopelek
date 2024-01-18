@@ -2,6 +2,7 @@ import type { DayOfWeek, Schedule, Subject } from '~/types'
 
 export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, container: HTMLDivElement | null) {
   const mouse = useMouse()
+  const schedulerStore = useScheduler()
   const subjectsStore = useSubjects()
 
   const { onDragDown } = useDrag(schedule, dayOfWeek, container)
@@ -178,6 +179,14 @@ export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, cont
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
 
         calculateStartTime(mouse.currentSubject)
+
+        // What the hell?!
+        schedulerStore.schedule!.subjects = schedulerStore.schedule!.subjects.map((subject) => {
+          if (subject.id === mouse.currentSubject!.id)
+            return mouse.currentSubject!
+
+          return subject
+        })
       }
     })
   }
@@ -202,7 +211,7 @@ export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, cont
 
     if (mouse.currentSubject && !mouse.isCreating) {
       mouse.currentSubject.ghost = false
-      subjectsStore.update(mouse.currentSubject)
+      await subjectsStore.update(mouse.currentSubject)
     }
 
     mouse.currentSubject = null
