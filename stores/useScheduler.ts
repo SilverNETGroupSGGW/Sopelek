@@ -3,7 +3,6 @@ import type { DayOfWeek, Schedule, Subject, SubjectConflict } from '~/types'
 export const useScheduler = defineStore('scheduler', {
   state: () => ({
     schedule: null as Schedule | null,
-    conflicts: [] as SubjectConflict[],
   }),
   getters: {
     getSubjectsByDay: state => (day: DayOfWeek) => {
@@ -40,14 +39,31 @@ export const useScheduler = defineStore('scheduler', {
       this.schedule = data
     },
     async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
-      this.conflicts = await $fetch<SubjectConflict[]>(`Subjects/check-conflict`, {
+      const data = await $fetch<SubjectConflict>(`Subjects/check-conflict`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
         body: JSON.stringify({
           scheduleId,
           groups: this.schedule?.groups.map(group => group.id) ?? [],
           dayOfWeek,
+          startTime: '08:00:00',
+          duration: '12:00:00',
         }),
+      })
+
+      data.conflicts.forEach((conflict) => {
+        const mainSubject = this.schedule?.subjects.find(subject => subject.id === conflict.mainSubject.id)
+        const otherSubject = this.schedule?.subjects.find(subject => subject.id === conflict.otherSubject.id)
+
+        if (mainSubject) {
+          mainSubject.conflict = true
+          mainSubject.conflictMessage = conflict.mainSubject.conflictMessage
+        }
+
+        if (otherSubject) {
+          otherSubject.conflict = true
+          otherSubject.conflictMessage = conflict.otherSubject.conflictMessage
+        }
       })
     },
   },
