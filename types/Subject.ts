@@ -60,4 +60,5 @@ export interface Subject {
   width?: number
   x?: number
   y?: number
+  zIndex?: number
 }

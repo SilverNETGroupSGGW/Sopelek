@@ -35,6 +35,7 @@ function handleDelete() {
       { 'border-gray-600 bg-gray-50': type === SubjectType.Unknown },
       { 'border-4 border-red-600 bg-red-50': conflict },
     ]"
+    :style="{ zIndex }"
   >
     <div class="flex w-full flex-wrap items-center justify-between">
       <small v-if="startTime && duration" class="text-xs text-gray-600">

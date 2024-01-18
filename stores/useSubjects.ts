@@ -1,4 +1,4 @@
-import type { DayOfWeek, Subject, SubjectConflict } from '~/types'
+import type { Subject, SubjectConflict } from '~/types'
 
 export const useSubjects = defineStore('subjects', {
   state: () => ({
