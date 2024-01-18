@@ -43,7 +43,7 @@ const paginatedData = computed(() => filteredData.value.slice((page.value - 1) *
         <tr v-if="paginatedData.length === 0">
           <td :colspan="columns.length + 1" class="whitespace-nowrap px-12 py-4">
             <div class="flex items-center justify-center gap-2">
-              <MagnifyingGlassMinusIcon class="h-5 w-5 text-gray-400" />
+              <MagnifyingGlassMinusIcon class="size-5 text-gray-400" />
               <span class="text-gray-400">Brak wyników</span>
             </div>
           </td>

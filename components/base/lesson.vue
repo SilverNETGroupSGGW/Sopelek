@@ -25,7 +25,7 @@ function handleDelete() {
   <div
     :id="id"
     data-lesson
-    class="flex h-full w-full flex-col items-start rounded-md border p-4 text-left outline-none"
+    class="flex size-full flex-col items-start rounded-md border p-4 text-left outline-none"
     :class="[
       { 'opacity-50': ghost },
       { 'border-purple-600 bg-purple-50': type === SubjectType.Faculty },

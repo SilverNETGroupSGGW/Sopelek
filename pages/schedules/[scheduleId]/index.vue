@@ -126,7 +126,7 @@ function handleDelete(id: string) {
 
         <div class="flex">
           <div class="flex h-full w-fit flex-col">
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex h-48 w-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
+            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex size-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
               {{ group.name }}
             </div>
           </div>

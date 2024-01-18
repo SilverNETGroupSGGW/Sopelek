@@ -50,7 +50,7 @@ async function handleFormSubmit() {
     <h1 class="mb-2 text-center text-3xl font-bold text-gray-900">
       Witamy!
     </h1>
-    <p class="text-balance mb-6 text-center text-gray-700">
+    <p class="mb-6 text-balance text-center text-gray-700">
       Zaloguj się za pomocą swojego maila.
     </p>
     <form class="w-full" @submit.prevent="handleFormSubmit">
