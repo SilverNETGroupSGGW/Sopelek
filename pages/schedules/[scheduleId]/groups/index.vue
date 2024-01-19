@@ -26,7 +26,7 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
       <base-button variant="primary" @click="handleDialogOpen('create')">
         Dodaj grupę
       </base-button>
-      <base-button to="/schedules" variant="secondary">
+      <base-button to="/" variant="secondary">
         Wróć do planów
       </base-button>
     </div>
