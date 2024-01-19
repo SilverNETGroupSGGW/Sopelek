@@ -134,8 +134,9 @@ const isSubmitting = ref(false)
 
 async function saveChanges() {
   isSubmitting.value = true
-  subjects.update(data.value!)
+  await subjects.update(data.value!)
   isSubmitting.value = false
+  await subjects.get(route.params.scheduleId as string)
   router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
 }
 
