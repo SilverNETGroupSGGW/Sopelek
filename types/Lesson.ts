@@ -1,6 +1,6 @@
-import type { Subject } from "./Subject"
-
-export interface Lesson extends Subject {
-  numberOfLesson: number
+export interface Lesson {
+  duration: string
+  id?: string
   startTime: string
+  subjectId?: string
 }

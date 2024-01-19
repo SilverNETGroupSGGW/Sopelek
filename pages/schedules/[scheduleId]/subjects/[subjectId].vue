@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
-import { type Classroom, type Group, type Lecturer, type Subject, SubjectType } from '~/types'
+import { CalendarDaysIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
+import { type Classroom, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
+
+// Types
+interface DateTimeSequence {
+  count: number
+  dateTimes: string[]
+}
 
 // Nuxt hooks
 const route = useRoute()
@@ -30,12 +36,18 @@ const search = reactive({
 
 const data = ref<Subject | null>(null)
 
+const shouldGenerateFifteenLessons = ref(false)
+
 try {
   const subject = await $fetch<Subject>(`subjects/${route.params.subjectId}/extended`, {
     baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
     method: 'GET',
   })
 
+  if (subject.lessons && subject.lessons.length > 0)
+    shouldGenerateFifteenLessons.value = true
+
+  subject.lessons ||= []
   subject.groupsIds = subject.groups?.map(group => group.id!)
   subject.lecturersIds = subject.lecturers?.map(lecturer => lecturer.id)
 
@@ -127,6 +139,31 @@ async function saveChanges() {
   router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
 }
 
+async function generateFifteenLessons() {
+  // Obtain schedule
+  const schedule = await $fetch<Schedule>(`schedules/${route.params.scheduleId}`, {
+    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+    method: 'GET',
+  })
+
+  // Generate dates
+  // We have to trim T part from schedule.startDate
+  const dates = await $fetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${new Date(schedule.startDate).toLocaleDateString()}/${15}`, {
+    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+    method: 'GET',
+  })
+
+  data.value!.lessons = dates.dateTimes.map(dateTime => ({
+    duration: data.value!.duration,
+    startTime: dateTime,
+  }) as Lesson)
+}
+
+watchEffect(() => {
+  if (shouldGenerateFifteenLessons.value)
+    generateFifteenLessons()
+})
+
 // Dialog
 const deleteDialog = ref(false)
 
@@ -174,6 +211,23 @@ async function handleDelete() {
       <div class="flex">
         <base-button v-for="(day, index) in daysOfWeek" :key="index" type="button" :variant="data!.dayOfWeek === day.value ? 'primary' : 'secondary'" :class="index === 0 ? 'rounded-r-none' : index === daysOfWeek.length - 1 ? 'rounded-l-none' : 'rounded-none'" @click="data!.dayOfWeek = day.value">
           {{ day.label }}
+        </base-button>
+      </div>
+    </div>
+
+    <div class="mb-6 rounded-lg border border-gray-200 p-4">
+      <base-checkbox v-model="shouldGenerateFifteenLessons" label="Wygeneruj 15 zajęć" />
+
+      <div v-if="shouldGenerateFifteenLessons" class="mt-4 flex w-fit flex-col gap-2">
+        <div v-for="(date, index) in data!.lessons" :key="index" class="flex gap-2">
+          <base-input v-model="data!.lessons![index].startTime" type="datetime-local" :icon="CalendarDaysIcon" />
+          <base-button type="button" variant="danger" @click="data!.lessons!.splice(index, 1)">
+            Usuń zajęcia
+          </base-button>
+        </div>
+
+        <base-button type="button" variant="primary" @click="data!.lessons!.push({ duration: data!.startTime, startTime: '' })">
+          Dodaj zajęcia
         </base-button>
       </div>
     </div>
