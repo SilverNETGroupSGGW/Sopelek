@@ -1,10 +1,8 @@
 <script setup lang="ts">
 defineProps<{
-  icon: any
-  label: string
-  to: string
-  collapsed?: boolean
   active?: boolean
+  icon: any
+  to: string
 }>()
 </script>
 

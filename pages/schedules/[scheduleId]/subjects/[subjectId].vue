@@ -120,12 +120,7 @@ while (initialDate.getHours() <= 4) {
 // API
 async function saveChanges() {
   subjects.update(data.value!)
-
-  const previousRoute = router.options.history.state.back?.toString()
-  if (previousRoute?.startsWith('/schedules/'))
-    router.push(previousRoute)
-  else
-    router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
+  router.go(-1)
 }
 
 // Dialog

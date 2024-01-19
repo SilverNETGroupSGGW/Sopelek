@@ -1,14 +1,13 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
-  modelValue: string | number
-  icon?: /* FunctionalComponent */ any
-  label?: string
   caption?: string
   dense?: boolean
-
   disabled?: boolean
-  type?: string
+  icon?: /* FunctionalComponent */ any
+  label?: string
+  modelValue: string | number
   placeholder?: string
+  type?: string
 }>(), {
   type: 'text',
 })

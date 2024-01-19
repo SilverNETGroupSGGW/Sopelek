@@ -41,7 +41,7 @@ async function handleFormSubmit() {
   useCookie('accessToken').value = accessToken
   useCookie('refreshToken').value = refreshToken
 
-  router.push('/lecturers')
+  router.push('/')
 }
 </script>
 

@@ -2,8 +2,8 @@
 import { MagnifyingGlassMinusIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps<{
-  data: T[]
   columns: { key: string, header: string }[]
+  data: T[]
   search: string
 }>()
 

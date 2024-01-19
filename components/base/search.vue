@@ -2,17 +2,13 @@
 import { Combobox, ComboboxInput, ComboboxLabel, ComboboxOption, ComboboxOptions, TransitionRoot } from '@headlessui/vue'
 
 const props = defineProps<{
-  options: T[]
+  caption?: string
   icon?: /* FunctionalComponent */ any
   label?: string
-  caption?: string
-  modelValue?: string
+  options: T[]
 }>()
 
-defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
-
+const modelValue = defineModel<string>()
 const query = ref('')
 
 const filteredOptions = computed(() => {
@@ -27,7 +23,7 @@ const filteredOptions = computed(() => {
 
 <template>
   <div class="relative flex flex-col">
-    <Combobox :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
+    <Combobox v-model="modelValue">
       <ComboboxLabel v-if="label" class="mb-1 font-medium text-gray-700">
         {{ label }}
       </ComboboxLabel>
