@@ -1,6 +1,6 @@
-export interface Lesson {
-  duration: string
-  id: string
+import type { Subject } from "./Subject"
+
+export interface Lesson extends Subject {
   numberOfLesson: number
   startTime: string
 }

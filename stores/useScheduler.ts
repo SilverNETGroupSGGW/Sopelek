@@ -1,4 +1,4 @@
-import type { DayOfWeek, Schedule, SubjectConflict } from '~/types'
+import { DayOfWeek, type Schedule, type SubjectConflict } from '~/types'
 
 export const useScheduler = defineStore('scheduler', {
   state: () => ({
@@ -7,7 +7,7 @@ export const useScheduler = defineStore('scheduler', {
   getters: {
     getSubjectsByDay: state => (day: DayOfWeek) => {
       return state.schedule!.subjects
-        .filter(subject => subject.dayOfWeek === day)
+        .filter(subject => day ? subject.dayOfWeek === day : DayOfWeek.Monday)
         .sort((a, b) => a.startTime.localeCompare(b.startTime))
         .map((subject, index) => ({ ...subject, zIndex: index + 1 }))
     },

@@ -1,5 +1,7 @@
 export default function useCrud<T extends { id: string }>(items: T[]) {
-  const search = ref('')
+  const route = useRoute()
+
+  const search = ref(route.query.search || '') as Ref<string>
   const currentItem = ref<T>({} as T) as Ref<T>
 
   const createDialog = ref(false)

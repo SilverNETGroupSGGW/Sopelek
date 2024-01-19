@@ -10,10 +10,20 @@ const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: number): void
 }>()
 
+const router = useRouter()
+
 // Fix - when deleting items from the last page and when it gets empty, it doesn't go back to the previous page
 watch(() => props.filteredData.length, () => {
   if (props.modelValue * 10 >= props.filteredData.length && props.modelValue !== 1)
     emit('update:modelValue', props.modelValue - 1)
+})
+
+watch(() => props.modelValue, () => {
+  router.push({
+    query: {
+      page: props.modelValue,
+    },
+  })
 })
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList } from '@headlessui/vue'
-import { DayOfWeek } from '~/types'
+import { DayOfWeek, type Lecturer } from '~/types'
 
 // Nuxt hooks
 const route = useRoute()
@@ -12,7 +12,10 @@ router.push({
 })
 
 // Data
-const { daysOfWeek, studiesDegrees, studiesModes } = useData()
+const { daysOfWeek } = useData()
+
+// Utils
+const { calculatePosition } = useSubject()
 
 // Time range
 const timeRange: Date[] = []
@@ -33,28 +36,24 @@ while (initialDate.getHours() < 20) {
   initialDate.setMinutes(initialDate.getMinutes() + 5)
 }
 
-// Subjects
-const scheduler = useScheduler()
-await scheduler.get(route.params.scheduleId as string)
-
-// Elements
-let initialContainer: HTMLDivElement | null = null
-const container = ref<HTMLDivElement | null>(null)
-
-let onPointerDown: Function | null = null
-let onCreateMove: Function | null = null
-
-onMounted(() => {
-  initialContainer = container.value
-
-  if (initialContainer) {
-    ({ onPointerDown } = useResize(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer, route.query.day as DayOfWeek, route.params.scheduleId as string))
-  }
+// Lecturer
+const { data: lecturer } = await useFetch<Lecturer>(`lecturers/${route.params.lecturerId}/schedule/full`, {
+  baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
 })
 
+if (lecturer.value) {
+  lecturer.value.subjects = lecturer.value.subjects?.map((subject) => {
+    const { x, y, width, height } = calculatePosition(subject, subject.groups!.map(x => x.name))
+    subject.x = x
+    subject.y = y
+    subject.width = width
+    subject.height = height
+    return subject
+  })
+}
+
 // Tabs
-const tabIndex = ref(daysOfWeek.findIndex(day => route.query.day ? day.value === route.query.day : 0))
+const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
 function handleTabChange(index: number) {
   tabIndex.value = index
@@ -64,11 +63,6 @@ function handleTabChange(index: number) {
     },
   })
 }
-
-// Delete
-function handleDelete(id: string) {
-  scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(subject => subject.id !== id)
-}
 </script>
 
 <template>
@@ -76,20 +70,11 @@ function handleDelete(id: string) {
     <div class="flex w-full flex-wrap items-start justify-between gap-6 border-b border-b-gray-200 px-12 py-9">
       <div>
         <h1 class="text-2xl font-bold leading-9 text-gray-900">
-          Kreator planu zajęć
+          Plan zajęć wykładowcy
         </h1>
 
         <p class="font-semibold text-indigo-600">
-          {{ scheduler.schedule!.name }}
-        </p>
-        <p class="text-indigo-600">
-          {{ scheduler.schedule!.faculty }}, {{ scheduler.schedule!.fieldOfStudy }}
-        </p>
-        <p class="text-indigo-600">
-          {{ studiesModes.find(x => x.type === scheduler.schedule!.studyMode)?.value }}, {{ studiesDegrees.find(x => x.type === scheduler.schedule!.degreeOfStudy)?.value }}
-        </p>
-        <p class="text-gray-700">
-          Rok {{ scheduler.schedule!.year }}, semestr {{ scheduler.schedule!.semester }}
+          {{ lecturer?.academicDegree }} {{ lecturer?.firstName }} {{ lecturer?.surname }}
         </p>
       </div>
 
@@ -126,17 +111,24 @@ function handleDelete(id: string) {
 
         <div class="flex">
           <div class="flex h-full w-fit flex-col">
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex size-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
-              {{ group.name }}
-            </div>
+            <template v-for="(subject, index) in lecturer!.subjects" :key="index">
+              <div v-for="(group, index2) in subject.groups!" :id="group.id" :key="index2" class="flex size-48 shrink-0 flex-col items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
+                <span>
+                  <b>Grupa </b>{{ group.name }}
+                </span>
+                <b>{{ subject.schedule.name }}</b>
+                <span>{{ subject.schedule.fieldOfStudy }}</span>
+                <span>Rok {{ subject.schedule.year }}, semestr {{ subject.schedule.semester }}</span>
+              </div>
+            </template>
           </div>
 
-          <div ref="container" class="relative flex flex-col" @pointerdown.prevent="onCreateMove!">
-            <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5 hover:cursor-move" @pointerdown.prevent="onPointerDown!($event, subject)">
-              <base-lesson v-bind="subject" @delete="handleDelete" />
+          <div class="relative flex flex-col">
+            <div v-for="(subject, index) in lecturer!.subjects" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5">
+              <base-lesson v-bind="subject" />
             </div>
 
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :key="index" class="flex h-48">
+            <div v-for="(group, index) in lecturer!.subjects!.map(x => x.groups!).flat()" v-once :key="index" class="flex h-48">
               <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-48 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
             </div>
           </div>

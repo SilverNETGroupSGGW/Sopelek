@@ -7,13 +7,24 @@ const props = defineProps<{
   search: string
 }>()
 
-const page = ref(1)
+const route = useRoute()
+const router = useRouter()
+
+const page = ref(Number.parseInt(route.query.page as string) || 1)
+watch(() => props.search, () => {
+  router.push({
+    query: {
+      page: page.value,
+      search: props.search,
+    },
+  })
+})
 
 function filter(row: T) {
   if (props.search === '')
     return true
 
-  return Object.values(row).some(value => (value as string).toString().toLowerCase().includes(props.search.toLowerCase()))
+  return Object.values(row).some(value => (value as string)?.toString().toLowerCase().includes(props.search.toLowerCase()))
 }
 
 const filteredData = computed(() => props.data.filter(row => filter(row)))

@@ -21,10 +21,12 @@ export const useLecturers = defineStore('lecturers', {
   }),
   actions: {
     async get() {
-      this.data = await $fetch<Lecturer[]>('lecturers', {
+      const data = await $fetch<Lecturer[]>('lecturers', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
+
+      this.data = data.sort((a, b) => a.surname.localeCompare(b.surname))
     },
     async create(lecturer: Lecturer) {
       const { degrees } = useData()

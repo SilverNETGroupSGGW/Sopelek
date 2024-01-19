@@ -52,6 +52,8 @@ export const useSubjects = defineStore('subjects', {
 
         const index = this.data.findIndex(l => l.id === data.id)
         this.data[index] = data
+
+        return data
       }
       catch (error) {
       }

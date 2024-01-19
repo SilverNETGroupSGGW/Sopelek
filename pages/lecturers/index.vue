@@ -45,6 +45,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         <base-button variant="primary" @click="handleDialogOpen('update', cell.id!)">
           Edytuj
         </base-button>
+        <base-button :to="`/lecturers/${cell.id}`" variant="secondary">
+          Plan
+        </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
           Usuń
         </base-button>
