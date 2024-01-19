@@ -37,6 +37,8 @@ watchEffect(() => {
   <base-table :data="schedules.data" :columns="schedules.columns" :search="search">
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
+      <br>
+      <span class="text-base text-gray-700">{{ new Date(cell.startDate).toLocaleDateString() }}</span>
     </template>
 
     <template #info="{ cell }">
@@ -76,6 +78,7 @@ watchEffect(() => {
   <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="UserIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
+      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia" />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
       <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
         <template #options="{ option, active }">
