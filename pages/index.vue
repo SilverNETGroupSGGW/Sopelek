@@ -42,7 +42,7 @@ const { data } = useFetch(`https://api.github.com/repos/SilverNETGroupSGGW/plans
       </div>
 
       <small class="text-right text-gray-700">
-        Projekt realizowany przez <a href="mailto:kontakt@silver.sggw.pl" class="font-semibold transition-colors duration-200 hover:text-gray-900">Koło Naukowe Informatyków SGGW.</a> Ostatnia aktualizacja: {{ new Date((data as any).commit.commit.author.date).toLocaleString() }}
+        Projekt realizowany przez <a href="mailto:kontakt@silver.sggw.pl" class="font-semibold transition-colors duration-200 hover:text-gray-900">Koło Naukowe Informatyków SGGW.</a> Ostatnia aktualizacja: {{ new Date((data as any).commit.commit.author.date).toLocaleString('pl-PL') }}
       </small>
     </div>
   </div>
