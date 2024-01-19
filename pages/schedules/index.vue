@@ -38,7 +38,7 @@ watchEffect(() => {
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
-      <span class="text-base text-gray-700">{{ new Date(cell.startDate).toLocaleDateString() }}</span>
+      <span class="text-base text-gray-700">{{ new Date(cell.startDate).toLocaleDateString('pl-PL') }}</span>
     </template>
 
     <template #info="{ cell }">

@@ -1,7 +1,3 @@
-<script setup lang="ts">
-const { data } = useFetch(`https://api.github.com/repos/SilverNETGroupSGGW/plansggw/branches/main`)
-</script>
-
 <template>
   <div class="flex h-screen flex-col items-center justify-center px-32">
     <h1 class="mb-4 text-5xl font-bold text-gray-900">
@@ -42,7 +38,7 @@ const { data } = useFetch(`https://api.github.com/repos/SilverNETGroupSGGW/plans
       </div>
 
       <small class="text-right text-gray-700">
-        Projekt realizowany przez <a href="mailto:kontakt@silver.sggw.pl" class="font-semibold transition-colors duration-200 hover:text-gray-900">Koło Naukowe Informatyków SGGW.</a> Ostatnia aktualizacja: {{ new Date((data as any).commit.commit.author.date).toLocaleString('pl-PL') }}
+        Projekt realizowany przez <a href="mailto:kontakt@silver.sggw.pl" class="font-semibold transition-colors duration-200 hover:text-gray-900">Koło Naukowe Informatyków SGGW.</a>
       </small>
     </div>
   </div>
