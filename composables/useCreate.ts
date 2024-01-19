@@ -32,13 +32,18 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       y = containerRect.height - 192
 
     const newSubject: Subject = {
-      id: '',
+      classroom: null,
+      classroomId: null,
       comment: '',
       conflict: false,
       conflictMessage: undefined,
       ghost: true,
+      groups: [schedule.groups.find(group => group.id === target.dataset.group)!],
       groupsIds: [target.dataset.group!],
       height: 192,
+      id: '',
+      lecturers: [],
+      lecturersIds: [],
       name: 'Zajęcia',
       scheduleId,
       startTime: target.dataset.time!,
