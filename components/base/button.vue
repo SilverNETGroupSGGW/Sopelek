@@ -8,18 +8,13 @@ defineProps<{
   to?: string
   variant: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'flat'
 }>()
-
-// Preserve width when not loading
-const button = ref<HTMLButtonElement | HTMLAnchorElement | null>(null)
 </script>
 
 <template>
   <component
     :is="to ? NuxtLink : 'button'"
-    ref="button"
     :to="to"
     v-bind="$attrs"
-    :style="{ width: `${button?.getBoundingClientRect()?.width}px` || 'auto', height: `${button?.getBoundingClientRect()?.height}px` || 'auto' }"
     class="flex cursor-pointer items-center justify-center gap-2 px-4 py-2 font-medium transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 active:ring-2"
     :class="{
       'disabled:opacity-50': $attrs.disabled,
