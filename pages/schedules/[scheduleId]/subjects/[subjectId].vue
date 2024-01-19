@@ -118,9 +118,13 @@ while (initialDate.getHours() <= 4) {
 }
 
 // API
+const isSubmitting = ref(false)
+
 async function saveChanges() {
+  isSubmitting.value = true
   subjects.update(data.value!)
-  router.go(-1)
+  isSubmitting.value = false
+  router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
 }
 
 // Dialog
@@ -150,7 +154,7 @@ async function handleDelete() {
         <base-button variant="danger" class="h-10" type="button" @click="deleteDialog = true">
           Usuń zajęcia
         </base-button>
-        <base-button variant="primary" class="h-10" type="submit">
+        <base-button variant="primary" class="h-10" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>

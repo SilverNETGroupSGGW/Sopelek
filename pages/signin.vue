@@ -60,7 +60,7 @@ async function handleFormSubmit() {
       </div>
 
       <div class="flex w-full justify-end">
-        <base-button variant="primary" type="submit" :disabled="isSubmitting">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zaloguj się
         </base-button>
       </div>

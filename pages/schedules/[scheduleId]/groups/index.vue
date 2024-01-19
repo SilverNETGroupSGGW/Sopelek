@@ -8,7 +8,7 @@ const route = useRoute()
 const groups = useGroups()
 await groups.get(route.params.scheduleId as string)
 
-const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, search, updateDialog } = useCrud(groups.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(groups.data)
 
 watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as string)
 </script>
@@ -64,7 +64,7 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
         <base-button variant="secondary" @click="createDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>
@@ -82,7 +82,7 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
         <base-button variant="secondary" @click="updateDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>
@@ -98,7 +98,7 @@ watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as stri
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async () => await groups.delete(currentItem))">
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async () => await groups.delete(currentItem))">
         Usuń
       </base-button>
     </div>

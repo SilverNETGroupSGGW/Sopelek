@@ -8,22 +8,30 @@ export default function useCrud<T extends { id: string }>(items: T[]) {
   const updateDialog = ref(false)
   const deleteDialog = ref(false)
 
+  const isSubmitting = ref(false)
+
   async function handleCreate(currentItem: T, callback: () => void) {
+    isSubmitting.value = true
     callback()
     createDialog.value = false
     currentItem = {} as T
+    isSubmitting.value = false
   }
 
   async function handleUpdate(currentItem: T, callback: (id?: string) => void) {
+    isSubmitting.value = true
     callback()
     updateDialog.value = false
     currentItem = {} as T
+    isSubmitting.value = false
   }
 
   async function handleDelete(currentItem: T, callback: (id?: string) => void) {
+    isSubmitting.value = true
     callback()
     deleteDialog.value = false
     currentItem = {} as T
+    isSubmitting.value = false
   }
 
   function handleDialogOpen(mode: 'create' | 'update' | 'delete', id?: string) {
@@ -49,6 +57,7 @@ export default function useCrud<T extends { id: string }>(items: T[]) {
     createDialog,
     updateDialog,
     deleteDialog,
+    isSubmitting,
     handleCreate,
     handleUpdate,
     handleDelete,

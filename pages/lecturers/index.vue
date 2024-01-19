@@ -8,7 +8,7 @@ const { degrees } = useData()
 const lecturers = useLecturers()
 await lecturers.get()
 
-const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, search, updateDialog } = useCrud(lecturers.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(lecturers.data)
 </script>
 
 <template>
@@ -67,7 +67,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         <base-button variant="secondary" @click="createDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>
@@ -86,7 +86,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         <base-button variant="secondary" @click="updateDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>
@@ -102,7 +102,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await lecturers.delete(currentItem))">
+      <base-button variant="danger" @click="handleDelete(currentItem, async() => await lecturers.delete(currentItem))" :disabled="isSubmitting" :loading="isSubmitting">
         Usuń
       </base-button>
     </div>

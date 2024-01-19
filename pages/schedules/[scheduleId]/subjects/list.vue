@@ -11,7 +11,7 @@ const { lessonTypes, daysOfWeek } = useData()
 const subjects = useSubjects()
 await subjects.get(route.params.scheduleId as string)
 
-const { currentItem, deleteDialog, handleDelete, handleDialogOpen, search } = useCrud(subjects.data)
+const { currentItem, deleteDialog, handleDelete, handleDialogOpen, isSubmitting, search } = useCrud(subjects.data)
 </script>
 
 <template>
@@ -87,7 +87,7 @@ const { currentItem, deleteDialog, handleDelete, handleDialogOpen, search } = us
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await subjects.delete(currentItem.id))">
+      <base-button variant="danger" @click="handleDelete(currentItem, async() => await subjects.delete(currentItem.id))" :disabled="isSubmitting" :loading="isSubmitting">
         Usuń
       </base-button>
     </div>
