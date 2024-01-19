@@ -1,11 +1,10 @@
-import type { DayOfWeek, Schedule, Subject } from '~/types'
+import type { Schedule, Subject } from '~/types'
 
-export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, container: HTMLDivElement | null) {
+export default function useResize(schedule: Schedule, container: HTMLDivElement | null) {
   const mouse = useMouse()
   const schedulerStore = useScheduler()
   const subjectsStore = useSubjects()
 
-  const { onDragDown } = useDrag(schedule, dayOfWeek, container)
   const { calculateStartTime } = useSubject()
 
   let rafId: number | null = null
@@ -13,26 +12,6 @@ export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, cont
   const resizeStart = ref({ x: 0, y: 0, width: 0, height: 0 })
 
   const edgeThreshold = 16
-
-  function onPointerDown(event: PointerEvent, subject: Subject) {
-    // Cleanup existing window event listeners
-    window.removeEventListener('pointermove', onResizeMove)
-    window.removeEventListener('pointerup', onResizeUp)
-
-    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-') || !(event.target as HTMLElement).id)
-      return
-
-    // Determine if we're dragging or resizing
-    const rect = (event.target as HTMLElement).getBoundingClientRect()
-    if (Math.abs(event.clientX - rect.left) < edgeThreshold || Math.abs(event.clientX - rect.right) < edgeThreshold || Math.abs(event.clientY - rect.top) < edgeThreshold || Math.abs(event.clientY - rect.bottom) < edgeThreshold) {
-      // We're resizing
-      onResizeDown(event, subject)
-    }
-    else {
-      // We're dragging
-      onDragDown(event)
-    }
-  }
 
   function onResizeDown(event: PointerEvent, subject: Subject) {
     mouse.isResizing = true
@@ -224,7 +203,6 @@ export default function useResize(schedule: Schedule, dayOfWeek: DayOfWeek, cont
   }
 
   return {
-    onPointerDown,
     onResizeDown,
     onResizeMove,
     onResizeUp,

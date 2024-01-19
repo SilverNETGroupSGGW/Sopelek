@@ -4,7 +4,7 @@ import type { DayOfWeek, Schedule, Subject } from '~/types'
 export default function useCreate(schedule: Schedule, container: HTMLDivElement | null, dayOfWeek: DayOfWeek, scheduleId: string) {
   const mouse = useMouse()
 
-  const { onResizeDown } = useResize(schedule, dayOfWeek, container)
+  const { onResizeDown } = useResize(schedule, container)
 
   function onCreateMove(event: PointerEvent) {
     if (event.button !== 0)
