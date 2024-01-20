@@ -5,6 +5,7 @@ const props = defineProps<{
   columns: { key: string, header: string }[]
   data: T[]
   search: string
+  filter?: (row: T) => boolean
 }>()
 
 const route = useRoute()
@@ -20,12 +21,19 @@ watch(() => props.search, () => {
   })
 })
 
-function filter(row: T) {
-  if (props.search === '')
+function defaultFilter(row: T, predicate?: (row: T) => boolean) {
+  if (props.search === '' && !predicate)
     return true
 
-  return Object.values(row).some(value => (value as string)?.toString().toLowerCase().includes(props.search.toLowerCase()))
+  const searchFilter = props.search !== '' && Object.values(row).some(value =>
+    (value as string)?.toString().toLowerCase().includes(props.search.toLowerCase()),
+  )
+
+  const predicateFilter = predicate ? predicate(row) : true
+  return searchFilter && predicateFilter
 }
+
+const filter = props.filter || defaultFilter
 
 const filteredData = computed(() => props.data.filter(row => filter(row)))
 const paginatedData = computed(() => filteredData.value.slice((page.value - 1) * 10, page.value * 10))

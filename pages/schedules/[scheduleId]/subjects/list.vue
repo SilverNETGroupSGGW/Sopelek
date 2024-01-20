@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
+import { CalendarDaysIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
+import type { Subject } from '~/types'
 
 // Nuxt hooks
 const route = useRoute()
@@ -12,6 +13,19 @@ const subjects = useSubjects()
 await subjects.get(route.params.scheduleId as string)
 
 const { currentItem, deleteDialog, handleDelete, handleDialogOpen, isSubmitting, search } = useCrud(subjects.data)
+
+// Filter
+const days = ref('')
+
+function filter(row: Subject) {
+  const searchFilter = search.value === '' || Object.values(row).some(value =>
+    (value as string)?.toString().toLowerCase().includes(search.value.toLowerCase()),
+  )
+
+  const daysFilter = days.value === '' || row.dayOfWeek === daysOfWeek.find(x => x.label === days.value)?.value
+
+  return searchFilter && daysFilter
+}
 </script>
 
 <template>
@@ -23,7 +37,9 @@ const { currentItem, deleteDialog, handleDelete, handleDialogOpen, isSubmitting,
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-64" :icon="MagnifyingGlassIcon" />
+      <base-select v-model="days" :options="daysOfWeek.map(x => ({ value: x.label }))" placeholder="Dzień tygodnia" class="w-64" :icon="CalendarDaysIcon" />
+
       <base-button variant="primary" :to="`/schedules/${route.params.scheduleId}/subjects/create`">
         Dodaj przedmiot
       </base-button>
@@ -33,7 +49,7 @@ const { currentItem, deleteDialog, handleDelete, handleDialogOpen, isSubmitting,
     </div>
   </div>
 
-  <base-table :data="subjects.data" :columns="subjects.columns" :search="search">
+  <base-table :data="subjects.data" :columns="subjects.columns" :search="search" :filter="filter">
     <template #name="{ cell }">
       <span class="text-base font-semibold text-gray-900">{{ cell.name }}</span>
 
@@ -87,7 +103,7 @@ const { currentItem, deleteDialog, handleDelete, handleDialogOpen, isSubmitting,
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await subjects.delete(currentItem.id))" :disabled="isSubmitting" :loading="isSubmitting">
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async() => await subjects.delete(currentItem.id))">
         Usuń
       </base-button>
     </div>
