@@ -191,7 +191,7 @@ async function handleDelete() {
       </div>
 
       <div class="flex gap-4">
-        <base-button variant="danger" class="h-10" type="button" @click="deleteDialog = true">
+        <base-button v-if="data!.id !== 'create'" variant="danger" class="h-10" type="button" @click="deleteDialog = true">
           Usuń zajęcia
         </base-button>
         <base-button variant="primary" class="h-10" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
