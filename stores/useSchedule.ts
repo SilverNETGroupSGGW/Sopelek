@@ -22,7 +22,7 @@ export const useSchedule = defineStore('schedule', {
   }),
   actions: {
     async get() {
-      const data = await $fetch<Schedule[]>('schedules', {
+      const { data } = await useFetch<Schedule[]>('schedules', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
@@ -30,13 +30,13 @@ export const useSchedule = defineStore('schedule', {
       // Update data.startDate to match YYYY-MM-DD format
       // Update studyMode and degreeOfStudy to match values from useData
       const { studiesModes, studiesDegrees } = useData()
-      data.forEach((schedule) => {
+      data.value!.forEach((schedule) => {
         schedule.startDate = schedule.startDate.split('T')[0]
         schedule.studyMode = studiesModes.find(mode => mode.type === schedule.studyMode)!.value
         schedule.degreeOfStudy = studiesDegrees.find(degree => degree.type === schedule.degreeOfStudy)!.value
       })
 
-      this.data = data
+      this.data = data.value!
     },
     async create(schedule: Schedule) {
       const { studiesModes, studiesDegrees } = useData()

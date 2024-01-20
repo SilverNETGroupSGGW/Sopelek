@@ -16,13 +16,13 @@ export const useScheduler = defineStore('scheduler', {
     async get(scheduleId: string) {
       const { calculatePosition } = useSubject()
 
-      const data = await $fetch<Schedule>(`schedules/${scheduleId}/extended`, {
+      const { data } = await useFetch<Schedule>(`schedules/${scheduleId}/extended`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
 
-      data.subjects = data.subjects.map((subject) => {
-        const { x, y, width, height } = calculatePosition(subject, data.groups.map(x => x.name))
+      data.value!.subjects = data.value!.subjects.map((subject) => {
+        const { x, y, width, height } = calculatePosition(subject, data.value!.groups.map(x => x.name))
         return {
           ...subject,
           conflict: false,
@@ -39,7 +39,7 @@ export const useScheduler = defineStore('scheduler', {
         }
       })
 
-      this.schedule = data
+      this.schedule = data.value!
     },
     async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
       const data = await $fetch<SubjectConflict>(`subjects/check-conflict`, {

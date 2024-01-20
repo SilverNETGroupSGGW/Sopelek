@@ -22,10 +22,12 @@ export const useSubjects = defineStore('subjects', {
   }),
   actions: {
     async get(scheduleId: string) {
-      this.data = await $fetch<Subject[]>(`subjects/schedule/${scheduleId}/extended`, {
+      const { data } = await useFetch<Subject[]>(`subjects/schedule/${scheduleId}/extended`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
+
+      this.data = data.value!.sort((a, b) => a.name!.localeCompare(b.name!))
     },
     async create(subject: Subject) {
       const data = await $fetch<Subject>('subjects', {

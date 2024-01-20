@@ -21,10 +21,12 @@ export const useClassrooms = defineStore('classrooms', {
   }),
   actions: {
     async get() {
-      this.data = await $fetch<Classroom[]>('classrooms', {
+      const { data } = await useFetch<Classroom[]>('classrooms', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
+
+      this.data = data.value!
     },
     async create(classroom: Classroom) {
       const data = await $fetch<Classroom>('classrooms', {

@@ -21,12 +21,12 @@ export const useGroups = defineStore('groups', {
   }),
   actions: {
     async get(scheduleId: string) {
-      const data = await $fetch<Group[]>(`Groups/schedule/${scheduleId}`, {
+      const { data } = await useFetch<Group[]>(`Groups/schedule/${scheduleId}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
 
-      this.data = data.sort((a, b) => a.name.localeCompare(b.name))
+      this.data = data.value!.sort((a, b) => a.name.localeCompare(b.name))
     },
     async create(group: Group) {
       const data = await $fetch<Group>('Groups', {
