@@ -9,7 +9,7 @@ const { fieldOfStudies, studiesDegrees, studiesModes } = useData()
 const schedules = useSchedule()
 await schedules.get()
 
-const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, search, updateDialog } = useCrud(schedules.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(schedules.data)
 
 watchEffect(() => {
   const course = fieldOfStudies.find(course => course.value.includes(currentItem.value.fieldOfStudy))
@@ -98,7 +98,7 @@ watchEffect(() => {
         <base-button variant="secondary" @click="updateDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>
@@ -128,7 +128,7 @@ watchEffect(() => {
         <base-button variant="secondary" @click="createDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>
@@ -144,7 +144,7 @@ watchEffect(() => {
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await schedules.delete(currentItem))">
+      <base-button variant="danger" @click="handleDelete(currentItem, async() => await schedules.delete(currentItem))" :disabled="isSubmitting" :loading="isSubmitting">
         Usuń
       </base-button>
     </div>
