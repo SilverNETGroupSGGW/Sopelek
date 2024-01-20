@@ -4,6 +4,7 @@ export const useSchedule = defineStore('schedule', {
   state: () => ({
     search: '',
     data: [] as Schedule[],
+    isDownloading: false,
     columns: [
       {
         key: 'name',
@@ -82,6 +83,8 @@ export const useSchedule = defineStore('schedule', {
       this.data = this.data.filter(l => l.id !== schedule.id)
     },
     async download(schedule: Schedule) {
+      this.isDownloading = true
+
       const data = await $fetch<Blob>(`ScheduleGenerator/generate/${schedule.id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
@@ -98,6 +101,8 @@ export const useSchedule = defineStore('schedule', {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+
+      this.isDownloading = false
     },
   },
 })

@@ -51,7 +51,7 @@ watchEffect(() => {
 
     <template #actions="{ cell }">
       <div class="flex flex-wrap gap-4">
-        <base-button variant="primary" @click="schedules.download(cell)">
+        <base-button variant="primary" :disabled="schedules.isDownloading" :loading="schedules.isDownloading" @click="schedules.download(cell)">
           Pobierz plan
         </base-button>
         <base-button variant="primary" :to="`/schedules/${cell.id}`">
@@ -144,7 +144,7 @@ watchEffect(() => {
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await schedules.delete(currentItem))" :disabled="isSubmitting" :loading="isSubmitting">
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async() => await schedules.delete(currentItem))">
         Usuń
       </base-button>
     </div>
