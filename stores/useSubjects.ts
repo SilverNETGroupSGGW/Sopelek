@@ -27,7 +27,13 @@ export const useSubjects = defineStore('subjects', {
         method: 'GET',
       })
 
-      this.data = data.value!.sort((a, b) => a.name!.localeCompare(b.name!))
+      this.data = data.value!.sort((a, b) => {
+        if (a.dayOfWeek === b.dayOfWeek)
+          return a.startTime!.localeCompare(b.startTime!)
+
+        else
+          return a.dayOfWeek!.localeCompare(b.dayOfWeek!)
+      })
     },
     async create(subject: Subject) {
       const data = await $fetch<Subject>('subjects', {
