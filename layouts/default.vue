@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useOfetchError } from '~/plugins/ofetch'
 
-const route = useRoute()
-
 // Ofetch
 const ofetchError = useOfetchError()
 
-onBeforeUnmount(() => {
+// Route
+const route = useRoute()
+
+// Clear error on route change
+watch(() => route.path, () => {
   ofetchError.value = null
 })
 
@@ -40,7 +42,9 @@ start()
         </li>
         <li class="text-sm text-gray-600">
           Sprawdź też
-          <NuxtLink :to="`/schedules/${route.params.scheduleId}/subjects/list`" class="underline font-medium">listę zajęć</NuxtLink> i upewnij się, że wszystkie są poprawnie uzupełnione.
+          <NuxtLink :to="`/schedules/${route.params.scheduleId}/subjects/list`" class="font-medium underline">
+            listę zajęć
+          </NuxtLink> i upewnij się, że wszystkie są poprawnie uzupełnione.
         </li>
       </ul>
     </template>
