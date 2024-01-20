@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList } from '@headlessui/vue'
 import { DayOfWeek } from '~/types'
-import { useOfetchError } from '~/plugins/ofetch'
-
-// Ofetch
-const ofetchError = useOfetchError()
-
-onBeforeUnmount(() => {
-  ofetchError.value = null
-})
 
 // Nuxt hooks
 const route = useRoute()
@@ -152,17 +144,4 @@ function handleDelete(id: string) {
       </div>
     </div>
   </div>
-
-  <base-toast :show="ofetchError !== null" type="error" @close="ofetchError = null">
-    <template v-if="ofetchError === 401">
-      Sesja wygasła.
-      <NuxtLink to="/signin" class="underline" @click="ofetchError = null">
-        Zaloguj się ponownie
-      </NuxtLink>
-    </template>
-
-    <template v-else-if="ofetchError === 400">
-      Nieprawidłowe dane. Może to być na przykład konflikt w zajęciach.
-    </template>
-  </base-toast>
 </template>
