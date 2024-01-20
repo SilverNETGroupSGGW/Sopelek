@@ -78,7 +78,7 @@ watchEffect(() => {
   <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="UserIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia" />
+      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia semestru" />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
       <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
         <template #options="{ option, active }">
@@ -108,7 +108,7 @@ watchEffect(() => {
   <base-dialog v-model="createDialog" title="Utwórz plan" :icon="UserIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia" />
+      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia semestru" />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
       <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
         <template #options="{ option, active }">

@@ -17,7 +17,7 @@ export enum StudyMode {
 
 export interface Schedule {
   created?: string
-  degreeOfStudy: DegreeOfStudy
+  degreeOfStudy: DegreeOfStudy | string
   faculty: string
   fieldOfStudy: string
   groups: Group[]
@@ -25,7 +25,7 @@ export interface Schedule {
   name: string
   semester: number
   startDate: string
-  studyMode: StudyMode
+  studyMode: StudyMode | string
   subjects: Subject[]
   updated?: string
   year: number
