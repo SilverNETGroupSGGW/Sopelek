@@ -24,5 +24,9 @@ start()
         Zaloguj się ponownie
       </NuxtLink>
     </template>
+
+    <template v-else-if="ofetchError === 400">
+      Nieprawidłowe dane. Może to być na przykład konflikt w zajęciach.
+    </template>
   </base-toast>
 </template>

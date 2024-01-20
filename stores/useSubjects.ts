@@ -22,13 +22,13 @@ export const useSubjects = defineStore('subjects', {
   }),
   actions: {
     async get(scheduleId: string) {
-      this.data = await $fetch<Subject[]>(`Subjects/schedule/${scheduleId}/extended`, {
+      this.data = await $fetch<Subject[]>(`subjects/schedule/${scheduleId}/extended`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
     },
     async create(subject: Subject) {
-      const data = await $fetch<Subject>('Subjects', {
+      const data = await $fetch<Subject>('subjects', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
         body: JSON.stringify(subject),
@@ -41,7 +41,7 @@ export const useSubjects = defineStore('subjects', {
     },
     async update(subject: Subject) {
       try {
-        const data = await $fetch<Subject>('Subjects', {
+        const data = await $fetch<Subject>('subjects', {
           baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
           method: subject.id === 'create' ? 'POST' : 'PUT',
           body: JSON.stringify(subject),
@@ -59,7 +59,7 @@ export const useSubjects = defineStore('subjects', {
       }
     },
     async delete(id: string) {
-      await $fetch<Subject>(`Subjects/${id}`, {
+      await $fetch<Subject>(`subjects/${id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'DELETE',
         headers: {

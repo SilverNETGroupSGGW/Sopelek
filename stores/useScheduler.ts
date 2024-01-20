@@ -42,7 +42,7 @@ export const useScheduler = defineStore('scheduler', {
       this.schedule = data
     },
     async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
-      const data = await $fetch<SubjectConflict>(`Subjects/check-conflict`, {
+      const data = await $fetch<SubjectConflict>(`subjects/check-conflict`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
         body: JSON.stringify({
