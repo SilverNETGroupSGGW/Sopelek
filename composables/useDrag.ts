@@ -3,7 +3,7 @@ import type { DayOfWeek, Schedule } from '~/types'
 export default function useDrag(schedule: Schedule, dayOfWeek: DayOfWeek, container: HTMLDivElement | null) {
   const mouse = useMouse()
   const subjectsStore = useSubjects()
-  const schedulerStore = useScheduler()
+  // const schedulerStore = useScheduler()
 
   const { calculateStartTime } = useSubject()
 
@@ -83,7 +83,7 @@ export default function useDrag(schedule: Schedule, dayOfWeek: DayOfWeek, contai
 
     if (mouse.currentSubject!) {
       await subjectsStore.update(mouse.currentSubject!)
-      await schedulerStore.getConflicts(schedule.id, dayOfWeek)
+      // await schedulerStore.getConflicts(schedule.id, dayOfWeek)
       mouse.currentSubject = null
     }
 
