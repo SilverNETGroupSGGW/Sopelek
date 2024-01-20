@@ -16,9 +16,9 @@ function handleClose() {
 </script>
 
 <template>
-  <div v-if="show" class="pointer-events-none fixed inset-0 flex h-screen items-end justify-end p-6">
-    <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-75 ease-out" leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-      <div v-if="show" class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+  <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform translate-y-2 opacity-0" enter-to-class="transform translate-y-0 opacity-100" leave-active-class="transition duration-75 ease-out" leave-from-class="transform translate-y-0 opacity-100" leave-to-class="transform translate-y-2 opacity-0">
+    <div v-if="show" class="pointer-events-none fixed inset-0 flex h-screen items-end justify-end p-6">
+      <div v-if="show" class="pointer-events-auto overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
         <div class="w-full p-4">
           <div class="flex items-center">
             <div class="mr-3 shrink-0">
@@ -38,6 +38,6 @@ function handleClose() {
           </div>
         </div>
       </div>
-    </transition>
-  </div>
+    </div>
+  </transition>
 </template>
