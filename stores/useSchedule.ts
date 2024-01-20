@@ -28,12 +28,8 @@ export const useSchedule = defineStore('schedule', {
       })
 
       // Update data.startDate to match YYYY-MM-DD format
-      // Update studyMode and degreeOfStudy to match values from useData
-      const { studiesModes, studiesDegrees } = useData()
       data.value!.forEach((schedule) => {
         schedule.startDate = schedule.startDate.split('T')[0]
-        schedule.studyMode = studiesModes.find(mode => mode.type === schedule.studyMode)!.value
-        schedule.degreeOfStudy = studiesDegrees.find(degree => degree.type === schedule.degreeOfStudy)!.value
       })
 
       this.data = data.value!

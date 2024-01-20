@@ -16,6 +16,16 @@ watchEffect(() => {
   if (course)
     currentItem.value.faculty = course.department
 })
+
+watchEffect(() => {
+  const studyMode = studiesModes.find(mode => mode.type === currentItem.value.studyMode)
+  if (studyMode)
+    currentItem.value.studyMode = studyMode.value
+
+  const degreeOfStudy = studiesDegrees.find(degree => degree.type === currentItem.value.degreeOfStudy)
+  if (degreeOfStudy)
+    currentItem.value.degreeOfStudy = degreeOfStudy.value
+})
 </script>
 
 <template>
