@@ -163,6 +163,8 @@ async function generateFifteenLessons() {
 watchEffect(() => {
   if (shouldGenerateFifteenLessons.value)
     generateFifteenLessons()
+  else
+    data.value!.lessons = undefined
 })
 
 // Dialog
@@ -217,7 +219,7 @@ async function handleDelete() {
     </div>
 
     <div class="mb-6 rounded-lg border border-gray-200 p-4">
-      <base-checkbox v-model="shouldGenerateFifteenLessons" label="Wygeneruj 15 zajęć" />
+      <base-checkbox v-model="shouldGenerateFifteenLessons" label="Wygeneruj 15 zajęć" description="Skorzystaj z tej opcji, na przykład gdy dane zajęcia trwają dziewięć tygodni. Podana jest kolejno data zajęć i ich czas trwania." />
 
       <div v-if="shouldGenerateFifteenLessons" class="mt-4 flex w-fit flex-col gap-2">
         <div v-for="(date, index) in data!.lessons" :key="index" class="flex gap-2">
