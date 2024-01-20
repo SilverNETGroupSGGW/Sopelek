@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
-import { SubjectType } from '~/types'
 
 const props = defineProps<Subject>()
 
@@ -19,23 +18,32 @@ function handleDelete() {
   deleteDialog.value = false
   emits('delete', props.id)
 }
+
+function stringToColor(input: string) {
+  let hash = 0
+  for (let i = 0; i < input.length; i++)
+    hash = input.charCodeAt(i) + ((hash << 5) - hash)
+
+  const hue = hash % 360
+  const saturation = 50 + Math.abs(hash % 51) // Set saturation between 50 and 100
+  const lightness = 90 + (hash % 10) // Set lightness between 90 and 99 to ensure color is near white and has high contrast with black
+
+  return {
+    backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
+    borderColor: `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`,
+  }
+}
 </script>
 
 <template>
   <div
     :id="id"
     data-lesson
-    class="flex size-full flex-col items-start rounded-md border p-4 text-left outline-none"
+    class="relative flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none"
     :class="[
       { 'opacity-50': ghost },
-      { 'border-purple-600 bg-purple-50': type === SubjectType.Faculty },
-      { 'border-yellow-600 bg-yellow-50': type === SubjectType.Laboratories },
-      { 'border-indigo-600 bg-indigo-50': type === SubjectType.Lecture },
-      { 'border-pink-600 bg-pink-50': type === SubjectType.PracticalClasses },
-      { 'border-gray-600 bg-gray-50': type === SubjectType.Unknown },
-      { 'border-4 border-red-600 bg-red-50': conflict },
     ]"
-    :style="{ zIndex }"
+    :style="{ zIndex, backgroundColor: stringToColor(name!).backgroundColor, borderColor: stringToColor(name!).borderColor }"
   >
     <div class="flex w-full flex-wrap items-center justify-between">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
