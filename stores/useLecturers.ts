@@ -29,8 +29,8 @@ export const useLecturers = defineStore('lecturers', {
       this.data = data.value!.sort((a, b) => a.surname.localeCompare(b.surname))
     },
     async create(lecturer: Lecturer) {
-      const { degrees } = useData()
-      lecturer.academicDegree = (degrees.find(degree => degree.value === lecturer.academicDegree))!.type
+      // const { degrees } = useData()
+      // lecturer.academicDegree = (degrees.find(degree => degree.value === lecturer.academicDegree))!.type
       const data = await $fetch<Lecturer>('lecturers', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
