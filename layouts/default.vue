@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useOfetchError } from '~/plugins/ofetch'
 
+const route = useRoute()
+
 // Ofetch
 const ofetchError = useOfetchError()
 
@@ -31,7 +33,16 @@ start()
     </template>
 
     <template v-else-if="ofetchError === 400">
-      Nieprawidłowe dane. Może to być na przykład konflikt w zajęciach.
+      <span class="text-sm font-medium text-gray-700">Nieprawidłowe dane, nie zapisano zmian. Sprawdź plan w poszukiwaniu konfliktów.</span>
+      <ul class="list-inside list-disc">
+        <li class="text-sm text-gray-600">
+          Jeżeli zajęcia nakładają się na inne, przenieś je poza obszar konfliktu lub usuń je za pomocą przycisku Usuń.
+        </li>
+        <li class="text-sm text-gray-600">
+          Sprawdź też
+          <NuxtLink :to="`/schedules/${route.params.scheduleId}/subjects/list`" class="underline font-medium">listę zajęć</NuxtLink> i upewnij się, że wszystkie są poprawnie uzupełnione.
+        </li>
+      </ul>
     </template>
   </base-toast>
 </template>

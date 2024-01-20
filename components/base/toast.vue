@@ -20,13 +20,13 @@ function handleClose() {
     <div v-if="show" class="pointer-events-none fixed inset-0 flex h-screen items-end justify-end p-6">
       <div v-if="show" class="pointer-events-auto overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
         <div class="w-full p-4">
-          <div class="flex items-center">
+          <div class="flex items-start">
             <div class="mr-3 shrink-0">
               <CheckCircleIcon v-if="type === 'success'" class="size-6 text-green-600" />
               <XMarkIcon v-if="type === 'error'" class="size-6 text-red-600" />
             </div>
 
-            <p class="flex-1 text-sm font-medium text-gray-700">
+            <p class="flex-1">
               <slot />
             </p>
 
