@@ -18,7 +18,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       return
 
     let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / 24) * 24
-    let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / 192) * 192
+    let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / 160) * 160
 
     // Check if x or y is outside the bounds and set them to the closest boundary
     const containerRect = container!.getBoundingClientRect()
@@ -28,8 +28,8 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       y = 0
     if (x > containerRect.width - 24)
       x = containerRect.width - 24
-    if (y > containerRect.height - 192)
-      y = containerRect.height - 192
+    if (y > containerRect.height - 160)
+      y = containerRect.height - 160
 
     const newSubject: Subject = {
       classroom: null,
@@ -42,7 +42,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       ghost: true,
       groups: [schedule.groups.find(group => group.id === target.dataset.group)!],
       groupsIds: [target.dataset.group!],
-      height: 192,
+      height: 160,
       id: '',
       lecturers: [],
       lecturersIds: [],

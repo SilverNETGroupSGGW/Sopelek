@@ -12,9 +12,9 @@ export default function useSubject() {
     const endTime = new Date(startTime.getTime() + durationInMilliseconds)
 
     const x = ((startTime.getHours() - 8) * 60 + startTime.getMinutes()) * (24 / 5)
-    const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * 192
+    const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * 160
 
-    const height = subject.groups!.length * 192
+    const height = subject.groups!.length * 160
     const width = ((endTime.getHours() * 60 + endTime.getMinutes()) - (startTime.getHours() * 60 + startTime.getMinutes())) * 4.8
 
     return { x, y, width, height }
@@ -32,8 +32,8 @@ export default function useSubject() {
   }
 
   function calculateGroups(subject: Subject) {
-    const currentGroupIndex = subject.y! / 192
-    const newGroupCount = subject.height! / 192
+    const currentGroupIndex = subject.y! / 160
+    const newGroupCount = subject.height! / 160
     subject.groups = subject.groups!.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
   }
 

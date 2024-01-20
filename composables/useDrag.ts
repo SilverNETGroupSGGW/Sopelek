@@ -39,7 +39,7 @@ export default function useDrag(schedule: Schedule, dayOfWeek: DayOfWeek, contai
       const deltaX = Math.round((event.clientX - dragStart.value.x) / 24) * 24
 
       // snap to groupCells height in Y axis
-      const deltaY = Math.round((event.clientY - dragStart.value.y) / 192) * 192
+      const deltaY = Math.round((event.clientY - dragStart.value.y) / 160) * 160
 
       if (deltaX !== 0 || deltaY !== 0) {
         if (!mouse.currentSubject)
@@ -49,7 +49,7 @@ export default function useDrag(schedule: Schedule, dayOfWeek: DayOfWeek, contai
         const newY = mouse.currentSubject!.y! + deltaY
 
         // Calculate the total height of groupCells
-        const totalHeight = 192 * schedule.groups.length
+        const totalHeight = 160 * schedule.groups.length
 
         // Set boundaries, x and y can't be smaller than 0
         // newY can't be larger than totalHeight - mouse.currentSubject!!.height
@@ -60,8 +60,8 @@ export default function useDrag(schedule: Schedule, dayOfWeek: DayOfWeek, contai
         calculateStartTime(mouse.currentSubject!)
 
         // Calculate new groups
-        const currentGroupIndex = mouse.currentSubject.y! / 192
-        const newGroupCount = mouse.currentSubject.height! / 192
+        const currentGroupIndex = mouse.currentSubject.y! / 160
+        const newGroupCount = mouse.currentSubject.height! / 160
         mouse.currentSubject.groups = schedule.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups!.map(group => group.id)
 

@@ -112,7 +112,7 @@ function handleTabChange(index: number) {
         <div class="flex">
           <div class="flex h-full w-fit flex-col">
             <template v-for="(subject, index) in lecturer!.subjects" :key="index">
-              <div v-for="(group, index2) in subject.groups!" :id="group.id" :key="index2" class="flex size-48 shrink-0 flex-col items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
+              <div v-for="(group, index2) in subject.groups!" :id="group.id" :key="index2" class="flex h-40 w-48 shrink-0 flex-col items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
                 <span>
                   <b>Grupa </b>{{ group.name }}
                 </span>
@@ -128,8 +128,8 @@ function handleTabChange(index: number) {
               <base-lesson v-bind="subject" />
             </div>
 
-            <div v-for="(group, index) in lecturer!.subjects!.map(x => x.groups!).flat()" v-once :key="index" class="flex h-48">
-              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-48 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
+            <div v-for="(group, index) in lecturer!.subjects!.map(x => x.groups!).flat()" v-once :key="index" class="flex h-40">
+              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-40 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
             </div>
           </div>
         </div>
