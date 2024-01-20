@@ -44,13 +44,12 @@ const container = ref<HTMLDivElement | null>(null)
 let onPointerDown: Function | null = null
 let onCreateMove: Function | null = null
 
-onMounted(() => {
-  initialContainer = container.value
+watchEffect(() => {
+  if (container.value)
+    initialContainer = container.value;
 
-  if (initialContainer) {
-    ({ onPointerDown } = usePointer(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer, route.query.day as DayOfWeek, route.params.scheduleId as string))
-  }
+  ({ onPointerDown } = usePointer(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
+  ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer!, route.query.day as DayOfWeek, route.params.scheduleId as string))
 })
 
 // Tabs
