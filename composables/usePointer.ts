@@ -18,21 +18,21 @@ export default function usePointer(schedule: Schedule, dayOfWeek: DayOfWeek, con
     const nearBottom = Math.abs(event.clientY - rect.bottom) < 16
 
     if (!nearLeft && !nearRight && !nearTop && !nearBottom) {
-      (event.target as HTMLElement).style.cursor = 'move'
+      (event.currentTarget as HTMLElement).style.cursor = 'move'
       return
     }
 
     if ((nearTop && nearLeft) || (nearBottom && nearRight))
-      (event.target as HTMLElement).style.cursor = 'nwse-resize'
+      (event.currentTarget as HTMLElement).style.cursor = 'nwse-resize'
 
     else if ((nearTop && nearRight) || (nearBottom && nearLeft))
-      (event.target as HTMLElement).style.cursor = 'nesw-resize'
+      (event.currentTarget as HTMLElement).style.cursor = 'nesw-resize'
 
     else if (nearLeft || nearRight)
-      (event.target as HTMLElement).style.cursor = 'ew-resize'
+      (event.currentTarget as HTMLElement).style.cursor = 'ew-resize'
 
     else if (nearTop || nearBottom)
-      (event.target as HTMLElement).style.cursor = 'ns-resize'
+      (event.currentTarget as HTMLElement).style.cursor = 'ns-resize'
   }
 
   function onPointerOut() {
