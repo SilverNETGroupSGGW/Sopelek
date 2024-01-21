@@ -4,9 +4,6 @@ import { useOfetchError } from '~/plugins/ofetch'
 // Ofetch
 const ofetchError = useOfetchError()
 
-// Route
-const route = useRoute()
-
 const { start } = useLoadingIndicator()
 start()
 </script>
@@ -35,16 +32,13 @@ start()
     </template>
 
     <template v-else-if="ofetchError === 400">
-      <span class="text-sm font-medium text-gray-700">Nieprawidłowe dane, nie zapisano zmian. Sprawdź plan w poszukiwaniu konfliktów.</span>
+      <span class="text-sm font-medium text-gray-700">Nieprawidłowe dane, nie zapisano zmian. Jeżeli edytujesz plan, sprawdź go w poszukiwaniu konfliktów.</span>
       <ul class="list-inside list-disc">
         <li class="text-sm text-gray-600">
           Jeżeli zajęcia nakładają się na inne, przenieś je poza obszar konfliktu lub usuń je za pomocą przycisku Usuń.
         </li>
         <li class="text-sm text-gray-600">
-          Sprawdź też
-          <NuxtLink :to="`/schedules/${route.params.scheduleId}/subjects/list`" class="font-medium underline">
-            listę zajęć
-          </NuxtLink> i upewnij się, że wszystkie są poprawnie uzupełnione.
+          Sprawdź też listę zajęć i upewnij się, że wszystkie są poprawnie uzupełnione.
         </li>
       </ul>
     </template>
