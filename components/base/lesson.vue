@@ -25,8 +25,8 @@ function stringToColor(input: string) {
     hash = input.charCodeAt(i) + ((hash << 5) - hash)
 
   const hue = hash % 360
-  const saturation = 50 + Math.abs(hash % 51) // Set saturation between 50 and 100
-  const lightness = 90 + (hash % 10) // Set lightness between 90 and 99 to ensure color is near white and has high contrast with black
+  const saturation = 75 + (hash % 10)
+  const lightness = 95
 
   return {
     backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
