@@ -41,14 +41,16 @@ await scheduler.get(route.params.scheduleId as string)
 let initialContainer: HTMLDivElement | null = null
 const container = ref<HTMLDivElement | null>(null)
 
+let onPointerMove: Function | null = null
 let onPointerDown: Function | null = null
+let onPointerOut: Function | null = null
 let onCreateMove: Function | null = null
 
 watchEffect(() => {
   if (container.value)
     initialContainer = container.value;
 
-  ({ onPointerDown } = usePointer(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
+  ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
   ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer!, route.query.day as DayOfWeek, route.params.scheduleId as string))
 })
 
@@ -131,7 +133,7 @@ function handleDelete(id: string) {
           </div>
 
           <div ref="container" class="relative flex flex-col" @pointerdown.prevent="onCreateMove!">
-            <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5 hover:cursor-move" @pointerdown.prevent="onPointerDown!($event, subject)">
+            <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5" @pointerdown.prevent="onPointerDown!($event, subject)" @pointermove.prevent="onPointerMove!" @pointerout.prevent="onPointerOut!">
               <base-lesson v-bind="subject" @delete="handleDelete" />
             </div>
 
