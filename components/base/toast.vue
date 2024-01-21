@@ -10,17 +10,17 @@ const emits = defineEmits<{
   (e: 'close'): void
 }>()
 
-function handleClose() {
-  emits('close')
-}
-
 const isDurating = ref(false)
+
+let timeoutId: NodeJS.Timeout | null = null
+let rafId: number | null = null
 
 watchEffect(() => {
   if (props.show) {
     isDurating.value = true
-    setTimeout(() => {
-      handleClose()
+    clearTimeout(timeoutId!)
+    timeoutId = setTimeout(() => {
+      emits('close')
       isDurating.value = false
     }, props.type === 'success' ? 1500 : 5000)
   }
@@ -28,8 +28,6 @@ watchEffect(() => {
 
 const progress = ref(0)
 
-// Update width of progress bar in %
-// From 0% to 100% in 1.5s if success, 5s if error
 watchEffect(() => {
   if (isDurating.value) {
     let start: number | null = null
@@ -41,21 +39,25 @@ watchEffect(() => {
       const elapsed = timestamp - start
       progress.value = Math.min((elapsed / duration) * 100, 100)
       if (elapsed < duration)
-        requestAnimationFrame(animate)
+        rafId = requestAnimationFrame(animate)
     }
 
-    requestAnimationFrame(animate)
+    cancelAnimationFrame(rafId!)
+    rafId = requestAnimationFrame(animate)
   }
 })
 
-// When type changes, reset progress
 watch(() => props.type, () => {
   progress.value = 0
+  clearTimeout(timeoutId!)
+  cancelAnimationFrame(rafId!)
 })
 
 onBeforeUnmount(() => {
   isDurating.value = false
   progress.value = 0
+  clearTimeout(timeoutId!)
+  cancelAnimationFrame(rafId!)
 })
 </script>
 
@@ -64,8 +66,8 @@ onBeforeUnmount(() => {
     <div v-if="show" class="pointer-events-none fixed inset-0 flex h-screen items-end justify-end p-6">
       <div v-if="show" class="pointer-events-auto relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
         <div class="w-full p-4">
-          <div class="flex items-center">
-            <div class="mr-3 shrink-0">
+          <div class="flex items-start">
+            <div class="mr-3 flex h-full items-start">
               <CheckCircleIcon v-if="type === 'success'" class="size-6 text-green-600" />
               <XMarkIcon v-if="type === 'error'" class="size-6 text-red-600" />
             </div>
@@ -73,12 +75,6 @@ onBeforeUnmount(() => {
             <p class="flex-1">
               <slot />
             </p>
-
-            <div class="ml-4 flex shrink-0">
-              <button class="inline-flex text-gray-400 transition duration-150 ease-in-out focus:text-gray-500 focus:outline-none" @click="handleClose">
-                <XMarkIcon class="size-5" />
-              </button>
-            </div>
           </div>
         </div>
 

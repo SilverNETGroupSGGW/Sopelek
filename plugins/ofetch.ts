@@ -7,7 +7,7 @@ export default defineNuxtPlugin((_nuxtApp) => {
 
   globalThis.$fetch = ofetch.create({
     onResponse({ response, request, options }) {
-      if (response.ok && (request as string).startsWith('https://kampus-sggw-api.azurewebsites.net/api') && options.method !== 'GET')
+      if (response.ok && (request as string).startsWith('https://kampus-sggw-api.azurewebsites.net/api') && options.method !== 'GET' && !(request as string).endsWith('/login'))
         ofetchError.value = response.status
     },
     onResponseError({ response }) {
