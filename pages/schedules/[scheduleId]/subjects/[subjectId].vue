@@ -249,10 +249,10 @@ async function handleDelete() {
           </template>
 
           <template #actions="{ cell }">
-            <button v-if="!data?.lecturers?.some(lecturer => lecturer.id === cell.id)" class="font-medium text-indigo-600" @click="addLecturer(cell)">
+            <button v-if="!data?.lecturers?.some(lecturer => lecturer.id === cell.id)" type="button" class="font-medium text-indigo-600" @click="addLecturer(cell)">
               Wybierz
             </button>
-            <button v-else class="font-medium text-red-600" @click="removeLecturer(cell)">
+            <button v-else type="button" class="font-medium text-red-600" @click="removeLecturer(cell)">
               Usuń
             </button>
           </template>
@@ -275,10 +275,10 @@ async function handleDelete() {
           </template>
 
           <template #actions="{ cell }">
-            <button v-if="!data?.groups?.some(group => group.id === cell.id)" class="font-medium text-indigo-600" @click="addGroup(cell)">
+            <button v-if="!data?.groups?.some(group => group.id === cell.id)" type="button" class="font-medium text-indigo-600" @click="addGroup(cell)">
               Wybierz
             </button>
-            <button v-else class="font-medium text-red-600" @click="removeGroup(cell)">
+            <button v-else type="button" class="font-medium text-red-600" @click="removeGroup(cell)">
               Usuń
             </button>
           </template>
@@ -303,10 +303,10 @@ async function handleDelete() {
           </template>
 
           <template #actions="{ cell }">
-            <button v-if="data!.classroom?.id !== cell.id" class="font-medium text-indigo-600" @click.prevent="addClassroom(cell)">
+            <button v-if="data!.classroom?.id !== cell.id" type="button" class="font-medium text-indigo-600" @click="addClassroom(cell)">
               Wybierz
             </button>
-            <button v-else class="font-medium text-red-600" @click="removeClassroom(cell)">
+            <button v-else type="button" class="font-medium text-red-600" @click="removeClassroom(cell)">
               Usuń
             </button>
           </template>

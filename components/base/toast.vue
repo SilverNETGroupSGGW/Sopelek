@@ -2,7 +2,6 @@
 import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps<{
-  durable?: boolean
   show: boolean
   type: 'success' | 'error'
 }>()
@@ -18,36 +17,45 @@ function handleClose() {
 const isDurating = ref(false)
 
 watchEffect(() => {
-  if (props.show && props.type === 'success' && props.durable) {
+  if (props.show) {
     isDurating.value = true
     setTimeout(() => {
       handleClose()
       isDurating.value = false
-    }, 1500)
+    }, props.type === 'success' ? 1500 : 5000)
   }
 })
 
 const progress = ref(0)
 
 // Update width of progress bar in %
-// From 0% to 100% in 1.5s
+// From 0% to 100% in 1.5s if success, 5s if error
 watchEffect(() => {
   if (isDurating.value) {
-    let i = 0
-    const interval = setInterval(() => {
-      i++
-      progress.value = i
-      if (i === 100)
-        clearInterval(interval)
-    }, 15)
+    let start: number | null = null
+    const duration = props.type === 'success' ? 1500 : 5000
+
+    const animate = (timestamp: number) => {
+      if (!start)
+        start = timestamp
+      const elapsed = timestamp - start
+      progress.value = Math.min((elapsed / duration) * 100, 100)
+      if (elapsed < duration)
+        requestAnimationFrame(animate)
+    }
+
+    requestAnimationFrame(animate)
   }
 })
 
+// When type changes, reset progress
+watch(() => props.type, () => {
+  progress.value = 0
+})
+
 onBeforeUnmount(() => {
-  if (props.durable) {
-    isDurating.value = false
-    progress.value = 0
-  }
+  isDurating.value = false
+  progress.value = 0
 })
 </script>
 
@@ -74,7 +82,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div v-if="type === 'success' && durable" class="absolute inset-x-0 bottom-0 h-1 bg-green-500" :style="{ width: `${progress}%` }" />
+        <div class="absolute inset-x-0 top-0 h-1" :style="{ width: `${progress}%` }" :class="{ 'bg-green-500': type === 'success', 'bg-red-500': type === 'error' }" />
       </div>
     </div>
   </transition>

@@ -6,9 +6,8 @@ export default defineNuxtPlugin((_nuxtApp) => {
   const ofetchError = useOfetchError()
 
   globalThis.$fetch = ofetch.create({
-    onResponse({ response, request }) {
-      // Show conflicts error on demand
-      if ((request as string).endsWith('/subjects') && response.ok)
+    onResponse({ response, request, options }) {
+      if (response.ok && (request as string).startsWith('https://kampus-sggw-api.azurewebsites.net/api') && options.method !== 'GET')
         ofetchError.value = response.status
     },
     onResponseError({ response }) {

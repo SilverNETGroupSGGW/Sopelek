@@ -7,11 +7,6 @@ const ofetchError = useOfetchError()
 // Route
 const route = useRoute()
 
-// Clear error on route change
-watch(() => route.path, () => {
-  ofetchError.value = null
-})
-
 const { start } = useLoadingIndicator()
 start()
 </script>
