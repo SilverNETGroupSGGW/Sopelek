@@ -1,20 +1,39 @@
 <script setup lang="ts">
-import { EllipsisHorizontalIcon } from '@heroicons/vue/20/solid'
 import { NuxtLink } from '#components'
 
-defineProps<{
+const props = defineProps<{
   flat?: boolean
   loading?: boolean
   to?: string
   variant: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'flat'
 }>()
+
+// Preserve width and height when loading
+const button = ref<HTMLButtonElement | null>(null)
+const width = ref<string | null>(null)
+const height = ref<string | null>(null)
+
+watchEffect(() => {
+  if (button.value) {
+    if (props.loading) {
+      width.value = `${button.value.offsetWidth!}px`
+      height.value = `${button.value.offsetHeight!}px`
+    }
+    else {
+      width.value = null
+      height.value = null
+    }
+  }
+})
 </script>
 
 <template>
   <component
     :is="to ? NuxtLink : 'button'"
+    ref="button"
     :to="to"
     v-bind="$attrs"
+    :style="{ width, height }"
     class="flex cursor-pointer items-center justify-center gap-2 px-4 py-2 font-medium transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 active:ring-2"
     :class="{
       'disabled:opacity-50': $attrs.disabled,
@@ -27,6 +46,15 @@ defineProps<{
     }"
   >
     <slot v-if="!loading" />
-    <EllipsisHorizontalIcon v-if="loading" class="size-5 animate-spin" />
+    <base-spinner
+      v-else
+      :class="{
+        'fill-indigo-50': variant === 'primary',
+        'fill-gray-50': variant === 'secondary',
+        'fill-red-50': variant === 'danger',
+        'fill-green-50': variant === 'success',
+        'fill-yellow-50': variant === 'warning',
+      }"
+    />
   </component>
 </template>
