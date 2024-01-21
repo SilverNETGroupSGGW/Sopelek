@@ -26,12 +26,17 @@ start()
     </main>
   </div>
 
-  <base-toast :show="ofetchError !== null" type="error" @close="ofetchError = null">
+  <base-toast :show="ofetchError !== null" :type="ofetchError === 200 ? 'success' : 'error'" :durable="ofetchError === 200" @close="ofetchError = null">
     <template v-if="ofetchError === 401">
       Sesja wygasła.
       <NuxtLink to="/signin" class="underline" @click="ofetchError = null">
         Zaloguj się ponownie
       </NuxtLink>
+    </template>
+
+    <!-- 200, when subjects saved -->
+    <template v-else-if="ofetchError === 200">
+      <span class="text-sm font-medium text-gray-700">Zapisano zmiany.</span>
     </template>
 
     <template v-else-if="ofetchError === 400">

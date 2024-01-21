@@ -9,7 +9,7 @@ export default defineNuxtPlugin((_nuxtApp) => {
     onResponse({ response, request }) {
       // Show conflicts error on demand
       if ((request as string).endsWith('/subjects') && response.ok)
-        ofetchError.value = null
+        ofetchError.value = response.status
     },
     onResponseError({ response }) {
       ofetchError.value = response.status
