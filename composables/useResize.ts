@@ -171,7 +171,11 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
   }
 
   async function onResizeUp() {
+    mouse.isResizing = false
+
     if (mouse.isCreating) {
+      mouse.isCreating = false
+
       const subject = await $fetch<Subject>('subjects', {
         method: 'POST',
         headers: {
@@ -181,12 +185,8 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
         body: JSON.stringify(mouse.currentSubject),
       })
 
-      mouse.isCreating = false
       schedule.subjects[schedule.subjects.length - 1].id = subject.id
     }
-
-    mouse.isResizing = false
-    mouse.isCreating = false
 
     if (mouse.currentSubject && !mouse.isCreating) {
       mouse.currentSubject.ghost = false

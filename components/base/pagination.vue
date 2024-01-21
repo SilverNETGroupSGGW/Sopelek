@@ -30,10 +30,10 @@ watch(() => modelValue, () => {
 
 <template>
   <div class="flex items-center gap-2">
-    <button class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue === 1" @click="$emit('update:modelValue', 1)">
+    <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue === 1" @click="$emit('update:modelValue', 1)">
       <ChevronDoubleLeftIcon class="size-5" />
     </button>
-    <button class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue === 1" @click="$emit('update:modelValue', modelValue - 1)">
+    <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue === 1" @click="$emit('update:modelValue', modelValue - 1)">
       <ChevronLeftIcon class="size-5" />
     </button>
 
@@ -44,11 +44,11 @@ watch(() => modelValue, () => {
       <span class="font-medium">{{ Math.ceil(filteredData.length / 10) }}</span>
     </span>
 
-    <button class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue * 10 >= filteredData.length" @click="$emit('update:modelValue', modelValue + 1)">
+    <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue * 10 >= filteredData.length" @click="$emit('update:modelValue', modelValue + 1)">
       <ChevronRightIcon class="size-5" />
     </button>
 
-    <button class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue * 10 >= filteredData.length" @click="$emit('update:modelValue', Math.ceil(filteredData.length / 10))">
+    <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue * 10 >= filteredData.length" @click="$emit('update:modelValue', Math.ceil(filteredData.length / 10))">
       <ChevronDoubleRightIcon class="size-5" />
     </button>
   </div>
