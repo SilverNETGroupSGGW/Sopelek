@@ -10,7 +10,7 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   let rafId: number | null = null
   const dragStart = ref({ x: 0, y: 0 })
 
-  function onDragDown(event: PointerEvent) {
+  function onDragDown(event: MouseEvent | PointerEvent) {
     if (event.button !== 0)
       return
 
@@ -78,10 +78,24 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   }
 
   async function onDragUp() {
+    // If the mouse is not dragging or copying, return immediately
+    if (!mouse.isDragging && !mouse.isCopying)
+      return
+
     mouse.isDragging = false
 
+    if (mouse.isCopying) {
+      mouse.isCopying = false
+      mouse.currentSubject!.ghost = false
+    }
+
     if (mouse.currentSubject!) {
-      await subjectsStore.update(mouse.currentSubject!)
+      const subject = await subjectsStore.update(mouse.currentSubject!)
+
+      // When copying, reassign the id of the subject to the new one
+      if (schedule.subjects.some(subject => subject.id === 'create'))
+        schedule.subjects.find(subject => subject.id === 'create')!.id = subject!.id
+
       // await schedulerStore.getConflicts(schedule.id, dayOfWeek)
       mouse.currentSubject = null
     }
