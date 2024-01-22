@@ -52,13 +52,6 @@ watch(() => props.type, () => {
   clearTimeout(timeoutId!)
   cancelAnimationFrame(rafId!)
 })
-
-onBeforeUnmount(() => {
-  isDurating.value = false
-  progress.value = 0
-  clearTimeout(timeoutId!)
-  cancelAnimationFrame(rafId!)
-})
 </script>
 
 <template>
