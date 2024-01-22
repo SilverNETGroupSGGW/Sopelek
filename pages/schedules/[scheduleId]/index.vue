@@ -107,8 +107,8 @@ function handleDelete(id: string) {
 
     <div class="h-screen overflow-x-scroll">
       <div class="h-full select-none">
-        <div class="flex w-full flex-col">
-          <div class="flex flex-col">
+        <div class="sticky top-0 z-50 flex w-max flex-col border-b-2 border-b-gray-200 bg-white">
+          <div class="flex w-max flex-col">
             <div class="flex">
               <div class="flex h-12 w-[10.5rem] shrink-0" />
               <div v-for="(time, index) in timeRange" v-once :key="index" class="flex h-12 shrink-0 items-center justify-between whitespace-nowrap text-center font-medium text-gray-700" :class="[index !== timeRange.length - 1 && 'w-36']">
