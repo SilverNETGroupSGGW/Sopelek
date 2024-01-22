@@ -6,6 +6,7 @@ const props = defineProps<Subject>()
 
 const emits = defineEmits<{
   (e: 'delete', id: string): void
+  (e: 'copy', $event: MouseEvent, id: string): void
 }>()
 
 const { lessonTypes } = useData()
@@ -54,6 +55,9 @@ function stringToColor(input: string) {
         <NuxtLink :id="`link-${id}`" :to="`/schedules/${scheduleId}/subjects/${id}`" class="text-xs text-indigo-600">
           Edytuj
         </NuxtLink>
+        <button :id="`copy-${id}`" class="text-xs text-indigo-600" @click="$emit('copy', $event, id)">
+          Kopiuj
+          </button>
         <button :id="`delete-${id}`" class="text-xs text-red-600" @click.prevent="deleteDialog = true">
           Usuń
         </button>
