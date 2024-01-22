@@ -26,6 +26,11 @@ watchEffect(() => {
   if (degreeOfStudy)
     currentItem.value.degreeOfStudy = degreeOfStudy.value
 })
+
+watchEffect(() => {
+  if (currentItem.value.semester)
+    currentItem.value.year = Math.floor((currentItem.value.semester - 1) / 2) + 1
+})
 </script>
 
 <template>
@@ -101,7 +106,7 @@ watchEffect(() => {
       </base-search>
       <base-select v-model="currentItem.studyMode" :options="studiesModes" :icon="CloudIcon" label="Tryb studiów" />
       <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
-      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" />
+      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
       <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
 
       <div class="mt-6 flex justify-end gap-4">
@@ -131,7 +136,7 @@ watchEffect(() => {
       </base-search>
       <base-select v-model="currentItem.studyMode" :icon="CloudIcon" label="Tryb studiów" :options="studiesModes" />
       <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
-      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" />
+      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
       <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
 
       <div class="mt-6 flex justify-end gap-4">
