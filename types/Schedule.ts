@@ -22,6 +22,7 @@ export interface Schedule {
   fieldOfStudy: string
   groups: Group[]
   id: string
+  isDownloading?: boolean /* internal */
   name: string
   semester: number
   startDate: string

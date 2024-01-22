@@ -66,7 +66,7 @@ watchEffect(() => {
 
     <template #actions="{ cell }">
       <div class="flex flex-wrap gap-4">
-        <base-button variant="primary" :disabled="schedules.isDownloading" :loading="schedules.isDownloading" @click="schedules.download(cell)">
+        <base-button variant="primary" :disabled="cell.isDownloading" :loading="cell.isDownloading" @click="schedules.download(cell)">
           Pobierz plan
         </base-button>
         <base-button variant="primary" :to="`/schedules/${cell.id}`">

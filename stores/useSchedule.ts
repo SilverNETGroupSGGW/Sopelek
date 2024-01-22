@@ -4,7 +4,6 @@ export const useSchedule = defineStore('schedule', {
   state: () => ({
     search: '',
     data: [] as Schedule[],
-    isDownloading: false,
     columns: [
       {
         key: 'name',
@@ -30,6 +29,7 @@ export const useSchedule = defineStore('schedule', {
       // Update data.startDate to match YYYY-MM-DD format
       data.value!.forEach((schedule) => {
         schedule.startDate = schedule.startDate.split('T')[0]
+        schedule.isDownloading = false
       })
 
       this.data = data.value!
@@ -79,7 +79,7 @@ export const useSchedule = defineStore('schedule', {
       this.data = this.data.filter(l => l.id !== schedule.id)
     },
     async download(schedule: Schedule) {
-      this.isDownloading = true
+      schedule.isDownloading = true
 
       const data = await $fetch<Blob>(`ScheduleGenerator/generate/${schedule.id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
@@ -98,7 +98,7 @@ export const useSchedule = defineStore('schedule', {
       link.click()
       document.body.removeChild(link)
 
-      this.isDownloading = false
+      schedule.isDownloading = false
     },
   },
 })
