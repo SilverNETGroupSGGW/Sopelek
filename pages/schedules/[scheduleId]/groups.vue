@@ -10,7 +10,15 @@ await groups.get(route.params.scheduleId as string)
 
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(groups.data)
 
-watchEffect(() => currentItem.value.scheduleId = route.params.scheduleId as string)
+watchEffect(() => {
+  currentItem.value.scheduleId = route.params.scheduleId as string
+})
+
+// Set group capacity to 20 by default
+watchEffect(() => {
+  if (currentItem.value.capacity === undefined)
+    currentItem.value.capacity = 20
+})
 </script>
 
 <template>
