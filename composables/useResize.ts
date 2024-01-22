@@ -16,6 +16,9 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
     if (!mouse.isCreating)
       mouse.currentSubject! = schedule.subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
 
+    if (!mouse.currentSubject)
+      return
+
     mouse.isResizing = true
     resizeStart.value = { x: event.clientX, y: event.clientY, width: mouse.currentSubject!.width!, height: mouse.currentSubject!.height! }
 
