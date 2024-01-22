@@ -1,8 +1,8 @@
-import type { DayOfWeek, Schedule, Subject } from '~/types'
+import type { Schedule, Subject } from '~/types'
 
-export default function usePointer(schedule: Schedule, dayOfWeek: DayOfWeek, container: HTMLDivElement | null) {
+export default function usePointer(schedule: Schedule, container: HTMLDivElement | null) {
   const { onResizeDown, onResizeMove, onResizeUp } = useResize(schedule, container)
-  const { onDragDown } = useDrag(schedule, dayOfWeek, container)
+  const { onDragDown } = useDrag(schedule, container)
 
   function onPointerMove(event: PointerEvent) {
     const rect = (event.target as HTMLElement).getBoundingClientRect()

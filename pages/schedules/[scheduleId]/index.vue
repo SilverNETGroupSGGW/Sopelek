@@ -50,8 +50,8 @@ watchEffect(() => {
   if (container.value)
     initialContainer = container.value;
 
-  ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, route.query.day as DayOfWeek, initialContainer));
-  ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer!, route.query.day as DayOfWeek, route.params.scheduleId as string))
+  ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, initialContainer));
+  ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer!, route.query.day as DayOfWeek))
 })
 
 // Tabs

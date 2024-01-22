@@ -1,6 +1,6 @@
-import type { DayOfWeek, Schedule } from '~/types'
+import type { Schedule } from '~/types'
 
-export default function useDrag(schedule: Schedule, dayOfWeek: DayOfWeek, container: HTMLDivElement | null) {
+export default function useDrag(schedule: Schedule, container: HTMLDivElement | null) {
   const mouse = useMouse()
   const subjectsStore = useSubjects()
   // const schedulerStore = useScheduler()
