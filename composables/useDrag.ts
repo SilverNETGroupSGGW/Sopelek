@@ -24,6 +24,9 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   }
 
   function onDragMove(event: PointerEvent) {
+    if (container && !container.contains(event.target as Node))
+      return
+
     if (!mouse.isDragging)
       return
 
