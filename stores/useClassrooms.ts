@@ -26,7 +26,7 @@ export const useClassrooms = defineStore('classrooms', {
         method: 'GET',
       })
 
-      this.data = data.value!
+      this.data = data.value!.sort((a, b) => a.name.localeCompare(b.name))
     },
     async create(classroom: Classroom) {
       const data = await $fetch<Classroom>('classrooms', {
