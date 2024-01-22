@@ -79,8 +79,9 @@ function handleDelete(id: string) {
 // Copy subject
 // Due to event bubbling, we must keep the logic here
 function handleCopy(event: MouseEvent, id: string) {
+  const subject = scheduler.schedule!.subjects.find(subject => subject.id === id)!
   mouse.currentSubject = {
-    ...scheduler.schedule!.subjects.find(subject => subject.id === id)!,
+    ...subject,
     id: 'create',
     ghost: true,
   }
@@ -127,7 +128,7 @@ function handleCopy(event: MouseEvent, id: string) {
 
     <div class="h-screen overflow-x-scroll">
       <div class="h-full select-none">
-        <div class="sticky top-0 z-50 flex w-max flex-col border-b-2 border-b-gray-200 bg-white">
+        <div class="sticky top-0 isolate z-50 flex w-max flex-col border-b-2 border-b-gray-200 bg-white">
           <div class="flex w-max flex-col">
             <div class="flex">
               <div class="flex h-12 w-[10.5rem] shrink-0" />
