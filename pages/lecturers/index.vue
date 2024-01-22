@@ -9,6 +9,11 @@ const lecturers = useLecturers()
 await lecturers.get()
 
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(lecturers.data)
+
+watchEffect(() => {
+  if (currentItem.value.firstName && currentItem.value.surname)
+    currentItem.value.email = `${currentItem.value.firstName}_${currentItem.value.surname}@sggw.edu.pl`.toLowerCase()
+})
 </script>
 
 <template>
@@ -102,7 +107,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await lecturers.delete(currentItem))" :disabled="isSubmitting" :loading="isSubmitting">
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async() => await lecturers.delete(currentItem))">
         Usuń
       </base-button>
     </div>
