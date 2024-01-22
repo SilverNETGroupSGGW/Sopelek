@@ -8,14 +8,13 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   const { calculateStartTime } = useSubject()
 
   let rafId: number | null = null
-  const isDragging = ref(false)
   const dragStart = ref({ x: 0, y: 0 })
 
   function onDragDown(event: PointerEvent) {
     if (event.button !== 0)
       return
 
-    isDragging.value = true
+    mouse.isDragging = true
     dragStart.value = { x: event.clientX, y: event.clientY }
     mouse.currentSubject! = schedule.subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
 
@@ -25,7 +24,7 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   }
 
   function onDragMove(event: PointerEvent) {
-    if (!isDragging.value)
+    if (!mouse.isDragging)
       return
 
     if (rafId !== null)
@@ -79,7 +78,7 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   }
 
   async function onDragUp() {
-    isDragging.value = false
+    mouse.isDragging = false
 
     if (mouse.currentSubject!) {
       await subjectsStore.update(mouse.currentSubject!)
