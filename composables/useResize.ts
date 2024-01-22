@@ -2,7 +2,6 @@ import type { Schedule, Subject } from '~/types'
 
 export default function useResize(schedule: Schedule, container: HTMLDivElement | null) {
   const mouse = useMouse()
-  const schedulerStore = useScheduler()
   const subjectsStore = useSubjects()
 
   const { calculateStartTime } = useSubject()
@@ -13,10 +12,12 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
 
   const edgeThreshold = 16
 
-  function onResizeDown(event: PointerEvent, subject: Subject) {
+  function onResizeDown(event: PointerEvent) {
+    if (!mouse.isCreating)
+      mouse.currentSubject! = schedule.subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
+
     mouse.isResizing = true
-    resizeStart.value = { x: event.clientX, y: event.clientY, width: subject.width!, height: subject.height! }
-    mouse.currentSubject = subject
+    resizeStart.value = { x: event.clientX, y: event.clientY, width: mouse.currentSubject!.width!, height: mouse.currentSubject!.height! }
 
     if (!mouse.isCreating) {
       // Determine which edge we're resizing
@@ -158,19 +159,15 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
 
         calculateStartTime(mouse.currentSubject)
-
-        // What the hell?!
-        schedulerStore.schedule!.subjects = schedulerStore.schedule!.subjects.map((subject) => {
-          if (subject.id === mouse.currentSubject!.id)
-            return mouse.currentSubject!
-
-          return subject
-        })
       }
     })
   }
 
   async function onResizeUp() {
+    // Remove event listeners from window
+    window.removeEventListener('pointermove', onResizeMove)
+    window.removeEventListener('pointerup', onResizeUp)
+
     mouse.isResizing = false
 
     if (mouse.isCreating) {
@@ -194,11 +191,6 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
     }
 
     mouse.currentSubject = null
-
-    // Remove event listeners from window
-    window.removeEventListener('pointermove', onResizeMove)
-    window.removeEventListener('pointerup', onResizeUp)
-
     initialResizeEdge.value = null
   }
 

@@ -1,4 +1,4 @@
-import type { Schedule, Subject } from '~/types'
+import type { Schedule } from '~/types'
 
 export default function usePointer(schedule: Schedule, container: HTMLDivElement | null) {
   const { onResizeDown, onResizeMove, onResizeUp } = useResize(schedule, container)
@@ -39,7 +39,7 @@ export default function usePointer(schedule: Schedule, container: HTMLDivElement
     document.body.style.cursor = 'default'
   }
 
-  function onPointerDown(event: PointerEvent, subject: Subject) {
+  function onPointerDown(event: PointerEvent) {
     // Cleanup existing window event listeners
     window.removeEventListener('pointermove', onResizeMove)
     window.removeEventListener('pointerup', onResizeUp)
@@ -51,7 +51,7 @@ export default function usePointer(schedule: Schedule, container: HTMLDivElement
     const rect = (event.target as HTMLElement).getBoundingClientRect()
     if (Math.abs(event.clientX - rect.left) < 16 || Math.abs(event.clientX - rect.right) < 16 || Math.abs(event.clientY - rect.top) < 16 || Math.abs(event.clientY - rect.bottom) < 16) {
       // We're resizing
-      onResizeDown(event, subject)
+      onResizeDown(event)
     }
     else {
       // We're dragging

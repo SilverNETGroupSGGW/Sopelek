@@ -81,6 +81,10 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
   }
 
   async function onDragUp() {
+    // Remove event listeners from window
+    window.removeEventListener('pointermove', onDragMove)
+    window.removeEventListener('pointerup', onDragUp)
+
     // If the mouse is not dragging or copying, return immediately
     if (!mouse.isDragging && !mouse.isCopying)
       return
@@ -102,10 +106,6 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
       // await schedulerStore.getConflicts(schedule.id, dayOfWeek)
       mouse.currentSubject = null
     }
-
-    // Remove event listeners from window
-    window.removeEventListener('pointermove', onDragMove)
-    window.removeEventListener('pointerup', onDragUp)
   }
 
   return {
