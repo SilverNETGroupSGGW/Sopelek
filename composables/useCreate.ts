@@ -64,7 +64,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
     schedule.subjects.push(newSubject)
 
     // Trigger the resize event
-    onResizeDown(event, newSubject)
+    onResizeDown(event)
   }
 
   return {

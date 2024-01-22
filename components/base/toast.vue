@@ -11,12 +11,18 @@ const emits = defineEmits<{
 }>()
 
 const isDurating = ref(false)
+const showCounter = ref(0) // New counter
 
 let timeoutId: NodeJS.Timeout | null = null
 let rafId: number | null = null
 
 watchEffect(() => {
-  if (props.show) {
+  if (props.show)
+    showCounter.value++
+})
+
+watchEffect(() => {
+  if (showCounter.value > 0) {
     isDurating.value = true
     clearTimeout(timeoutId!)
     timeoutId = setTimeout(() => {
@@ -48,13 +54,6 @@ watchEffect(() => {
 })
 
 watch(() => props.type, () => {
-  progress.value = 0
-  clearTimeout(timeoutId!)
-  cancelAnimationFrame(rafId!)
-})
-
-onBeforeUnmount(() => {
-  isDurating.value = false
   progress.value = 0
   clearTimeout(timeoutId!)
   cancelAnimationFrame(rafId!)
