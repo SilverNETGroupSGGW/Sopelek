@@ -2,7 +2,9 @@
 import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 
-const props = defineProps<Subject>()
+const props = defineProps<Subject & {
+  compressed?: boolean
+}>()
 
 const emits = defineEmits<{
   (e: 'delete', id: string): void
@@ -57,38 +59,47 @@ function stringToColor(input: string) {
         </NuxtLink>
         <button :id="`copy-${id}`" class="text-xs text-indigo-600" @click="$emit('copy', $event, id)">
           Kopiuj
-          </button>
+        </button>
         <button :id="`delete-${id}`" class="text-xs text-red-600" @click.prevent="deleteDialog = true">
           Usuń
         </button>
       </div>
     </div>
 
-    <p class="text-left text-sm font-bold text-gray-900">
-      {{ name }}
-    </p>
-    <small class="mb-2 text-xs text-gray-700">
-      {{ lessonTypes.find(x => x.value === type)?.label }}
-    </small>
+    <template v-if="!compressed">
+      <p class="text-left text-sm font-bold text-gray-900">
+        {{ name }}
+      </p>
+      <small class="mb-2 text-xs text-gray-700">
+        {{ lessonTypes.find(x => x.value === type)?.label }}
+      </small>
 
-    <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
-      <b>{{ lecturers[0].academicDegree }} {{ lecturers[0].firstName }} {{ lecturers[0].surname }}</b>
-    </small>
-    <small v-if="classroom" class="text-xs text-gray-700">
-      <b>Sala: </b> b. {{ classroom?.building }}, p. {{ classroom?.floor }}, s. {{ classroom?.name }}
-    </small>
-    <small v-if="groups" class="text-xs text-gray-700">
-      <b>Grupy: </b> {{ groups.map(x => x.name).sort().join(', ') }}
-    </small>
-    <small v-if="isRemote" class="text-xs text-gray-700">
-      <b>Zajęcia zdalne</b>
-    </small>
-    <small v-if="comment" class="text-xs text-gray-700">
-      <b>Komentarz: </b> {{ comment }}
-    </small>
-    <small v-if="conflict" class="text-xs text-red-600">
-      <b>Konflikt: </b> {{ conflictMessage }}
-    </small>
+      <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
+        <b>{{ lecturers[0].academicDegree }} {{ lecturers[0].firstName }} {{ lecturers[0].surname }}</b>
+      </small>
+      <small v-if="classroom" class="text-xs text-gray-700">
+        <b>Sala: </b> b. {{ classroom?.building }}, p. {{ classroom?.floor }}, s. {{ classroom?.name }}
+      </small>
+      <small v-if="groups" class="text-xs text-gray-700">
+        <b>Grupy: </b> {{ groups.map(x => x.name).sort().join(', ') }}
+      </small>
+      <small v-if="isRemote" class="text-xs text-gray-700">
+        <b>Zajęcia zdalne</b>
+      </small>
+      <small v-if="comment" class="text-xs text-gray-700">
+        <b>Komentarz: </b> {{ comment }}
+      </small>
+    </template>
+
+    <template v-else>
+      <p class="text-left text-sm font-bold text-gray-900">
+        {{ name!.split(' ').map(x => x.charAt(0)).join('') }} [{{ lessonTypes.find(x => x.value === type)?.label.charAt(0) }}] ({{ classroom?.floor }} / {{ classroom?.name }})
+      </p>
+      <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
+        <b>{{ lecturers[0].firstName.charAt(0) }}. {{ lecturers[0].surname.charAt(0) }}., </b>
+        <b v-if="comment">{{ comment }}</b>
+      </small>
+    </template>
   </div>
 
   <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">

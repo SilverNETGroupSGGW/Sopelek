@@ -68,15 +68,15 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
     rafId = requestAnimationFrame(() => {
       // Calculate the change in x and y positions
       const deltaX = Math.round((event.clientX - resizeStart.value.x) / 24) * 24
-      const deltaY = Math.round((event.clientY - resizeStart.value.y) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
+      const deltaY = Math.round((event.clientY - resizeStart.value.y) / runtimeConfig.public.cellHeight) * runtimeConfig.public.cellHeight
 
       const minWidth = 24
-      const minHeight = runtimeConfig.public.groupHeight
+      const minHeight = runtimeConfig.public.cellHeight
 
       let newWidth, newHeight, newX, newY
 
       // Calculate the total height of the group cells
-      const totalHeight = schedule.groups.length * runtimeConfig.public.groupHeight
+      const totalHeight = schedule.groups.length * runtimeConfig.public.cellHeight
 
       switch (initialResizeEdge.value) {
         case 'top-left':
@@ -156,8 +156,8 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
         mouse.currentSubject.duration = duration
 
         // Calculate new groups
-        const currentGroupIndex = mouse.currentSubject.y! / runtimeConfig.public.groupHeight
-        const newGroupCount = mouse.currentSubject.height! / runtimeConfig.public.groupHeight
+        const currentGroupIndex = mouse.currentSubject.y! / runtimeConfig.public.cellHeight
+        const newGroupCount = mouse.currentSubject.height! / runtimeConfig.public.cellHeight
         mouse.currentSubject.groups = schedule.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups.map(group => group.id)
 

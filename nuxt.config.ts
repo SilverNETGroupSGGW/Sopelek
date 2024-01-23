@@ -21,7 +21,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       edgeThreshold: 16, // resize and drag bounds
-      groupHeight: 160 // height of a group cell
+      cellHeight: 160, // height of a group cell
+      compressedCellHeight: 100 // height of a group cell when compressed
     }
   }
 })
