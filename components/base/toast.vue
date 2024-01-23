@@ -24,6 +24,9 @@ watchEffect(() => {
       isDurating.value = false
     }, props.type === 'success' ? 1500 : 5000)
   }
+  else {
+    clearTimeout(timeoutId!)
+  }
 })
 
 const progress = ref(0)

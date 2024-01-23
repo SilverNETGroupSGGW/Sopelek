@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { useOfetchError } from '~/plugins/ofetch'
+import { useOfetchStatus } from '~/plugins/ofetch'
 
 // Ofetch
-const ofetchError = useOfetchError()
+const ofetchStatus = useOfetchStatus()
 
 const { start } = useLoadingIndicator()
 start()
+
+function resetOfetchStatus() {
+  ofetchStatus.value.request = ''
+  ofetchStatus.value.status = 0
+}
+
+const isOfetchEmpty = computed(() => {
+  return ofetchStatus.value.request === '' && ofetchStatus.value.status === 0
+})
 </script>
 
 <template>
@@ -18,29 +27,39 @@ start()
     </main>
   </div>
 
-  <base-toast :show="ofetchError !== null" :type="ofetchError === 200 ? 'success' : 'error'" :durable="ofetchError === 200" @close="ofetchError = null">
-    <template v-if="ofetchError === 401">
-      Sesja wygasła.
-      <NuxtLink to="/signin" class="underline" @click="ofetchError = null">
-        Zaloguj się ponownie
-      </NuxtLink>
+  <base-toast :type="ofetchStatus.status === 200 ? 'success' : 'error'" :show="!isOfetchEmpty" @close="resetOfetchStatus">
+    <template v-if="ofetchStatus.status === 200">
+      <template v-if="ofetchStatus.request.endsWith('login')">
+        <span class="text-sm font-medium text-gray-700">Witamy w aplikacji!</span>
+      </template>
+
+      <template v-else>
+        <span class="text-sm font-medium text-gray-700">Zapisano zmiany.</span>
+      </template>
     </template>
 
-    <!-- 200, when subjects saved -->
-    <template v-else-if="ofetchError === 200">
-      <span class="text-sm font-medium text-gray-700">Zapisano zmiany.</span>
-    </template>
+    <template v-else>
+      <template v-if="ofetchStatus.request.endsWith('login')">
+        <span class="text-sm font-medium text-gray-700">Niepoprawne dane logowania.</span>
+      </template>
 
-    <template v-else-if="ofetchError === 400">
-      <span class="text-sm font-medium text-gray-700">Nieprawidłowe dane, nie zapisano zmian. Jeżeli edytujesz plan, sprawdź go w poszukiwaniu konfliktów.</span>
-      <ul class="list-inside list-disc">
-        <li class="text-sm text-gray-600">
-          Jeżeli zajęcia nakładają się na inne, przenieś je poza obszar konfliktu lub usuń je za pomocą przycisku Usuń.
-        </li>
-        <li class="text-sm text-gray-600">
-          Sprawdź też listę zajęć i upewnij się, że wszystkie są poprawnie uzupełnione.
-        </li>
-      </ul>
+      <template v-else-if="ofetchStatus.status === 401">
+        <span class="text-sm font-medium text-gray-700">
+          Sesja wygasła. <NuxtLink to="/signin" class="underline">Zaloguj się ponownie</NuxtLink>.
+        </span>
+      </template>
+
+      <template v-else-if="ofetchStatus.status === 400 && ofetchStatus.request.endsWith('subjects')">
+        <span class="text-sm font-medium text-gray-700">Nieprawidłowe dane, nie zapisano zmian. Sprawdź plan w poszukiwaniu konfliktów.</span>
+        <ul class="list-inside list-disc">
+          <li class="text-sm text-gray-600">
+            Jeżeli zajęcia nakładają się na inne, przenieś je poza obszar konfliktu lub usuń je za pomocą przycisku Usuń.
+          </li>
+          <li class="text-sm text-gray-600">
+            Sprawdź też listę zajęć i upewnij się, że wszystkie są poprawnie uzupełnione.
+          </li>
+        </ul>
+      </template>
     </template>
   </base-toast>
 </template>
