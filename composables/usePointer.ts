@@ -44,7 +44,7 @@ export default function usePointer(schedule: Schedule, container: HTMLDivElement
     window.removeEventListener('pointermove', onResizeMove)
     window.removeEventListener('pointerup', onResizeUp)
 
-    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-') || !(event.target as HTMLElement).id)
+    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-') || (event.target as HTMLElement).id.startsWith('copy-') || !(event.target as HTMLElement).id)
       return
 
     // Determine if we're dragging or resizing
