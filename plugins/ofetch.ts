@@ -4,6 +4,7 @@ export function useOfetchStatus() {
   return useState('error', () => ({
     status: 0 as number,
     request: '' as string,
+    method: '' as string,
   }))
 }
 
@@ -16,14 +17,16 @@ export default defineNuxtPlugin((_nuxtApp) => {
         ofetchStatus.value = {
           status: 200,
           request: request as string,
+          method: options.method as string,
         }
       }
     },
-    onResponseError({ response, request, options }) {
+    async onResponseError({ response, request, options }) {
       if (options.method !== 'GET') {
         ofetchStatus.value = {
           status: response.status,
           request: request as string,
+          method: options.method as string,
         }
       }
     },

@@ -21,7 +21,7 @@ export const useGroups = defineStore('groups', {
   }),
   actions: {
     async get(scheduleId: string) {
-      const { data } = await useFetch<Group[]>(`Groups/schedule/${scheduleId}`, {
+      const { data } = await useFetch<Group[]>(`groups/schedule/${scheduleId}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'GET',
       })
@@ -29,7 +29,7 @@ export const useGroups = defineStore('groups', {
       this.data = data.value!.sort((a, b) => a.name.localeCompare(b.name))
     },
     async create(group: Group) {
-      const data = await $fetch<Group>('Groups', {
+      const data = await $fetch<Group>('groups', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
         body: JSON.stringify(group),
@@ -41,7 +41,7 @@ export const useGroups = defineStore('groups', {
       this.data.push(data)
     },
     async update(group: Group) {
-      const data = await $fetch<Group>('Groups', {
+      const data = await $fetch<Group>('groups', {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'PUT',
         body: JSON.stringify(group),
@@ -54,7 +54,7 @@ export const useGroups = defineStore('groups', {
       this.data[index] = data
     },
     async delete(group: Group) {
-      await $fetch<Group>(`Groups/${group.id}`, {
+      await $fetch<Group>(`groups/${group.id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'DELETE',
         headers: {

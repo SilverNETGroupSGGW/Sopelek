@@ -10,10 +10,11 @@ start()
 function resetOfetchStatus() {
   ofetchStatus.value.request = ''
   ofetchStatus.value.status = 0
+  ofetchStatus.value.method = ''
 }
 
 const isOfetchEmpty = computed(() => {
-  return ofetchStatus.value.request === '' && ofetchStatus.value.status === 0
+  return ofetchStatus.value.request === '' && ofetchStatus.value.status === 0 && ofetchStatus.value.method === ''
 })
 </script>
 
@@ -59,6 +60,10 @@ const isOfetchEmpty = computed(() => {
             Sprawdź też listę zajęć i upewnij się, że wszystkie są poprawnie uzupełnione.
           </li>
         </ul>
+      </template>
+
+      <template v-else-if="ofetchStatus.status === 400 && ofetchStatus.request.includes('groups') && ofetchStatus.method === 'DELETE'">
+        <span class="text-sm font-medium text-gray-700">Nie można usunąć grupy, ponieważ jest ona przypisana do zajęć.</span>
       </template>
     </template>
   </base-toast>
