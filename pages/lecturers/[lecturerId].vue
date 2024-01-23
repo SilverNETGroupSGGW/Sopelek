@@ -125,7 +125,7 @@ function handleTabChange(index: number) {
 
           <div class="relative flex flex-col">
             <div v-for="(subject, index) in lecturer!.subjects" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5">
-              <base-lesson v-bind="subject" />
+              <base-subject v-bind="subject" />
             </div>
 
             <div v-for="(group, index) in lecturer!.subjects!.map(x => x.groups!).flat()" v-once :key="index" class="flex h-40">
