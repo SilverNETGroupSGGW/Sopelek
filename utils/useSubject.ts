@@ -1,6 +1,8 @@
 import type { Subject } from '~/types'
 
 export default function useSubject() {
+  const runtimeConfig = useRuntimeConfig()
+
   function calculatePosition(subject: Subject, groups: string[]) {
     const startTime = new Date(`1970-01-01T${subject.startTime}`)
 
@@ -12,9 +14,9 @@ export default function useSubject() {
     const endTime = new Date(startTime.getTime() + durationInMilliseconds)
 
     const x = ((startTime.getHours() - 8) * 60 + startTime.getMinutes()) * (24 / 5)
-    const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * 160
+    const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * runtimeConfig.public.groupHeight
 
-    const height = subject.groups!.length * 160
+    const height = subject.groups!.length * runtimeConfig.public.groupHeight
     const width = ((endTime.getHours() * 60 + endTime.getMinutes()) - (startTime.getHours() * 60 + startTime.getMinutes())) * 4.8
 
     return { x, y, width, height }
@@ -32,8 +34,8 @@ export default function useSubject() {
   }
 
   function calculateGroups(subject: Subject) {
-    const currentGroupIndex = subject.y! / 160
-    const newGroupCount = subject.height! / 160
+    const currentGroupIndex = subject.y! / runtimeConfig.public.groupHeight
+    const newGroupCount = subject.height! / runtimeConfig.public.groupHeight
     subject.groups = subject.groups!.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
   }
 

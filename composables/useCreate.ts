@@ -2,6 +2,8 @@ import { SubjectType } from '~/types'
 import type { DayOfWeek, Schedule, Subject } from '~/types'
 
 export default function useCreate(schedule: Schedule, container: HTMLDivElement | null, dayOfWeek: DayOfWeek) {
+  const runtimeConfig = useRuntimeConfig()
+
   const mouse = useMouse()
 
   const { onResizeDown } = useResize(schedule, container)
@@ -18,7 +20,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       return
 
     let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / 24) * 24
-    let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / 160) * 160
+    let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
 
     // Check if x or y is outside the bounds and set them to the closest boundary
     const containerRect = container!.getBoundingClientRect()
@@ -28,8 +30,8 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       y = 0
     if (x > containerRect.width - 24)
       x = containerRect.width - 24
-    if (y > containerRect.height - 160)
-      y = containerRect.height - 160
+    if (y > containerRect.height - runtimeConfig.public.groupHeight)
+      y = containerRect.height - runtimeConfig.public.groupHeight
 
     const newSubject: Subject = {
       classroom: null,
@@ -42,7 +44,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       ghost: true,
       groups: [schedule.groups.find(group => group.id === target.dataset.group)!],
       groupsIds: [target.dataset.group!],
-      height: 160,
+      height: runtimeConfig.public.groupHeight,
       id: '',
       lecturers: [],
       lecturersIds: [],

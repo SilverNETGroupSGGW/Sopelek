@@ -1,6 +1,8 @@
 import type { Schedule } from '~/types'
 
 export default function useDrag(schedule: Schedule, container: HTMLDivElement | null) {
+  const runtimeConfig = useRuntimeConfig()
+
   const mouse = useMouse()
   const subjectsStore = useSubjects()
   // const schedulerStore = useScheduler()
@@ -41,7 +43,7 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
       const deltaX = Math.round((event.clientX - dragStart.value.x) / 24) * 24
 
       // snap to groupCells height in Y axis
-      const deltaY = Math.round((event.clientY - dragStart.value.y) / 160) * 160
+      const deltaY = Math.round((event.clientY - dragStart.value.y) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
 
       if (deltaX !== 0 || deltaY !== 0) {
         if (!mouse.currentSubject)
@@ -51,7 +53,7 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
         const newY = mouse.currentSubject!.y! + deltaY
 
         // Calculate the total height of groupCells
-        const totalHeight = 160 * schedule.groups.length
+        const totalHeight = runtimeConfig.public.groupHeight * schedule.groups.length
 
         // Set boundaries, x and y can't be smaller than 0
         // newY can't be larger than totalHeight - mouse.currentSubject!!.height
@@ -62,8 +64,8 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
         calculateStartTime(mouse.currentSubject!)
 
         // Calculate new groups
-        const currentGroupIndex = mouse.currentSubject.y! / 160
-        const newGroupCount = mouse.currentSubject.height! / 160
+        const currentGroupIndex = mouse.currentSubject.y! / runtimeConfig.public.groupHeight
+        const newGroupCount = mouse.currentSubject.height! / runtimeConfig.public.groupHeight
         mouse.currentSubject.groups = schedule.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
         mouse.currentSubject.groupsIds = mouse.currentSubject?.groups!.map(group => group.id)
 
