@@ -34,6 +34,10 @@ const isOfetchEmpty = computed(() => {
         <span class="text-sm font-medium text-gray-700">Witamy w aplikacji!</span>
       </template>
 
+      <template v-if="ofetchStatus.request.includes('generate')">
+        <span class="text-sm font-medium text-gray-700">Trwa pobieranie pliku.</span>
+      </template>
+
       <template v-else>
         <span class="text-sm font-medium text-gray-700">Zapisano zmiany.</span>
       </template>

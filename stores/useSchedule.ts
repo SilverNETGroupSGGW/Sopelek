@@ -81,7 +81,7 @@ export const useSchedule = defineStore('schedule', {
     async download(schedule: Schedule) {
       schedule.isDownloading = true
 
-      const data = await $fetch<Blob>(`ScheduleGenerator/generate/${schedule.id}`, {
+      const data = await $fetch<Blob>(`schedulegenerator/generate/${schedule.id}`, {
         baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
         method: 'POST',
         headers: {
