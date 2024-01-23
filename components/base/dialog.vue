@@ -12,7 +12,7 @@ const model = defineModel<boolean>()
 
 <template>
   <TransitionRoot appear :show="model" as="template">
-    <Dialog as="div" class="relative z-10" @close="model = false">
+    <Dialog as="div" class="relative z-[9999]" @close="model = false">
       <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100" leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
         <div class="fixed inset-0 bg-black/25" />
       </TransitionChild>
