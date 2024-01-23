@@ -1,6 +1,8 @@
 import type { Schedule, Subject } from '~/types'
 
 export default function useResize(schedule: Schedule, container: HTMLDivElement | null) {
+  const runtimeConfig = useRuntimeConfig()
+
   const mouse = useMouse()
   const subjectsStore = useSubjects()
 
@@ -9,8 +11,6 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
   let rafId: number | null = null
   const initialResizeEdge = ref<null | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right' | 'top' | 'bottom'>(null)
   const resizeStart = ref({ x: 0, y: 0, width: 0, height: 0 })
-
-  const edgeThreshold = 16
 
   function onResizeDown(event: PointerEvent) {
     if (!mouse.isCreating)
@@ -25,10 +25,10 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
     if (!mouse.isCreating) {
       // Determine which edge we're resizing
       const rect = (event.target as HTMLElement).getBoundingClientRect()
-      const nearLeft = Math.abs(event.clientX - rect.left) < edgeThreshold
-      const nearRight = Math.abs(event.clientX - rect.right) < edgeThreshold
-      const nearTop = Math.abs(event.clientY - rect.top) < edgeThreshold
-      const nearBottom = Math.abs(event.clientY - rect.bottom) < edgeThreshold
+      const nearLeft = Math.abs(event.clientX - rect.left) < runtimeConfig.public.edgeThreshold
+      const nearRight = Math.abs(event.clientX - rect.right) < runtimeConfig.public.edgeThreshold
+      const nearTop = Math.abs(event.clientY - rect.top) < runtimeConfig.public.edgeThreshold
+      const nearBottom = Math.abs(event.clientY - rect.bottom) < runtimeConfig.public.edgeThreshold
 
       if (nearTop && nearLeft)
         mouse.resizeEdge = 'top-left'

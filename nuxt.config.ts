@@ -18,4 +18,9 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
+  runtimeConfig: {
+    public: {
+      edgeThreshold: 16 // resize and drag bounds
+    }
+  }
 })

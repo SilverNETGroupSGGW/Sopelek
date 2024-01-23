@@ -1,6 +1,8 @@
 import type { Schedule } from '~/types'
 
 export default function usePointer(schedule: Schedule, container: HTMLDivElement | null) {
+  const runtimeConfig = useRuntimeConfig()
+
   const { onResizeDown, onResizeMove, onResizeUp } = useResize(schedule, container)
   const { onDragDown } = useDrag(schedule, container)
 
@@ -12,10 +14,10 @@ export default function usePointer(schedule: Schedule, container: HTMLDivElement
       return
     }
 
-    const nearLeft = Math.abs(event.clientX - rect.left) < 16
-    const nearRight = Math.abs(event.clientX - rect.right) < 16
-    const nearTop = Math.abs(event.clientY - rect.top) < 16
-    const nearBottom = Math.abs(event.clientY - rect.bottom) < 16
+    const nearLeft = Math.abs(event.clientX - rect.left) < runtimeConfig.public.edgeThreshold
+    const nearRight = Math.abs(event.clientX - rect.right) < runtimeConfig.public.edgeThreshold
+    const nearTop = Math.abs(event.clientY - rect.top) < runtimeConfig.public.edgeThreshold
+    const nearBottom = Math.abs(event.clientY - rect.bottom) < runtimeConfig.public.edgeThreshold
 
     if (!nearLeft && !nearRight && !nearTop && !nearBottom) {
       (event.currentTarget as HTMLElement).style.cursor = 'move'
@@ -49,7 +51,7 @@ export default function usePointer(schedule: Schedule, container: HTMLDivElement
 
     // Determine if we're dragging or resizing
     const rect = (event.target as HTMLElement).getBoundingClientRect()
-    if (Math.abs(event.clientX - rect.left) < 16 || Math.abs(event.clientX - rect.right) < 16 || Math.abs(event.clientY - rect.top) < 16 || Math.abs(event.clientY - rect.bottom) < 16) {
+    if (Math.abs(event.clientX - rect.left) < runtimeConfig.public.edgeThreshold || Math.abs(event.clientX - rect.right) < runtimeConfig.public.edgeThreshold || Math.abs(event.clientY - rect.top) < runtimeConfig.public.edgeThreshold || Math.abs(event.clientY - rect.bottom) < runtimeConfig.public.edgeThreshold) {
       // We're resizing
       onResizeDown(event)
     }
