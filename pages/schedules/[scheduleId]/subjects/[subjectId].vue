@@ -260,7 +260,7 @@ async function handleDelete() {
 
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
       <label class="mb-1 font-medium text-gray-700">Grupy</label>
-      <base-input v-model="search.groups" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search.groups" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" caption="W przypadku, gdy grupy zajęć nie są po kolei, należy utworzyć zajęcia dla każdej z nich oddzielnie." />
 
       <div class="rounded-lg border border-gray-200 p-4">
         <base-table :search="search.groups" :data="groups.data" :columns="groups.columns">
