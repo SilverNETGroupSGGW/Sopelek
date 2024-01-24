@@ -2,7 +2,9 @@
 import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 
-const props = defineProps<Subject>()
+const props = defineProps<Subject & {
+  copyable?: boolean
+}>()
 
 const emits = defineEmits<{
   (e: 'delete', id: string): void
@@ -55,9 +57,9 @@ function stringToColor(input: string) {
         <NuxtLink :id="`link-${id}`" :to="`/schedules/${scheduleId}/subjects/${id}`" class="text-xs text-indigo-600">
           Edytuj
         </NuxtLink>
-        <button :id="`copy-${id}`" class="text-xs text-indigo-600" @click="$emit('copy', $event, id)">
+        <button v-if="copyable" :id="`copy-${id}`" class="text-xs text-indigo-600" @click="$emit('copy', $event, id)">
           Kopiuj
-          </button>
+        </button>
         <button :id="`delete-${id}`" class="text-xs text-red-600" @click.prevent="deleteDialog = true">
           Usuń
         </button>
