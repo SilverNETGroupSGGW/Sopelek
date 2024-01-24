@@ -36,6 +36,19 @@ function stringToColor(input: string) {
     borderColor: `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`,
   }
 }
+
+function calculateEndTime() {
+  if (!props.startTime || !props.duration)
+    return null
+
+  const startTime = new Date(`1970-01-01T${props.startTime}`)
+  const duration = new Date(`1970-01-01T${props.duration}`)
+
+  const endTime = new Date(startTime.getTime() + duration.getTime())
+  endTime.setHours(endTime.getHours() + 2)
+
+  return endTime.toUTCString().slice(-12, -7)
+}
 </script>
 
 <template>
@@ -50,7 +63,7 @@ function stringToColor(input: string) {
   >
     <div class="flex w-full flex-wrap items-center justify-between">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
-        {{ startTime.slice(0, -3) }} ({{ duration!.slice(0, -3) }}h)
+        {{ startTime.slice(0, -3) }} - {{ calculateEndTime() }}
       </small>
 
       <div class="flex items-center gap-2">
