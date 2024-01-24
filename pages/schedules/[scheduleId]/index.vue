@@ -3,6 +3,8 @@ import { Tab, TabGroup, TabList } from '@headlessui/vue'
 import { DayOfWeek } from '~/types'
 
 // Nuxt hooks
+const config = useRuntimeConfig()
+
 const route = useRoute()
 const router = useRouter()
 router.push({
@@ -147,7 +149,7 @@ function handleCopy(event: MouseEvent, id: string) {
 
         <div class="flex">
           <div class="flex h-full w-fit flex-col">
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex h-40 w-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
+            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700" :style="{ height: `${config.public.groupHeight}px` }">
               {{ group.name }}
             </div>
           </div>
@@ -157,8 +159,8 @@ function handleCopy(event: MouseEvent, id: string) {
               <base-lesson v-bind="subject" @delete="handleDelete" @copy="handleCopy" />
             </div>
 
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :key="index" class="flex h-40">
-              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-40 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
+            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :key="index" class="flex">
+              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" :style="{ height: `${config.public.groupHeight}px` }" />
             </div>
           </div>
         </div>
