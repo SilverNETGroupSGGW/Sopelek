@@ -10,10 +10,6 @@ export const useLecturers = defineStore('lecturers', {
         header: 'Imię i nazwisko',
       },
       {
-        key: 'email',
-        header: 'Email',
-      },
-      {
         key: 'actions',
         header: 'Akcje',
       },

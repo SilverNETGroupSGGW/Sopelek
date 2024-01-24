@@ -39,10 +39,8 @@ watchEffect(() => {
   <base-table :data="lecturers.data" :columns="lecturers.columns" :search="search">
     <template #firstName="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.academicDegree }} {{ cell.firstName }} {{ cell.surname }}</span>
-    </template>
-
-    <template #email="{ cell }">
-      <a class="text-base text-indigo-600 underline" :href="`mailto:${cell.email}`">{{ cell.email }}</a>
+      <br>
+      <a class="text-sm text-indigo-600 underline" :href="`mailto:${cell.email}`">{{ cell.email }}</a>
     </template>
 
     <template #actions="{ cell }">
