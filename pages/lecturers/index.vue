@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { InboxIcon, KeyIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { DayOfWeek } from '~/types';
 
 // Data
 const { degrees } = useData()
@@ -48,7 +49,7 @@ watchEffect(() => {
         <base-button variant="primary" @click="handleDialogOpen('update', cell.id!)">
           Edytuj
         </base-button>
-        <base-button :to="`/lecturers/${cell.id}`" variant="secondary">
+        <base-button :to="`/lecturers/${cell.id}?day=${DayOfWeek.Monday}`" variant="secondary">
           Plan
         </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">

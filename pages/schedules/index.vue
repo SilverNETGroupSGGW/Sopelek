@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ViewfinderCircleIcon } from '@heroicons/vue/20/solid'
 import { BriefcaseIcon, CalendarIcon, CloudIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { DayOfWeek } from '~/types';
 
 // Data
 const { fieldOfStudies, studiesDegrees, studiesModes } = useData()
@@ -69,7 +70,7 @@ watchEffect(() => {
         <base-button variant="primary" :disabled="cell.isDownloading" :loading="cell.isDownloading" @click="schedules.download(cell)">
           Pobierz plan
         </base-button>
-        <base-button variant="primary" :to="`/schedules/${cell.id}`">
+        <base-button variant="primary" :to="`/schedules/${cell.id}?day=${DayOfWeek.Monday}`">
           Kreator
         </base-button>
 
