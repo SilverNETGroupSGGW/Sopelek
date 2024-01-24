@@ -81,7 +81,7 @@ function calculateEndTime() {
     ]"
     :style="{ zIndex, backgroundColor: stringToColor(name!).backgroundColor, borderColor: stringToColor(name!).borderColor }"
   >
-    <div class="flex w-full flex-wrap items-center justify-between">
+    <div class="flex w-full flex-wrap gap-x-2 items-center justify-between">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
         {{ startTime.slice(0, -3) }} - {{ calculateEndTime() }}
       </small>
