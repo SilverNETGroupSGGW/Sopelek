@@ -235,98 +235,111 @@ async function handleDelete() {
       </div>
     </div>
 
-    <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
-      <base-input v-model="search.lecturers" label="Prowadzący" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" />
-
-      <div class="rounded-lg border border-gray-200 p-4">
-        <base-table :search="search.lecturers" :data="lecturers.data" :columns="lecturers.columns">
-          <template #firstName="{ cell }">
-            <span class="text-base font-medium text-gray-900">{{ cell.academicDegree }} {{ cell.firstName }} {{ cell.surname }}</span>
-            <br>
-            <a class="text-sm text-indigo-600 underline" :href="`mailto:${cell.email}`">{{ cell.email }}</a>
-          </template>
-
-          <template #actions="{ cell }">
-            <button v-if="!data?.lecturers?.some(lecturer => lecturer.id === cell.id)" type="button" class="font-medium text-indigo-600" @click="addLecturer(cell)">
-              Wybierz
-            </button>
-            <button v-else type="button" class="font-medium text-red-600" @click="removeLecturer(cell)">
-              Usuń
-            </button>
-          </template>
-        </base-table>
+    <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
+      <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-12 py-6">
+        <p>
+          <span class="mb-1 font-medium text-gray-900">Prowadzący</span>
+        </p>
+        <base-input v-model="search.lecturers" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
       </div>
+
+      <base-table :search="search.lecturers" :data="lecturers.data" :columns="lecturers.columns" :paddingless="true">
+        <template #firstName="{ cell }">
+          <span class="text-base font-medium text-gray-900">{{ cell.academicDegree }} {{ cell.firstName }} {{ cell.surname }}</span>
+          <br>
+          <a class="text-sm text-indigo-600 underline" :href="`mailto:${cell.email}`">{{ cell.email }}</a>
+        </template>
+
+        <template #actions="{ cell }">
+          <base-button v-if="!data?.lecturers?.some(lecturer => lecturer.id === cell.id)" type="button" variant="primary" @click="addLecturer(cell)">
+            Wybierz
+          </base-button>
+          <base-button v-else type="button" variant="danger" @click="removeLecturer(cell)">
+            Usuń
+          </base-button>
+        </template>
+      </base-table>
     </div>
 
-    <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
-      <label class="mb-1 font-medium text-gray-700">Grupy</label>
-      <base-input v-model="search.groups" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" caption="W przypadku, gdy grupy zajęć nie są po kolei, należy utworzyć zajęcia dla każdej z nich oddzielnie." />
-
-      <div class="rounded-lg border border-gray-200 p-4">
-        <base-table :search="search.groups" :data="groups.data" :columns="groups.columns">
-          <template #name="{ cell }">
-            <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
-          </template>
-
-          <template #capacity="{ cell }">
-            <span class="text-base text-gray-900">{{ cell.capacity }}</span>
-          </template>
-
-          <template #actions="{ cell }">
-            <button v-if="!data?.groups?.some(group => group.id === cell.id)" type="button" class="font-medium text-indigo-600" @click="addGroup(cell)">
-              Wybierz
-            </button>
-            <button v-else type="button" class="font-medium text-red-600" @click="removeGroup(cell)">
-              Usuń
-            </button>
-          </template>
-        </base-table>
+    <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
+      <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-12 py-6">
+        <p>
+          <span class="mb-1 font-medium text-gray-900">Grupy</span>
+          <br>
+          <small class="text-sm text-gray-700">W przypadku, gdy grupy zajęć nie są po kolei, należy utworzyć zajęcia dla każdej z nich oddzielnie.</small>
+        </p>
+        <base-input v-model="search.groups" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
       </div>
+
+      <base-table :search="search.groups" :data="groups.data" :columns="groups.columns" :paddingless="true">
+        <template #name="{ cell }">
+          <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
+        </template>
+
+        <template #capacity="{ cell }">
+          <span class="text-base text-gray-900">{{ cell.capacity }}</span>
+        </template>
+
+        <template #actions="{ cell }">
+          <base-button v-if="!data?.groups?.some(group => group.id === cell.id)" type="button" variant="primary" @click="addGroup(cell)">
+            Wybierz
+          </base-button>
+          <base-button v-else type="button" variant="danger" @click="removeGroup(cell)">
+            Usuń
+          </base-button>
+        </template>
+      </base-table>
     </div>
 
-    <div class="mb-6 flex flex-col rounded-lg border border-gray-200 p-4">
-      <label class="mb-1 font-medium text-gray-700">Sala</label>
-      <base-input v-model="search.classrooms" placeholder="Szukaj" class="mb-4 w-96" :icon="MagnifyingGlassIcon" caption="Zajęcia mogą odbywać się tylko w jednej sali jednocześnie." />
-
-      <div class="rounded-lg border border-gray-200 p-4">
-        <base-table :search="search.classrooms" :data="classrooms.data" :columns="classrooms.columns">
-          <template #name="{ cell }">
-            <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
-            <br>
-            <span class="text-sm text-gray-700">budynek {{ cell.building }}, piętro {{ cell.floor }}</span>
-          </template>
-
-          <template #capacity="{ cell }">
-            <span class="text-base text-gray-900">{{ cell.capacity }}</span>
-          </template>
-
-          <template #actions="{ cell }">
-            <button v-if="data!.classroom?.id !== cell.id" type="button" class="font-medium text-indigo-600" @click="addClassroom(cell)">
-              Wybierz
-            </button>
-            <button v-else type="button" class="font-medium text-red-600" @click="removeClassroom(cell)">
-              Usuń
-            </button>
-          </template>
-        </base-table>
+    <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
+      <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-12 py-6">
+        <p>
+          <span class="mb-1 font-medium text-gray-900">Sala</span>
+          <br>
+          <small class="text-sm text-gray-700">Zajęcia mogą odbywać się tylko w jednej sali jednocześnie.</small>
+        </p>
+        <base-input v-model="search.classrooms" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
       </div>
+
+      <base-table :search="search.classrooms" :data="classrooms.data" :columns="classrooms.columns" :paddingless="true">
+        <template #name="{ cell }">
+          <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
+          <br>
+          <span class="text-sm text-gray-700">budynek {{ cell.building }}, piętro {{ cell.floor }}</span>
+        </template>
+
+        <template #capacity="{ cell }">
+          <span class="text-base text-gray-900">{{ cell.capacity }}</span>
+        </template>
+
+        <template #actions="{ cell }">
+          <base-button v-if="data!.classroom?.id !== cell.id" type="button" variant="primary" @click="addClassroom(cell)">
+            Wybierz
+          </base-button>
+          <base-button v-else type="button" variant="danger" @click="removeClassroom(cell)">
+            Usuń
+          </base-button>
+        </template>
+      </base-table>
     </div>
 
     <base-input v-model="data!.comment" label="Komentarz" />
   </form>
 
   <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">
-    <p class="text-base text-gray-700">
-      Czy na pewno chcesz usunąć zajęcia?
-    </p>
+    <form @submit.prevent="handleDelete">
+      <p class="text-base text-gray-700">
+        Czy na pewno chcesz usunąć zajęcia?
+      </p>
 
-    <div class="mt-6 flex justify-end gap-4">
-      <base-button variant="secondary" @click="deleteDialog = false">
-        Zamknij
-      </base-button>
-      <base-button variant="danger" @click="handleDelete">
-        Usuń
-      </base-button>
-    </div>
+      <div class="mt-6 flex justify-end gap-4">
+        <base-button type="button" variant="secondary" @click="deleteDialog = false">
+          Zamknij
+        </base-button>
+        <base-button variant="danger" type="submit">
+          Usuń
+        </base-button>
+      </div>
+    </form>
   </base-dialog>
 </template>
