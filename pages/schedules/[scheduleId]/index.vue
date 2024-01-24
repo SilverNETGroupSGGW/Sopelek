@@ -13,9 +13,6 @@ router.push({
   },
 })
 
-// Store
-const mouse = useMouse()
-
 // Data
 const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
@@ -50,7 +47,6 @@ let onPointerMove: Function | null = null
 let onPointerDown: Function | null = null
 let onPointerOut: Function | null = null
 let onCreateMove: Function | null = null
-let onDragDown: Function | null = null
 
 watchEffect(() => {
   if (container.value)
@@ -58,7 +54,6 @@ watchEffect(() => {
 
   ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, initialContainer));
   ({ onCreateMove } = useCreate(scheduler.schedule!, initialContainer!, route.query.day as DayOfWeek));
-  ({ onDragDown } = useDrag(scheduler.schedule!, initialContainer!))
 })
 
 // Tabs
@@ -76,21 +71,6 @@ function handleTabChange(index: number) {
 // Delete
 function handleDelete(id: string) {
   scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(subject => subject.id !== id)
-}
-
-// Copy subject
-// Due to event bubbling, we must keep the logic here
-function handleCopy(event: MouseEvent, id: string) {
-  mouse.currentSubject = {
-    ...scheduler.schedule!.subjects.find(subject => subject.id === id)!,
-    id: 'create',
-    ghost: true,
-  }
-
-  scheduler.schedule!.subjects.push(mouse.currentSubject)
-
-  mouse.isCopying = true
-  onDragDown!(event)
 }
 </script>
 
@@ -156,7 +136,7 @@ function handleCopy(event: MouseEvent, id: string) {
 
           <div ref="container" class="relative flex flex-col" @pointerdown.prevent="onCreateMove!">
             <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek ?? DayOfWeek.Monday)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5" @pointerdown.prevent="onPointerDown!($event, subject)" @pointermove.prevent="onPointerMove!" @pointerout.prevent="onPointerOut!">
-              <base-lesson v-bind="subject" @delete="handleDelete" @copy="handleCopy" />
+              <base-lesson v-bind="subject" :container="initialContainer!" @delete="handleDelete" :copyable="true" />
             </div>
 
             <div v-for="(group, index) in scheduler.schedule!.groups" v-once :key="index" class="flex">

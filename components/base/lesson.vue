@@ -3,17 +3,20 @@ import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 
 const props = defineProps<Subject & {
+  container: HTMLDivElement
   copyable?: boolean
 }>()
 
 const emits = defineEmits<{
   (e: 'delete', id: string): void
-  (e: 'copy', $event: MouseEvent, id: string): void
 }>()
 
 const { lessonTypes } = useData()
 
+const scheduler = useScheduler()
 const subjects = useSubjects()
+const mouse = useMouse()
+
 const deleteDialog = ref(false)
 
 function handleDelete() {
@@ -37,6 +40,23 @@ function stringToColor(input: string) {
   }
 }
 
+// Copy
+const { onDragDown } = useDrag(scheduler.schedule!, props.container)
+
+function handleCopy(event: MouseEvent) {
+  mouse.currentSubject = {
+    ...scheduler.schedule!.subjects.find(subject => subject.id === props.id)!,
+    id: 'create',
+    ghost: true,
+  }
+
+  scheduler.schedule!.subjects.push(mouse.currentSubject)
+
+  mouse.isCopying = true
+  onDragDown!(event)
+}
+
+// End time
 function calculateEndTime() {
   if (!props.startTime || !props.duration)
     return null
@@ -70,7 +90,7 @@ function calculateEndTime() {
         <NuxtLink :id="`link-${id}`" :to="`/schedules/${scheduleId}/subjects/${id}`" class="text-xs text-indigo-600">
           Edytuj
         </NuxtLink>
-        <button v-if="copyable" :id="`copy-${id}`" class="text-xs text-indigo-600" @click="$emit('copy', $event, id)">
+        <button v-if="copyable" :id="`copy-${id}`" class="text-xs text-indigo-600" @click="handleCopy">
           Kopiuj
         </button>
         <button :id="`delete-${id}`" class="text-xs text-red-600" @click.prevent="deleteDialog = true">
