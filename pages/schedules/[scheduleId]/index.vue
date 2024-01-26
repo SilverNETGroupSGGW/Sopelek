@@ -50,7 +50,7 @@ let onCreateMove: ((event: PointerEvent) => void) | null = null
 watchEffect(() => {
   if (container.value) {
     ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, container.value));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek))
+    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek ?? DayOfWeek.Monday))
   }
 })
 

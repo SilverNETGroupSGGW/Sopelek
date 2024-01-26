@@ -36,16 +36,11 @@ const search = reactive({
 
 const data = ref<Subject | null>(null)
 
-const shouldGenerateFifteenLessons = ref(false)
-
 try {
   const subject = await $fetch<Subject>(`subjects/${route.params.subjectId}/extended`, {
     baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
     method: 'GET',
   })
-
-  if (subject.lessons && subject.lessons.length > 0)
-    shouldGenerateFifteenLessons.value = true
 
   subject.lessons ||= []
   subject.groupsIds = subject.groups?.map(group => group.id!)
@@ -140,32 +135,29 @@ async function saveChanges() {
   router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
 }
 
-async function generateFifteenLessons() {
-  // Obtain schedule
-  const schedule = await $fetch<Schedule>(`schedules/${route.params.scheduleId}`, {
-    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-    method: 'GET',
-  })
-
-  // Generate dates
-  // We have to trim T part from schedule.startDate
-  const dates = await $fetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${new Date(schedule.startDate).toLocaleDateString()}/${15}`, {
-    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-    method: 'GET',
-  })
-
-  data.value!.lessons = dates.dateTimes.map(dateTime => ({
-    duration: data.value!.duration,
-    startTime: dateTime,
-  }) as Lesson)
-}
-
-watchEffect(() => {
-  if (shouldGenerateFifteenLessons.value)
-    generateFifteenLessons()
-  else
-    data.value!.lessons = undefined
+// Obtain schedule
+const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.scheduleId}`, {
+  baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+  method: 'GET',
 })
+
+// Generate dates
+// We have to trim T part from schedule.startDate
+if (schedule.value) {
+  if (data.value.lessons && data.value.lessons.length === 0) {
+    const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${new Date(schedule.value.startDate).toLocaleDateString()}/${15}`, {
+      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+      method: 'GET',
+    })
+
+    if (dates.value) {
+      data.value!.lessons = dates.value.dateTimes.map(dateTime => ({
+        duration: data.value!.duration,
+        startTime: dateTime,
+      }) as Lesson)
+    }
+  }
+}
 
 // Dialog
 const deleteDialog = ref(false)
@@ -219,20 +211,16 @@ async function handleDelete() {
     </div>
 
     <div class="mb-6 rounded-lg border border-gray-200 p-4">
-      <base-checkbox v-model="shouldGenerateFifteenLessons" label="Wygeneruj 15 zajęć" description="Skorzystaj z tej opcji, na przykład gdy dane zajęcia trwają dziewięć tygodni. Podana jest kolejno data zajęć i ich czas trwania." />
-
-      <div v-if="shouldGenerateFifteenLessons" class="mt-4 flex w-fit flex-col gap-2">
-        <div v-for="(date, index) in data!.lessons" :key="index" class="flex gap-2">
-          <base-input v-model="data!.lessons![index].startTime" type="datetime-local" :icon="CalendarDaysIcon" />
-          <base-button type="button" variant="danger" @click="data!.lessons!.splice(index, 1)">
-            Usuń zajęcia
-          </base-button>
-        </div>
-
-        <base-button type="button" variant="primary" @click="data!.lessons!.push({ duration: data!.startTime, startTime: '' })">
-          Dodaj zajęcia
+      <div v-for="(date, index) in data!.lessons" :key="index" class="flex gap-2">
+        <base-input v-model="data!.lessons![index].startTime" type="datetime-local" :icon="CalendarDaysIcon" />
+        <base-button type="button" variant="danger" @click="data!.lessons!.splice(index, 1)">
+          Usuń zajęcia
         </base-button>
       </div>
+
+      <base-button type="button" variant="primary" @click="data!.lessons!.push({ duration: data!.startTime, startTime: '' })">
+        Dodaj zajęcia
+      </base-button>
     </div>
 
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
