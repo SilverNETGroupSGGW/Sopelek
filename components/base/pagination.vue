@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T">
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 
-const props = defineProps<{
+defineProps<{
   filteredData: T[]
 }>()
 
@@ -14,7 +14,7 @@ const modelValue = defineModel<number>({ default: 0 })
 const router = useRouter()
 
 watchEffect(() => {
-  router.push({
+  router.replace({
     query: {
       page: modelValue.value,
     },

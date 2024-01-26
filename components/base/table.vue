@@ -13,7 +13,7 @@ const router = useRouter()
 
 const page = ref(Number.parseInt(route.query.page as string) || 1)
 watchEffect(() => {
-  router.push({
+  router.replace({
     query: {
       page: page.value,
       search: props.search,
