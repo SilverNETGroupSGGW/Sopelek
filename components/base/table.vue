@@ -21,6 +21,12 @@ watchEffect(() => {
   })
 })
 
+router.beforeEach((to, from) => {
+  // Reset page to 1 when going to a different route
+  if (to.path !== from.path)
+    page.value = 1
+})
+
 function defaultFilter(row: T, predicate?: (row: T) => boolean) {
   if (props.search === '' && !predicate)
     return true
