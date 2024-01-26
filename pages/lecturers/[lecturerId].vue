@@ -41,17 +41,6 @@ const { data: lecturer } = await useFetch<Lecturer>(`lecturers/${route.params.le
   baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
 })
 
-if (lecturer.value) {
-  lecturer.value.subjects = lecturer.value.subjects?.map((subject) => {
-    const { x, y, width, height } = calculatePosition(subject, subject.groups!.map(x => x.name))
-    subject.x = x
-    subject.y = y
-    subject.width = width
-    subject.height = height
-    return subject
-  })
-}
-
 // Tabs
 const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
@@ -63,6 +52,38 @@ function handleTabChange(index: number) {
     },
   })
 }
+
+// Filtration
+const filteredSubjects = computed(() =>
+  lecturer.value?.subjects?.filter(subject => subject.dayOfWeek === daysOfWeek[tabIndex.value].value),
+)
+
+const filteredGroups = computed(() => {
+  return filteredSubjects.value?.map(subject => subject.groups!).flat().filter((group, index, self) =>
+    index === self.findIndex(t => (
+      t.id === group.id
+    )),
+  ).sort((a, b) => a.name.localeCompare(b.name))
+})
+
+
+if (lecturer.value) {
+  lecturer.value.subjects = lecturer.value.subjects?.map((subject) => {
+    const { x, y, width, height } = calculatePosition(subject, filteredGroups.value!.map(x => x.name))
+    subject.x = x
+    subject.y = y
+    subject.width = width
+    subject.height = height
+    return subject
+  })
+}
+
+const filteredSubjectsAndGroups = computed(() => {
+  return filteredGroups.value?.map((group) => {
+    const subject = filteredSubjects.value?.find(subject => subject.groups!.map(x => x.id).includes(group.id))
+    return { group, subject }
+  })
+})
 </script>
 
 <template>
@@ -111,25 +132,25 @@ function handleTabChange(index: number) {
 
         <div class="flex">
           <div class="flex h-full w-fit flex-col">
-            <template v-for="(subject, index) in lecturer!.subjects" :key="index">
-              <div v-for="(group, index2) in subject.groups!" :id="group.id" :key="index2" class="flex h-40 w-48 shrink-0 flex-col items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
+            <template v-for="(item, index) in filteredSubjectsAndGroups" :key="index">
+              <div v-if="item.subject" :id="item.group.id" class="flex h-40 w-48 shrink-0 flex-col items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700">
                 <span>
-                  <b>Grupa </b>{{ group.name }}
+                  <b>Grupa </b>{{ item.group.name }}
                 </span>
-                <b>{{ subject.schedule.name }}</b>
-                <span>{{ subject.schedule.fieldOfStudy }}</span>
-                <span>Rok {{ subject.schedule.year }}, semestr {{ subject.schedule.semester }}</span>
+                <b>{{ item.subject.schedule.name }}</b>
+                <span>{{ item.subject.schedule.fieldOfStudy }}</span>
+                <span>Rok {{ item.subject.schedule.year }}, semestr {{ item.subject.schedule.semester }}</span>
               </div>
             </template>
           </div>
 
           <div class="relative flex flex-col">
-            <div v-for="(subject, index) in lecturer!.subjects" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5">
+            <div v-for="(subject, index) in filteredSubjects" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5">
               <base-lesson v-bind="subject" :copyable="false" />
             </div>
 
-            <div v-for="(group, index) in lecturer!.subjects!.map(x => x.groups!).flat()" v-once :key="index" class="flex h-40">
-              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-40 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
+            <div v-for="(group, index) in filteredGroups" :key="index" class="flex h-40">
+              <div v-for="(time, index2) in smallerTimeRange"  v-once :key="index2" class="flex h-40 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
             </div>
           </div>
         </div>

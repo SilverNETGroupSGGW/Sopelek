@@ -3,7 +3,7 @@ import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 
 const props = defineProps<Subject & {
-  container: HTMLDivElement
+  container?: HTMLDivElement
   copyable?: boolean
 }>()
 
