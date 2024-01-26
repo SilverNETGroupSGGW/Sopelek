@@ -63,6 +63,9 @@ const isOfetchEmpty = computed(() => {
           <li class="text-sm text-gray-600">
             Sprawdź też listę zajęć i upewnij się, że wszystkie są poprawnie uzupełnione.
           </li>
+          <li class="text-sm text-gray-600">
+            Jeżeli edytujesz lub tworzysz nowe zajęcia, upewnij się, że wszystkie pola są poprawnie uzupełnione.
+          </li>
         </ul>
       </template>
 

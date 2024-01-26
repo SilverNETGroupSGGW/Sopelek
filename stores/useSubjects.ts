@@ -36,16 +36,21 @@ export const useSubjects = defineStore('subjects', {
       })
     },
     async create(subject: Subject) {
-      const data = await $fetch<Subject>('subjects', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-        method: 'POST',
-        body: JSON.stringify(subject),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      try {
+        const data = await $fetch<Subject>('subjects', {
+          baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+          method: 'POST',
+          body: JSON.stringify(subject),
+          headers: {
+            Authorization: `Bearer ${useCookie('accessToken').value}`,
+          },
+        })
 
-      this.data.push(data)
+        this.data.push(data)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
     },
     async update(subject: Subject) {
       try {
@@ -64,6 +69,7 @@ export const useSubjects = defineStore('subjects', {
         return data
       }
       catch (error) {
+        return Promise.reject(error)
       }
     },
     async delete(id: string) {

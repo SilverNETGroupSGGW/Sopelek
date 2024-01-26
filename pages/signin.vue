@@ -46,6 +46,7 @@ async function handleFormSubmit() {
   }
   catch (error) {
     isSubmitting.value = false
+    return Promise.reject(error)
   }
 }
 </script>
