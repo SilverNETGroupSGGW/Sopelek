@@ -12,7 +12,7 @@ const route = useRoute()
 const router = useRouter()
 
 const page = ref(Number.parseInt(route.query.page as string) || 1)
-watch(() => props.search, () => {
+watchEffect(() => {
   router.push({
     query: {
       page: page.value,

@@ -13,13 +13,7 @@ const modelValue = defineModel<number>({ default: 0 })
 
 const router = useRouter()
 
-// Fix - when deleting items from the last page and when it gets empty, it doesn't go back to the previous page
-watch(() => props.filteredData.length, () => {
-  if (modelValue.value * 10 >= props.filteredData.length && modelValue.value !== 1)
-    modelValue.value--
-})
-
-watch(() => modelValue, () => {
+watchEffect(() => {
   router.push({
     query: {
       page: modelValue.value,
