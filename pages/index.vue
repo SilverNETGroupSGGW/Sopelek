@@ -69,6 +69,15 @@
             Możliwość tworzenia draftów oraz oficjalnych planów zajęć, które zarazem będą dostępne w aplikacji mobilnej.
           </p>
         </div>
+
+        <div class="w-full rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg">
+          <p class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 hover:text-gray-900">
+            Definiowanie zajęć
+          </p>
+          <p class="text-gray-600">
+            Możliwość definiowania zajęć przedmiotu, które będą wyświetlane w planie. Przydatne gdy zajęcia trwają np. 2 tygodnie.
+          </p>
+        </div>
       </div>
     </div>
 
