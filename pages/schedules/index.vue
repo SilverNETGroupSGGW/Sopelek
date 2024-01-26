@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ViewfinderCircleIcon } from '@heroicons/vue/20/solid'
 import { BriefcaseIcon, CalendarIcon, CloudIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
-import { DayOfWeek } from '~/types';
+import { DayOfWeek } from '~/types'
 
 // Data
 const { fieldOfStudies, studiesDegrees, studiesModes } = useData()
@@ -51,10 +51,15 @@ watchEffect(() => {
   </div>
 
   <base-table :data="schedules.data" :columns="schedules.columns" :search="search">
+    <div class="mb-4 flex items-center">
+      <input id="default-checkbox" type="checkbox" value="" class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600">
+      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
+    </div>
+
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
-      <span class="text-base text-gray-700">{{ new Date(cell.startDate).toLocaleDateString('pl-PL') }}</span>
+      <span class="text-base text-gray-700">Semestr od {{ new Date(cell.startDate).toLocaleDateString('pl-PL') }}</span>
     </template>
 
     <template #info="{ cell }">

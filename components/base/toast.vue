@@ -51,15 +51,13 @@ watchEffect(() => {
 })
 
 watchEffect(() => {
-  if (props.type) {
-    progress.value = 0
+  progress.value = 0
 
-    if (timeoutId)
-      clearTimeout(timeoutId)
+  if (timeoutId)
+    clearTimeout(timeoutId)
 
-    if (rafId)
-      cancelAnimationFrame(rafId)
-  }
+  if (rafId)
+    cancelAnimationFrame(rafId)
 })
 </script>
 

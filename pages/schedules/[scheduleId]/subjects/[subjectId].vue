@@ -237,8 +237,8 @@ async function handleDelete() {
 
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
       <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-12 py-6">
-        <p>
-          <span class="mb-1 font-medium text-gray-900">Prowadzący</span>
+        <p class="mb-1 text-xl font-semibold text-gray-900">
+          Prowadzący
         </p>
         <base-input v-model="search.lecturers" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
       </div>
@@ -264,7 +264,7 @@ async function handleDelete() {
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
       <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-12 py-6">
         <p>
-          <span class="mb-1 font-medium text-gray-900">Grupy</span>
+          <span class="mb-1 text-xl font-semibold text-gray-900">Grupy</span>
           <br>
           <small class="text-sm text-gray-700">W przypadku, gdy grupy zajęć nie są po kolei, należy utworzyć zajęcia dla każdej z nich oddzielnie.</small>
         </p>
@@ -294,7 +294,7 @@ async function handleDelete() {
     <div class="mb-6 flex flex-col rounded-lg border border-gray-200">
       <div class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-12 py-6">
         <p>
-          <span class="mb-1 font-medium text-gray-900">Sala</span>
+          <span class="mb-1 text-xl font-semibold text-gray-900">Sala</span>
           <br>
           <small class="text-sm text-gray-700">Zajęcia mogą odbywać się tylko w jednej sali jednocześnie.</small>
         </p>
