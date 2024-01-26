@@ -34,6 +34,9 @@ function filter(row: Subject) {
       <h1 class="text-2xl font-bold leading-9 text-gray-900">
         Przedmioty
       </h1>
+      <p class="text-base font-normal leading-normal text-gray-700">
+        Puste zajęcia nie będą wyświetlane w planie.
+      </p>
     </div>
 
     <div class="flex gap-4">
