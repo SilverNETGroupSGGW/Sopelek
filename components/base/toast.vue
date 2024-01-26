@@ -10,54 +10,40 @@ const emits = defineEmits<{
   (e: 'close'): void
 }>()
 
-const isDurating = ref(false)
+const start = ref<number | null>(null)
+const progress = ref(0)
 
-let timeoutId: NodeJS.Timeout | null = null
-let rafId: number | null = null
+function animate(timestamp: number) {
+  if (!start.value)
+    start.value = timestamp
+  const elapsed = timestamp - start.value
+  const duration = props.type === 'success' ? 2000 : 6000 // duration in ms
+
+  progress.value = (elapsed / duration) * 100
+
+  if (progress.value >= 100) {
+    progress.value = 100
+    emits('close')
+  }
+  else {
+    requestAnimationFrame(animate)
+  }
+}
 
 watchEffect(() => {
   if (props.show) {
-    isDurating.value = true
-    clearTimeout(timeoutId!)
-    timeoutId = setTimeout(() => {
-      emits('close')
-      isDurating.value = false
-    }, props.type === 'success' ? 1500 : 5000)
-  }
-  else {
-    clearTimeout(timeoutId!)
-  }
-})
-
-const progress = ref(0)
-
-watchEffect(() => {
-  if (isDurating.value) {
-    let start: number | null = null
-    const duration = props.type === 'success' ? 1500 : 5000
-
-    const animate = (timestamp: number) => {
-      if (!start)
-        start = timestamp
-      const elapsed = timestamp - start
-      progress.value = Math.min((elapsed / duration) * 100, 100)
-      if (elapsed < duration)
-        rafId = requestAnimationFrame(animate)
-    }
-
-    cancelAnimationFrame(rafId!)
-    rafId = requestAnimationFrame(animate)
+    progress.value = 0
+    start.value = null
+    requestAnimationFrame(animate)
   }
 })
 
 watchEffect(() => {
-  progress.value = 0
-
-  if (timeoutId)
-    clearTimeout(timeoutId)
-
-  if (rafId)
-    cancelAnimationFrame(rafId)
+  if (props.type && props.show) {
+    progress.value = 0
+    start.value = null
+    requestAnimationFrame(animate)
+  }
 })
 </script>
 
