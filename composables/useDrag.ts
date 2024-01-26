@@ -101,9 +101,8 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
     if (mouse.currentSubject!) {
       const subject = await subjectsStore.update(mouse.currentSubject!)
 
-      // When copying, reassign the id of the subject to the new one
-      if (schedule.subjects.some(subject => subject.id === 'create'))
-        schedule.subjects.find(subject => subject.id === 'create')!.id = subject!.id
+      if (mouse.currentSubject.id === 'create')
+        mouse.currentSubject.id = subject!.id
 
       // await schedulerStore.getConflicts(schedule.id, dayOfWeek)
       mouse.currentSubject = null

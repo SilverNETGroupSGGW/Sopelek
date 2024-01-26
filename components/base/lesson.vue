@@ -42,12 +42,16 @@ function stringToColor(input: string) {
 
 // Copy
 const container = ref<HTMLDivElement | null>(null)
-watchEffect(() => {
-  if (props.container)
-    container.value = props.container
-})
+let onDragDown: ((event: MouseEvent) => void) | null = null
 
-const { onDragDown } = useDrag(scheduler.schedule!, container.value!)
+watchEffect(() => {
+  if (props.container) {
+    container.value = props.container;
+    // const drag = useDrag(scheduler.schedule!, container.value!)
+    // onDragDown = drag.onDragDown
+    ({ onDragDown } = useDrag(scheduler.schedule!, container.value!))
+  }
+})
 
 function handleCopy(event: MouseEvent) {
   mouse.currentSubject = {

@@ -28,20 +28,25 @@ const isSubmitting = ref(false)
 
 async function handleFormSubmit() {
   isSubmitting.value = true
-  const { refreshToken, accessToken } = await $fetch<UserResponse>('tokens/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(form),
-    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
-  })
-  isSubmitting.value = false
+  try {
+    const { refreshToken, accessToken } = await $fetch<UserResponse>('tokens/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+    })
+    isSubmitting.value = false
 
-  useCookie('accessToken').value = accessToken
-  useCookie('refreshToken').value = refreshToken
+    useCookie('accessToken').value = accessToken
+    useCookie('refreshToken').value = refreshToken
 
-  router.push('/')
+    router.push('/')
+  }
+  catch (error) {
+    isSubmitting.value = false
+  }
 }
 </script>
 
