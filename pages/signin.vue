@@ -16,8 +16,6 @@ definePageMeta({
   layout: 'user',
 })
 
-const router = useRouter()
-
 const form = reactive<User>({
   email: '',
   password: '',
@@ -42,7 +40,7 @@ async function handleFormSubmit() {
     useCookie('accessToken').value = accessToken
     useCookie('refreshToken').value = refreshToken
 
-    router.push('/')
+    await navigateTo('/')
   }
   catch (error) {
     isSubmitting.value = false

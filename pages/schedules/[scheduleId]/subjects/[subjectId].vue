@@ -11,7 +11,6 @@ interface DateTimeSequence {
 
 // Nuxt hooks
 const route = useRoute()
-const router = useRouter()
 
 // Data
 const { daysOfWeek, lessonTypes } = useData()
@@ -135,7 +134,7 @@ async function saveChanges() {
     isSubmitting.value = false
 
     await subjects.get(route.params.scheduleId as string)
-    router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
+    await navigateTo(`/schedules/${route.params.scheduleId}/subjects/list`)
   }
   catch (error) {
     isSubmitting.value = false
@@ -173,7 +172,7 @@ const deleteDialog = ref(false)
 async function handleDelete() {
   await subjects.delete(route.params.subjectId as string)
   deleteDialog.value = false
-  router.push(`/schedules/${route.params.scheduleId}/subjects/list`)
+  await navigateTo(`/schedules/${route.params.scheduleId}/subjects/list`)
 }
 </script>
 

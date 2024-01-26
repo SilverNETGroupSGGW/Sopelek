@@ -10,16 +10,6 @@ defineEmits<{
 }>()
 
 const modelValue = defineModel<number>({ default: 0 })
-
-const router = useRouter()
-
-watchEffect(() => {
-  router.replace({
-    query: {
-      page: modelValue.value,
-    },
-  })
-})
 </script>
 
 <template>

@@ -12,8 +12,8 @@ const route = useRoute()
 const router = useRouter()
 
 const page = ref(Number.parseInt(route.query.page as string) || 1)
-watchEffect(() => {
-  router.replace({
+watchEffect(async () => {
+  await navigateTo({
     query: {
       page: page.value,
       search: props.search,

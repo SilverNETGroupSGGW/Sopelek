@@ -6,8 +6,8 @@ import { DayOfWeek } from '~/types'
 const config = useRuntimeConfig()
 
 const route = useRoute()
-const router = useRouter()
-router.push({
+
+await navigateTo({
   query: {
     day: route.query.day ?? DayOfWeek.Monday,
   },
@@ -57,9 +57,9 @@ watchEffect(() => {
 // Tabs
 const tabIndex = ref(daysOfWeek.findIndex(day => route.query.day ? day.value === route.query.day : 0))
 
-function handleTabChange(index: number) {
+async function handleTabChange(index: number) {
   tabIndex.value = index
-  router.push({
+  await navigateTo({
     query: {
       day: daysOfWeek[index].value,
     },

@@ -4,8 +4,8 @@ import { DayOfWeek, type Lecturer } from '~/types'
 
 // Nuxt hooks
 const route = useRoute()
-const router = useRouter()
-router.push({
+
+await navigateTo({
   query: {
     day: route.query.day ?? DayOfWeek.Monday,
   },
@@ -44,9 +44,9 @@ const { data: lecturer } = await useFetch<Lecturer>(`lecturers/${route.params.le
 // Tabs
 const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
-function handleTabChange(index: number) {
+async function handleTabChange(index: number) {
   tabIndex.value = index
-  router.push({
+  await navigateTo({
     query: {
       day: daysOfWeek[index].value,
     },
@@ -65,7 +65,6 @@ const filteredGroups = computed(() => {
     )),
   ).sort((a, b) => a.name.localeCompare(b.name))
 })
-
 
 if (lecturer.value) {
   lecturer.value.subjects = lecturer.value.subjects?.map((subject) => {
@@ -150,7 +149,7 @@ const filteredSubjectsAndGroups = computed(() => {
             </div>
 
             <div v-for="(group, index) in filteredGroups" :key="index" class="flex h-40">
-              <div v-for="(time, index2) in smallerTimeRange"  v-once :key="index2" class="flex h-40 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
+              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex h-40 w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" />
             </div>
           </div>
         </div>
