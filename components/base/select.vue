@@ -20,7 +20,7 @@ const modelValue = defineModel<string>()
         {{ label }}
       </ListboxLabel>
       <div class="relative h-full">
-        <ListboxButton class="relative flex h-12 w-full items-center justify-between rounded-lg border border-gray-200 py-4 px-6 text-gray-700 transition-colors duration-200 ease-in-out placeholder:text-gray-400 hover:transition-all hover:duration-200 hover:ease-in-out focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:transition-all focus:duration-200 focus:ease-in-out active:ring-2 active:ring-indigo-600 disabled:bg-gray-100" v-bind="$attrs">
+        <ListboxButton class="relative flex h-12 w-full items-center justify-between rounded-lg border border-gray-200 py-4 pl-12 pr-3  text-gray-700 transition-colors duration-200 ease-in-out placeholder:text-gray-400 hover:transition-all hover:duration-200 hover:ease-in-out focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:transition-all focus:duration-200 focus:ease-in-out active:ring-2 active:ring-indigo-600 disabled:bg-gray-100" v-bind="$attrs">
           <div class="flex items-center gap-2">
             <component :is="icon" v-if="icon" class="absolute left-6 top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-gray-400" />
 
