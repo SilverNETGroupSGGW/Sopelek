@@ -19,21 +19,12 @@ const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
 // Time range
 const timeRange: Date[] = []
-const smallerTimeRange: Date[] = []
-let initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
+const initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
 
 while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialDate.getMinutes() === 0)) {
   // timeRange is in 30 minute interval
   timeRange.push(new Date(initialDate.getTime()))
   initialDate.setMinutes(initialDate.getMinutes() + 30)
-}
-
-initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
-
-while (initialDate.getHours() < 20) {
-  // smallerTimeRange is in 5 minute interval
-  smallerTimeRange.push(new Date(initialDate.getTime()))
-  initialDate.setMinutes(initialDate.getMinutes() + 5)
 }
 
 // Subjects
@@ -51,12 +42,12 @@ let onCreateMove: ((event: PointerEvent) => void) | null = null
 watchEffect(() => {
   if (container.value) {
     ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, container.value));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek ?? DayOfWeek.Monday))
+    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek))
   }
 })
 
 // Tabs
-const tabIndex = ref(daysOfWeek.findIndex(day => route.query.day ? day.value === route.query.day : 0))
+const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
 async function handleTabChange(index: number) {
   tabIndex.value = index
