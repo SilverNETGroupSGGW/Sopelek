@@ -20,7 +20,7 @@ const { calculatePosition } = useSubject()
 // Time range
 const timeRange: Date[] = []
 const smallerTimeRange: Date[] = []
-let initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
+let initialDate = new Date(1970, 0, 1, 8, 0, 0, 0)
 
 while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialDate.getMinutes() === 0)) {
   // timeRange is in 30 minute interval
@@ -28,7 +28,7 @@ while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialD
   initialDate.setMinutes(initialDate.getMinutes() + 30)
 }
 
-initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
+initialDate = new Date(1970, 0, 1, 8, 0, 0, 0)
 
 while (initialDate.getHours() < 20) {
   // smallerTimeRange is in 5 minute interval

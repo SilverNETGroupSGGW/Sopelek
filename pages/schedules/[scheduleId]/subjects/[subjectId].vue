@@ -110,14 +110,14 @@ function removeGroup(group: Group) {
 // Time range
 const timeRange: Array<{ value: string }> = []
 const durationRange: Array<{ value: string }> = []
-let initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
+let initialDate = new Date(1970, 0, 1, 8, 0, 0, 0)
 
 while (initialDate.getHours() <= 20) {
   timeRange.push({ value: new Date(initialDate).toLocaleTimeString() })
   initialDate.setMinutes(initialDate.getMinutes() + 5)
 }
 
-initialDate = new Date(2023, 0, 1, 0, 0, 0, 0)
+initialDate = new Date(1970, 0, 1, 0, 0, 0, 0)
 while (initialDate.getHours() <= 4) {
   durationRange.push({ value: new Date(initialDate).toLocaleTimeString() })
   initialDate.setMinutes(initialDate.getMinutes() + 5)

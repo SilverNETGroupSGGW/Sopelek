@@ -19,7 +19,7 @@ const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
 // Time range
 const timeRange: Date[] = []
-const initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
+const initialDate = new Date(1970, 0, 1, 8, 0, 0, 0)
 
 while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialDate.getMinutes() === 0)) {
   // timeRange is in 30 minute interval
