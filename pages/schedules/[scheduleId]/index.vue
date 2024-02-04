@@ -98,7 +98,7 @@ function handleDelete(id: string) {
     </div>
 
     <div class="h-screen w-max select-none overflow-x-scroll">
-      <div class="sticky top-0 z-50 flex w-max flex-col border-b-gray-200 bg-white">
+      <div class="sticky top-0 z-50 flex w-max flex-col bg-white">
         <div class="flex">
           <div class="flex h-12 w-[10.5rem] shrink-0" />
           <p v-for="(time, index) in timeRange" v-once :key="index" class="flex h-12 items-center whitespace-nowrap text-center font-medium text-gray-700" :class="[index !== timeRange.length - 1 && 'w-36']">
@@ -107,14 +107,14 @@ function handleDelete(id: string) {
         </div>
 
         <div class="flex">
-          <div class="h-12 w-48 border-b-2 border-b-gray-200" />
-          <div class="h-12 w-[calc(100%_-_12rem)] border-b-2 border-gray-200" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3480px ${runtimeConfig.public.intervalWidth}px` }" />
+          <div class="h-12 w-48" />
+          <div class="h-12 w-[calc(100%_-_12rem)]" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3480px ${runtimeConfig.public.intervalWidth}px` }" />
         </div>
       </div>
 
       <div class="flex w-full">
         <div>
-          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-b-2 border-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.groupHeight}px` }">
+          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-t border-t-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.groupHeight}px` }">
             {{ group.name }}
           </div>
         </div>
@@ -124,7 +124,7 @@ function handleDelete(id: string) {
             <base-lesson v-bind="subject" :container="container!" :copyable="true" @delete="handleDelete" />
           </div>
 
-          <div v-for="index in scheduler.schedule!.groups.length" v-once :key="index" class="size-full border-b-2 border-gray-200" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3456px ${runtimeConfig.public.intervalWidth}px` }" />
+          <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
       </div>
     </div>
