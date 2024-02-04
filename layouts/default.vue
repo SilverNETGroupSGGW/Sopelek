@@ -4,8 +4,8 @@ import { useOfetchStatus } from '~/plugins/ofetch'
 // Ofetch
 const ofetchStatus = useOfetchStatus()
 
-const { start } = useLoadingIndicator()
-start()
+// const { start } = useLoadingIndicator()
+// start()
 
 function resetOfetchStatus() {
   ofetchStatus.value.request = ''
@@ -19,9 +19,9 @@ const isOfetchEmpty = computed(() => {
 </script>
 
 <template>
-  <NuxtLoadingIndicator color="#4F46E5" />
   <div class="flex">
-    <layout-sidebar />
+    <layout-sidebar />  <!-- <NuxtLoadingIndicator color="#4F46E5" /> -->
+
 
     <main class="h-screen w-full overflow-y-scroll">
       <slot />
