@@ -33,6 +33,20 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
     if (y > containerRect.height - runtimeConfig.public.groupHeight)
       y = containerRect.height - runtimeConfig.public.groupHeight
 
+    // We need to find the group by the y position
+    // One group is of height runtimeConfig.public.groupHeight
+    const groupIndex = Math.floor(y / runtimeConfig.public.groupHeight)
+    const group = schedule.groups[groupIndex]
+
+    // Same applies for startTime
+    // 5 minutes = 24px
+    // Between x = 0 and x = 24 - 08:00:00
+    // Between x = 24 and x = 48 - 08:05:00
+    // Between x = 48 and x = 72 - 08:10:00
+    // ...
+    const startTime = new Date(1970, 0, 1, 8, 0, 0)
+    startTime.setMinutes(startTime.getMinutes() + Math.floor(x / 24) * 5)    
+
     const newSubject: Subject = {
       classroom: null,
       classroomId: null,
@@ -42,8 +56,8 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       dayOfWeek,
       duration: '00:05:00',
       ghost: true,
-      groups: [schedule.groups.find(group => group.id === target.dataset.group)!],
-      groupsIds: [target.dataset.group!],
+      groups: [group],
+      groupsIds: [group.id],
       height: runtimeConfig.public.groupHeight,
       id: '',
       lecturers: [],
@@ -51,7 +65,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       lessons: [],
       name: 'Zajęcia',
       scheduleId: schedule.id,
-      startTime: target.dataset.time!,
+      startTime: startTime.toTimeString().slice(0, 8),
       type: SubjectType.Unknown,
       width: 24,
       x,
