@@ -39,8 +39,8 @@ export default function useDrag(schedule: Schedule, container: HTMLDivElement | 
       mouse.currentSubject! = schedule.subjects.find(subject => subject.id === (event.target as HTMLElement).id)!
 
     rafId = requestAnimationFrame(() => {
-      // snap to 24px grid in X axis
-      const deltaX = Math.round((event.clientX - dragStart.value.x) / 24) * 24
+      // snap to runtimeConfig.public.intervalWidth grid in X axis
+      const deltaX = Math.round((event.clientX - dragStart.value.x) / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
 
       // snap to groupCells height in Y axis
       const deltaY = Math.round((event.clientY - dragStart.value.y) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight

@@ -3,8 +3,7 @@ import { Tab, TabGroup, TabList } from '@headlessui/vue'
 import { DayOfWeek } from '~/types'
 
 // Nuxt hooks
-const config = useRuntimeConfig()
-
+const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 
 if (!route.query.day) {
@@ -118,13 +117,13 @@ function handleDelete(id: string) {
 
         <div class="flex">
           <div class="h-12 w-48 border-b-2 border-b-gray-200" />
-          <div class="h-12 w-[calc(100%_-_12rem)] border-b-2 border-gray-200" :style="{ backgroundImage: 'repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 24px)', backgroundSize: '3480px 24px' }" />
+          <div class="h-12 w-[calc(100%_-_12rem)] border-b-2 border-gray-200" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3480px ${runtimeConfig.public.intervalWidth}px` }" />
         </div>
       </div>
 
       <div class="flex w-full">
         <div>
-          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-b-2 border-gray-200 text-center text-xs text-gray-700" :style="{ height: `${config.public.groupHeight}px` }">
+          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-b-2 border-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.groupHeight}px` }">
             {{ group.name }}
           </div>
         </div>
@@ -134,7 +133,7 @@ function handleDelete(id: string) {
             <base-lesson v-bind="subject" :container="container!" :copyable="true" @delete="handleDelete" />
           </div>
 
-          <div v-for="index in scheduler.schedule!.groups.length" v-once :key="index" class="size-full border-b-2 border-gray-200" :style="{ backgroundImage: 'repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 24px)', backgroundSize: '3456px 24px' }" />
+          <div v-for="index in scheduler.schedule!.groups.length" v-once :key="index" class="size-full border-b-2 border-gray-200" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3456px ${runtimeConfig.public.intervalWidth}px` }" />
         </div>
       </div>
     </div>

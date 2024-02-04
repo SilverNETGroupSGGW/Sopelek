@@ -19,7 +19,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
     if (target.closest('[data-lesson]'))
       return
 
-    let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / 24) * 24
+    let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
     let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
 
     // Check if x or y is outside the bounds and set them to the closest boundary
@@ -28,8 +28,8 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       x = 0
     if (y < 0)
       y = 0
-    if (x > containerRect.width - 24)
-      x = containerRect.width - 24
+    if (x > containerRect.width - runtimeConfig.public.intervalWidth)
+      x = containerRect.width - runtimeConfig.public.intervalWidth
     if (y > containerRect.height - runtimeConfig.public.groupHeight)
       y = containerRect.height - runtimeConfig.public.groupHeight
 
@@ -39,13 +39,13 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
     const group = schedule.groups[groupIndex]
 
     // Same applies for startTime
-    // 5 minutes = 24px
+    // 5 minutes = runtimeConfig.public.intervalWidth
     // Between x = 0 and x = 24 - 08:00:00
     // Between x = 24 and x = 48 - 08:05:00
     // Between x = 48 and x = 72 - 08:10:00
     // ...
     const startTime = new Date(1970, 0, 1, 8, 0, 0)
-    startTime.setMinutes(startTime.getMinutes() + Math.floor(x / 24) * 5)    
+    startTime.setMinutes(startTime.getMinutes() + Math.floor(x / runtimeConfig.public.intervalWidth) * 5)    
 
     const newSubject: Subject = {
       classroom: null,
@@ -67,7 +67,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
       scheduleId: schedule.id,
       startTime: startTime.toTimeString().slice(0, 8),
       type: SubjectType.Unknown,
-      width: 24,
+      width: runtimeConfig.public.intervalWidth,
       x,
       y,
     }
