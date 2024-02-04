@@ -13,7 +13,7 @@ export default function useSubject() {
     const durationInMilliseconds = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000
     const endTime = new Date(startTime.getTime() + durationInMilliseconds)
 
-    const x = ((startTime.getHours() - 8) * 60 + startTime.getMinutes()) * (24 / 5)
+    const x = ((startTime.getHours() - 8) * 60 + startTime.getMinutes()) * (runtimeConfig.public.intervalWidth / 5)
     const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * runtimeConfig.public.groupHeight
 
     const height = subject.groups!.length * runtimeConfig.public.groupHeight
@@ -26,7 +26,7 @@ export default function useSubject() {
     const baseTime = new Date()
     baseTime.setHours(8, 0, 0, 0)
 
-    const minutesFromBase = (subject.x! / 24) * 5
+    const minutesFromBase = (subject.x! / runtimeConfig.public.intervalWidth) * 5
     const newTime = new Date(baseTime.getTime() + minutesFromBase * 60000)
     const hours = newTime.getHours() < 10 ? `0${newTime.getHours()}` : newTime.getHours()
     const minutes = newTime.getMinutes() < 10 ? `0${newTime.getMinutes()}` : newTime.getMinutes()

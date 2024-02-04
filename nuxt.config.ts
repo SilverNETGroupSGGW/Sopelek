@@ -21,7 +21,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       edgeThreshold: 16, // resize and drag bounds
-      groupHeight: 160 // height of a group cell
+      groupHeight: 160, // height of a group cell,
+      intervalWidth: 24 // width of 5 minutes interval cell
     }
   }
 })

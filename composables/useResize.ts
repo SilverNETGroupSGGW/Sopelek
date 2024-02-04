@@ -67,10 +67,10 @@ export default function useResize(schedule: Schedule, container: HTMLDivElement 
 
     rafId = requestAnimationFrame(() => {
       // Calculate the change in x and y positions
-      const deltaX = Math.round((event.clientX - resizeStart.value.x) / 24) * 24
+      const deltaX = Math.round((event.clientX - resizeStart.value.x) / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
       const deltaY = Math.round((event.clientY - resizeStart.value.y) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
 
-      const minWidth = 24
+      const minWidth = runtimeConfig.public.intervalWidth
       const minHeight = runtimeConfig.public.groupHeight
 
       let newWidth, newHeight, newX, newY

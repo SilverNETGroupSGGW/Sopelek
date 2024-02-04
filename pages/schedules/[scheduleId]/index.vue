@@ -3,36 +3,28 @@ import { Tab, TabGroup, TabList } from '@headlessui/vue'
 import { DayOfWeek } from '~/types'
 
 // Nuxt hooks
-const config = useRuntimeConfig()
-
+const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 
-await navigateTo({
-  query: {
-    day: route.query.day ?? DayOfWeek.Monday,
-  },
-})
+if (!route.query.day) {
+  await navigateTo({
+    query: {
+      day: DayOfWeek.Monday,
+    },
+  })
+}
 
 // Data
 const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
 // Time range
 const timeRange: Date[] = []
-const smallerTimeRange: Date[] = []
-let initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
+const initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
 
 while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialDate.getMinutes() === 0)) {
   // timeRange is in 30 minute interval
   timeRange.push(new Date(initialDate.getTime()))
   initialDate.setMinutes(initialDate.getMinutes() + 30)
-}
-
-initialDate = new Date(2023, 0, 1, 8, 0, 0, 0)
-
-while (initialDate.getHours() < 20) {
-  // smallerTimeRange is in 5 minute interval
-  smallerTimeRange.push(new Date(initialDate.getTime()))
-  initialDate.setMinutes(initialDate.getMinutes() + 5)
 }
 
 // Subjects
@@ -50,12 +42,12 @@ let onCreateMove: ((event: PointerEvent) => void) | null = null
 watchEffect(() => {
   if (container.value) {
     ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, container.value));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek ?? DayOfWeek.Monday))
+    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek))
   }
 })
 
 // Tabs
-const tabIndex = ref(daysOfWeek.findIndex(day => route.query.day ? day.value === route.query.day : 0))
+const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
 async function handleTabChange(index: number) {
   tabIndex.value = index
@@ -105,42 +97,34 @@ function handleDelete(id: string) {
       </TabGroup>
     </div>
 
-    <div class="h-screen overflow-x-scroll">
-      <div class="h-full select-none">
-        <div class="sticky top-0 z-50 flex w-max flex-col border-b-2 border-b-gray-200 bg-white">
-          <div class="flex w-max flex-col">
-            <div class="flex">
-              <div class="flex h-12 w-[10.5rem] shrink-0" />
-              <div v-for="(time, index) in timeRange" v-once :key="index" class="flex h-12 shrink-0 items-center justify-between whitespace-nowrap text-center font-medium text-gray-700" :class="[index !== timeRange.length - 1 && 'w-36']">
-                <div>
-                  {{ time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) }}
-                </div>
-              </div>
-            </div>
-
-            <div class="flex">
-              <div class="flex h-12 w-48 shrink-0 border-b-2 border-r-2" />
-              <div v-for="index in (timeRange.length - 1) * 6" v-once :key="index" class="flex h-12 w-6 shrink-0 items-center justify-between whitespace-nowrap border-b-2 border-r border-gray-200 text-center font-medium text-gray-700" :class="[index % 6 === 0 ? 'border-r-2' : 'border-r']" />
-            </div>
-          </div>
+    <div class="h-screen w-max select-none overflow-x-scroll">
+      <div class="sticky top-0 z-50 flex w-max flex-col border-b-gray-200 bg-white">
+        <div class="flex">
+          <div class="flex h-12 w-[10.5rem] shrink-0" />
+          <p v-for="(time, index) in timeRange" v-once :key="index" class="flex h-12 items-center whitespace-nowrap text-center font-medium text-gray-700" :class="[index !== timeRange.length - 1 && 'w-36']">
+            {{ time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) }}
+          </p>
         </div>
 
         <div class="flex">
-          <div class="flex h-full w-fit flex-col">
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-x-2 border-b-2 border-gray-200 text-center text-xs text-gray-700" :style="{ height: `${config.public.groupHeight}px` }">
-              {{ group.name }}
-            </div>
+          <div class="h-12 w-48 border-b-2 border-b-gray-200" />
+          <div class="h-12 w-[calc(100%_-_12rem)] border-b-2 border-gray-200" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3480px ${runtimeConfig.public.intervalWidth}px` }" />
+        </div>
+      </div>
+
+      <div class="flex w-full">
+        <div>
+          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-b-2 border-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.groupHeight}px` }">
+            {{ group.name }}
+          </div>
+        </div>
+
+        <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onCreateMove!">
+          <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek ?? DayOfWeek.Monday)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!" @pointerout.prevent="onPointerOut!">
+            <base-lesson v-bind="subject" :container="container!" :copyable="true" @delete="handleDelete" />
           </div>
 
-          <div ref="container" class="relative flex flex-col" @pointerdown.prevent="onCreateMove!">
-            <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek ?? DayOfWeek.Monday)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!" @pointerout.prevent="onPointerOut!">
-              <base-lesson v-bind="subject" :container="container!" :copyable="true" @delete="handleDelete" />
-            </div>
-
-            <div v-for="(group, index) in scheduler.schedule!.groups" v-once :key="index" class="flex">
-              <div v-for="(time, index2) in smallerTimeRange" v-once :key="index2" class="flex w-6 shrink-0 items-center justify-between border-b-2 border-gray-200 text-center text-xs text-gray-700" :data-group="group.id" :data-time="time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })" :class="[(time.getMinutes() === 55 || time.getMinutes() === 25) ? 'border-r-2' : 'border-r']" :style="{ height: `${config.public.groupHeight}px` }" />
-            </div>
-          </div>
+          <div v-for="index in scheduler.schedule!.groups.length" v-once :key="index" class="size-full border-b-2 border-gray-200" :style="{ backgroundImage: `repeating-linear-gradient(to right, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff ${runtimeConfig.public.intervalWidth}px)`, backgroundSize: `3456px ${runtimeConfig.public.intervalWidth}px` }" />
         </div>
       </div>
     </div>
