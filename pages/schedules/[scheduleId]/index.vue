@@ -100,6 +100,8 @@ async function handleTabChange(index: number) {
         </div>
 
         <div class="relative flex w-full flex-col">
+          <base-lesson />
+
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
       </div>
