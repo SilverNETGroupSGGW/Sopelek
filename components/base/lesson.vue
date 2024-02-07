@@ -5,6 +5,8 @@ const props = defineProps<{
   container: HTMLElement | null
 }>()
 
+const mouse = useMouse()
+
 const x = ref(0)
 const y = ref(0)
 
@@ -28,6 +30,7 @@ const unwatch = watchEffect(() => {
       transform: `translate(${x}px, ${y}px)`,
     }"
     class="absolute border border-blue-400 bg-blue-50"
+    :class="[mouse.isActive && 'cursor-move']"
     @pointerdown.prevent="onDragDown!"
     @pointermove.prevent="onDragMove!"
     @pointerup.prevent="onDragUp!"
