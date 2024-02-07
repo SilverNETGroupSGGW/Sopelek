@@ -2,20 +2,10 @@ export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<n
   const runtimeConfig = useRuntimeConfig()
   const mouse = useMouse()
 
+  const { isOutside } = usePointer()
+
   let offsetX = 0
   let offsetY = 0
-
-  function isOutside(e: PointerEvent) {
-    const target = e.target as HTMLElement
-    const rect = target.getBoundingClientRect()
-
-    return (
-      e.clientX < rect.left + runtimeConfig.public.edgeThreshold
-      || e.clientX > rect.right - runtimeConfig.public.edgeThreshold
-      || e.clientY < rect.top + runtimeConfig.public.edgeThreshold
-      || e.clientY > rect.bottom - runtimeConfig.public.edgeThreshold
-    )
-  }
 
   function onDragDown(e: PointerEvent) {
     if (isOutside(e))
