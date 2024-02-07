@@ -1,8 +1,23 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue'
+
+const props = defineProps<{
+  container: HTMLElement | null
+}>()
+
 const x = ref(0)
 const y = ref(0)
 
-const { onDragDown, onDragMove, onDragUp } = useDrag(x, y)
+let onDragDown: ((e: PointerEvent) => void) | null = null
+let onDragMove: ((e: PointerEvent) => void) | null = null
+let onDragUp: ((e: PointerEvent) => void) | null = null
+
+const unwatch = watchEffect(() => {
+  if (props.container) {
+    unwatch()
+    ;({ onDragDown, onDragMove, onDragUp } = useDrag(props.container, x, y))
+  }
+})
 </script>
 
 <template>
@@ -13,9 +28,9 @@ const { onDragDown, onDragMove, onDragUp } = useDrag(x, y)
       transform: `translate(${x}px, ${y}px)`,
     }"
     class="absolute border border-blue-400 bg-blue-50"
-    @pointerdown.prevent="onDragDown"
-    @pointermove.prevent="onDragMove"
-    @pointerup.prevent="onDragUp"
+    @pointerdown.prevent="onDragDown!"
+    @pointermove.prevent="onDragMove!"
+    @pointerup.prevent="onDragUp!"
   >
     <div />
   </div>

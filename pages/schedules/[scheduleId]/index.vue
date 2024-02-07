@@ -14,6 +14,9 @@ if (!route.query.day) {
   })
 }
 
+// Container
+const container = ref<HTMLElement | null>(null)
+
 // Data
 const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
@@ -99,8 +102,8 @@ async function handleTabChange(index: number) {
           </div>
         </div>
 
-        <div class="relative flex w-full flex-col">
-          <base-lesson />
+        <div ref="container" class="relative flex w-full flex-col">
+          <base-lesson :container="container!" />
 
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
