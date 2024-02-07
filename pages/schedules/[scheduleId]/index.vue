@@ -31,21 +31,6 @@ while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialD
 const scheduler = useScheduler()
 await scheduler.get(route.params.scheduleId as string)
 
-// Elements
-const container = ref<HTMLDivElement | null>(null)
-
-let onPointerMove: ((event: PointerEvent) => void) | null = null
-let onPointerDown: ((event: PointerEvent) => void) | null = null
-let onPointerOut: ((event: PointerEvent) => void) | null = null
-let onCreateMove: ((event: PointerEvent) => void) | null = null
-
-watchEffect(() => {
-  if (container.value) {
-    ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, container.value));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek))
-  }
-})
-
 // Tabs
 const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
@@ -56,11 +41,6 @@ async function handleTabChange(index: number) {
       day: daysOfWeek[index].value,
     },
   })
-}
-
-// Delete
-function handleDelete(id: string) {
-  scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(subject => subject.id !== id)
 }
 </script>
 
@@ -119,11 +99,7 @@ function handleDelete(id: string) {
           </div>
         </div>
 
-        <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onCreateMove!">
-          <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek ?? DayOfWeek.Monday)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!" @pointerout.prevent="onPointerOut!">
-            <base-lesson v-bind="subject" :container="container!" :copyable="true" @delete="handleDelete" />
-          </div>
-
+        <div class="relative flex w-full flex-col">
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
       </div>
