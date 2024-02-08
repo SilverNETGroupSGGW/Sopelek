@@ -2,31 +2,21 @@ export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<n
   const runtimeConfig = useRuntimeConfig()
   const mouse = useMouse()
 
-  const { isOutside } = usePointer()
-
   let offsetX = 0
   let offsetY = 0
 
   function onDragDown(e: PointerEvent) {
-    if (isOutside(e))
-      return
-
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
     mouse.isDragging = true
 
     offsetX = e.clientX - x.value
     offsetY = e.clientY - y.value
-  }
 
-  function onDragUp(e: PointerEvent) {
-    const target = e.target as HTMLElement
-    target.releasePointerCapture(e.pointerId)
-    mouse.isDragging = false
+    e.target?.addEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
+    e.target?.addEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
   }
 
   function onDragMove(e: PointerEvent) {
-    mouse.isActive = !isOutside(e)
-
     if (mouse.isDragging) {
       requestAnimationFrame(() => {
         let newX = e.clientX - offsetX
@@ -55,6 +45,15 @@ export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<n
         y.value = newY
       })
     }
+  }
+
+  function onDragUp(e: PointerEvent) {
+    const target = e.target as HTMLElement
+    target.releasePointerCapture(e.pointerId)
+    mouse.isDragging = false
+
+    target.removeEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
+    target.removeEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
   }
 
   return {

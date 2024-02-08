@@ -1,5 +1,8 @@
-export default function usePointer() {
+export default function usePointer(container: HTMLElement, x: Ref<number>, y: Ref<number>) {
   const runtimeConfig = useRuntimeConfig()
+  const mouse = useMouse()
+
+  const { onDragDown } = useDrag(container, x, y)
 
   function isOutside(e: PointerEvent) {
     const target = e.target as HTMLElement
@@ -13,7 +16,18 @@ export default function usePointer() {
     )
   }
 
+  function onPointerDown(e: PointerEvent) {
+    if (!isOutside(e))
+      onDragDown(e)
+  }
+
+  function onPointerMove(e: PointerEvent) {
+    mouse.isActive = !isOutside(e)
+  }
+
   return {
     isOutside,
+    onPointerDown,
+    onPointerMove,
   }
 }
