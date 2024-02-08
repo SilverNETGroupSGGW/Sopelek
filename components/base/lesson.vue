@@ -29,7 +29,7 @@ const unwatch = watchEffect(() => {
       transform: `translate(${x}px, ${y}px)`,
     }"
     class="absolute border border-blue-400 bg-blue-50"
-    :class="[mouse.isActive && 'cursor-move']"
+    :class="[mouse.cursor]"
     @pointerdown.prevent="onPointerDown!"
     @pointermove.prevent="onPointerMove!"
   >
