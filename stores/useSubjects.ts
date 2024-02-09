@@ -22,8 +22,9 @@ export const useSubjects = defineStore('subjects', {
   }),
   actions: {
     async get(scheduleId: string) {
+      const runtimeConfig = useRuntimeConfig()
       const { data } = await useFetch<Subject[]>(`subjects/schedule/${scheduleId}/extended`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
@@ -37,8 +38,9 @@ export const useSubjects = defineStore('subjects', {
     },
     async create(subject: Subject) {
       try {
+        const runtimeConfig = useRuntimeConfig()
         const data = await $fetch<Subject>('subjects', {
-          baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+          baseURL: runtimeConfig.public.baseURL,
           method: 'POST',
           body: JSON.stringify(subject),
           headers: {
@@ -54,8 +56,9 @@ export const useSubjects = defineStore('subjects', {
     },
     async update(subject: Subject) {
       try {
+        const runtimeConfig = useRuntimeConfig()
         const data = await $fetch<Subject>('subjects', {
-          baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+          baseURL: runtimeConfig.public.baseURL,
           method: subject.id === 'create' ? 'POST' : 'PUT',
           body: JSON.stringify(subject),
           headers: {
@@ -73,8 +76,9 @@ export const useSubjects = defineStore('subjects', {
       }
     },
     async delete(id: string) {
+      const runtimeConfig = useRuntimeConfig()
       await $fetch<Subject>(`subjects/${id}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,

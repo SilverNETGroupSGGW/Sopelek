@@ -21,8 +21,9 @@ export const useSchedule = defineStore('schedule', {
   }),
   actions: {
     async get() {
+      const runtimeConfig = useRuntimeConfig()
       const { data } = await useFetch<Schedule[]>('schedules', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
@@ -35,12 +36,14 @@ export const useSchedule = defineStore('schedule', {
       this.data = data.value!
     },
     async create(schedule: Schedule) {
+      const runtimeConfig = useRuntimeConfig()
+
       const { studiesModes, studiesDegrees } = useData()
       schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
       schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
 
       const data = await $fetch<Schedule>('schedules', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(schedule),
         headers: {
@@ -51,12 +54,14 @@ export const useSchedule = defineStore('schedule', {
       this.data.push(data)
     },
     async update(schedule: Schedule) {
+      const runtimeConfig = useRuntimeConfig()
+
       const { studiesModes, studiesDegrees } = useData()
       schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
       schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
 
       const data = await $fetch<Schedule>('schedules', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(schedule),
         headers: {
@@ -68,8 +73,10 @@ export const useSchedule = defineStore('schedule', {
       this.data[index] = data
     },
     async delete(schedule: Schedule) {
+      const runtimeConfig = useRuntimeConfig()
+
       await $fetch<Schedule>(`schedules/${schedule.id}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
@@ -79,10 +86,11 @@ export const useSchedule = defineStore('schedule', {
       this.data = this.data.filter(l => l.id !== schedule.id)
     },
     async download(schedule: Schedule) {
+      const runtimeConfig = useRuntimeConfig()
       schedule.isDownloading = true
 
       const data = await $fetch<Blob>(`schedulegenerator/generate/${schedule.id}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,

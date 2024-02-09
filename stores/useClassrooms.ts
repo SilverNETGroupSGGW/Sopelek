@@ -21,8 +21,9 @@ export const useClassrooms = defineStore('classrooms', {
   }),
   actions: {
     async get() {
+      const runtimeConfig = useRuntimeConfig()
       const { data } = await useFetch<Classroom[]>('classrooms', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
@@ -37,8 +38,9 @@ export const useClassrooms = defineStore('classrooms', {
       })
     },
     async create(classroom: Classroom) {
+      const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<Classroom>('classrooms', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(classroom),
         headers: {
@@ -49,8 +51,9 @@ export const useClassrooms = defineStore('classrooms', {
       this.data.push(data)
     },
     async update(classroom: Classroom) {
+      const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<Classroom>('classrooms', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(classroom),
         headers: {
@@ -62,8 +65,9 @@ export const useClassrooms = defineStore('classrooms', {
       this.data[index] = data
     },
     async delete(classroom: Classroom) {
+      const runtimeConfig = useRuntimeConfig()
       await $fetch(`classrooms/${classroom.id}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,

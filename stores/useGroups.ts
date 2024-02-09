@@ -21,16 +21,18 @@ export const useGroups = defineStore('groups', {
   }),
   actions: {
     async get(scheduleId: string) {
+      const runtimeConfig = useRuntimeConfig()
       const { data } = await useFetch<Group[]>(`groups/schedule/${scheduleId}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
       this.data = data.value!.sort((a, b) => a.name.localeCompare(b.name))
     },
     async create(group: Group) {
+      const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<Group>('groups', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(group),
         headers: {
@@ -41,8 +43,9 @@ export const useGroups = defineStore('groups', {
       this.data.push(data)
     },
     async update(group: Group) {
+      const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<Group>('groups', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(group),
         headers: {
@@ -54,8 +57,9 @@ export const useGroups = defineStore('groups', {
       this.data[index] = data
     },
     async delete(group: Group) {
+      const runtimeConfig = useRuntimeConfig()
       await $fetch<Group>(`groups/${group.id}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,

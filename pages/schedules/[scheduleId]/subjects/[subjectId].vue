@@ -10,6 +10,7 @@ interface DateTimeSequence {
 }
 
 // Nuxt hooks
+const runtimeConfig = useRuntimeConfig()
 const route = useRoute()
 
 // Data
@@ -37,7 +38,7 @@ const data = ref<Subject | null>(null)
 
 try {
   const subject = await $fetch<Subject>(`subjects/${route.params.subjectId}/extended`, {
-    baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+    baseURL: runtimeConfig.public.baseURL,
     method: 'GET',
   })
 
@@ -144,7 +145,7 @@ async function saveChanges() {
 
 // Obtain schedule
 const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.scheduleId}`, {
-  baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+  baseURL: runtimeConfig.public.baseURL,
   method: 'GET',
 })
 
@@ -153,7 +154,7 @@ const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.sc
 if (schedule.value) {
   if (data.value.lessons && data.value.lessons.length === 0) {
     const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${new Date(schedule.value.startDate).toLocaleDateString()}/${15}`, {
-      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+      baseURL: runtimeConfig.public.baseURL,
       method: 'GET',
     })
 

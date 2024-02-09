@@ -14,10 +14,11 @@ export const useScheduler = defineStore('scheduler', {
   },
   actions: {
     async get(scheduleId: string) {
+      const runtimeConfig = useRuntimeConfig()
       const { calculatePosition } = useSubject()
 
       const { data } = await useFetch<Schedule>(`schedules/${scheduleId}/extended`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
@@ -42,8 +43,9 @@ export const useScheduler = defineStore('scheduler', {
       this.schedule = data.value!
     },
     async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
+      const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<SubjectConflict>(`subjects/check-conflict`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify({
           scheduleId,
