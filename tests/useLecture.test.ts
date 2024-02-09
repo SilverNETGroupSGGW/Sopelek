@@ -1,11 +1,11 @@
 import { expect, it } from 'vitest'
-import useSubject from './utils/useSubject'
-import type { Subject } from './types'
+import useSubject from '../utils/useSubject'
+import type { Subject } from '../types'
 
 it('useSubjects 1', () => {
   const subject: Subject = {
-    startTime: "08:00:00",
-    duration: "00:45:00",
+    startTime: '08:00:00',
+    duration: '00:45:00',
     groupsIds: ['ISI-1', 'ISI-2', 'ISK', 'TM'],
   }
 

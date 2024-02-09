@@ -22,7 +22,6 @@ const isOfetchEmpty = computed(() => {
   <div class="flex">
     <layout-sidebar />  <!-- <NuxtLoadingIndicator color="#4F46E5" /> -->
 
-
     <main class="h-screen w-full overflow-y-scroll">
       <slot />
     </main>
