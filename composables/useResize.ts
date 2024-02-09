@@ -108,13 +108,12 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
           if (newHeight > 0)
             height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
         }
-
         else if (mouse.resizeEdge === 'n') {
-          const newHeight = original.value.height - (e.clientY - original.value.mouseY)
+          const newHeight = original.value.height + original.value.y - Math.round((original.value.y + e.clientY - original.value.mouseY) / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
 
           if (newHeight > 0) {
-            y.value = original.value.y + (e.clientY - original.value.mouseY)
-            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
+            y.value = Math.round((original.value.y + e.clientY - original.value.mouseY) / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
+            height.value = newHeight
           }
         }
       })
