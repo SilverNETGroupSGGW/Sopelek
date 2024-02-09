@@ -1,14 +1,14 @@
 export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref<number>, width: Ref<number>, height: Ref<number>) {
   const mouse = useMouse()
 
-  const original = {
+  const original = ref({
     x: 0,
     y: 0,
     width: 0,
     height: 0,
     mouseX: 0,
     mouseY: 0,
-  }
+  })
 
   function onResizeDown(e: PointerEvent) {
     const { getResizeEdge } = usePointer(container, x, y, width, height)
@@ -18,14 +18,14 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
     target.setPointerCapture(e.pointerId)
     mouse.isResizing = true
 
-    Object.assign(original, {
+    original.value = {
       x: x.value,
       y: y.value,
       width: width.value,
       height: height.value,
       mouseX: e.clientX,
       mouseY: e.clientY,
-    })
+    }
 
     const rect = target.getBoundingClientRect()
     const edgeThreshold = runtimeConfig.public.edgeThreshold
@@ -40,34 +40,34 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
     if (mouse.isResizing) {
       requestAnimationFrame(() => {
         if (mouse.resizeEdge === 'nw') {
-          const newWidth = original.width - (e.clientX - original.mouseX)
-          const newHeight = original.height - (e.clientY - original.mouseY)
+          const newWidth = original.value.width - (e.clientX - original.value.mouseX)
+          const newHeight = original.value.height - (e.clientY - original.value.mouseY)
 
           if (newWidth > 0) {
-            x.value = original.x + (e.clientX - original.mouseX)
+            x.value = original.value.x + (e.clientX - original.value.mouseX)
             width.value = newWidth
           }
 
           if (newHeight > 0) {
-            y.value = original.y + (e.clientY - original.mouseY)
+            y.value = original.value.y + (e.clientY - original.value.mouseY)
             height.value = newHeight
           }
         }
         else if (mouse.resizeEdge === 'ne') {
-          const newWidth = original.width + (e.clientX - original.mouseX)
-          const newHeight = original.height - (e.clientY - original.mouseY)
+          const newWidth = original.value.width + (e.clientX - original.value.mouseX)
+          const newHeight = original.value.height - (e.clientY - original.value.mouseY)
 
           if (newWidth > 0)
             width.value = newWidth
 
           if (newHeight > 0) {
-            y.value = original.y + (e.clientY - original.mouseY)
+            y.value = original.value.y + (e.clientY - original.value.mouseY)
             height.value = newHeight
           }
         }
         else if (mouse.resizeEdge === 'se') {
-          const newWidth = original.width + (e.clientX - original.mouseX)
-          const newHeight = original.height + (e.clientY - original.mouseY)
+          const newWidth = original.value.width + (e.clientX - original.value.mouseX)
+          const newHeight = original.value.height + (e.clientY - original.value.mouseY)
 
           if (newWidth > 0)
             width.value = newWidth
@@ -76,11 +76,11 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
             height.value = newHeight
         }
         if (mouse.resizeEdge === 'sw') {
-          const newWidth = original.width - (e.clientX - original.mouseX)
-          const newHeight = original.height + (e.clientY - original.mouseY)
+          const newWidth = original.value.width - (e.clientX - original.value.mouseX)
+          const newHeight = original.value.height + (e.clientY - original.value.mouseY)
 
           if (newWidth > 0) {
-            x.value = original.x + (e.clientX - original.mouseX)
+            x.value = original.value.x + (e.clientX - original.value.mouseX)
             width.value = newWidth
           }
 
@@ -88,31 +88,31 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
             height.value = newHeight
         }
         else if (mouse.resizeEdge === 'w') {
-          const newWidth = original.width - (e.clientX - original.mouseX)
+          const newWidth = original.value.width - (e.clientX - original.value.mouseX)
 
           if (newWidth > 0) {
-            x.value = original.x + (e.clientX - original.mouseX)
+            x.value = original.value.x + (e.clientX - original.value.mouseX)
             width.value = newWidth
           }
         }
         else if (mouse.resizeEdge === 'e') {
-          const newWidth = original.width + (e.clientX - original.mouseX)
+          const newWidth = original.value.width + (e.clientX - original.value.mouseX)
 
           if (newWidth > 0)
             width.value = newWidth
         }
         else if (mouse.resizeEdge === 's') {
-          const newHeight = original.height + (e.clientY - original.mouseY)
+          const newHeight = original.value.height + (e.clientY - original.value.mouseY)
 
           if (newHeight > 0)
             height.value = newHeight
         }
 
         else if (mouse.resizeEdge === 'n') {
-          const newHeight = original.height - (e.clientY - original.mouseY)
+          const newHeight = original.value.height - (e.clientY - original.value.mouseY)
 
           if (newHeight > 0) {
-            y.value = original.y + (e.clientY - original.mouseY)
+            y.value = original.value.y + (e.clientY - original.value.mouseY)
             height.value = newHeight
           }
         }
