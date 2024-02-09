@@ -23,7 +23,7 @@ export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<n
         let newY = e.clientY - offsetY
 
         newX = Math.round(newX / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-        newY = Math.round(newY / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
+        newY = Math.round(newY / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
 
         // Get the dimensions of the container and the element
         const containerRect = container.getBoundingClientRect()

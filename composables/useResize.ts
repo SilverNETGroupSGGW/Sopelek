@@ -1,5 +1,6 @@
 export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref<number>, width: Ref<number>, height: Ref<number>) {
   const mouse = useMouse()
+  const runtimeConfig = useRuntimeConfig()
 
   const original = ref({
     x: 0,
@@ -45,12 +46,12 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
 
           if (newWidth > 0) {
             x.value = original.value.x + (e.clientX - original.value.mouseX)
-            width.value = newWidth
+            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
           }
 
           if (newHeight > 0) {
             y.value = original.value.y + (e.clientY - original.value.mouseY)
-            height.value = newHeight
+            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
           }
         }
         else if (mouse.resizeEdge === 'ne') {
@@ -58,11 +59,11 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
           const newHeight = original.value.height - (e.clientY - original.value.mouseY)
 
           if (newWidth > 0)
-            width.value = newWidth
+            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
 
           if (newHeight > 0) {
             y.value = original.value.y + (e.clientY - original.value.mouseY)
-            height.value = newHeight
+            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
           }
         }
         else if (mouse.resizeEdge === 'se') {
@@ -70,10 +71,10 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
           const newHeight = original.value.height + (e.clientY - original.value.mouseY)
 
           if (newWidth > 0)
-            width.value = newWidth
+            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
 
           if (newHeight > 0)
-            height.value = newHeight
+            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
         }
         if (mouse.resizeEdge === 'sw') {
           const newWidth = original.value.width - (e.clientX - original.value.mouseX)
@@ -81,31 +82,31 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
 
           if (newWidth > 0) {
             x.value = original.value.x + (e.clientX - original.value.mouseX)
-            width.value = newWidth
+            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
           }
 
           if (newHeight > 0)
-            height.value = newHeight
+            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
         }
         else if (mouse.resizeEdge === 'w') {
           const newWidth = original.value.width - (e.clientX - original.value.mouseX)
 
           if (newWidth > 0) {
             x.value = original.value.x + (e.clientX - original.value.mouseX)
-            width.value = newWidth
+            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
           }
         }
         else if (mouse.resizeEdge === 'e') {
           const newWidth = original.value.width + (e.clientX - original.value.mouseX)
 
           if (newWidth > 0)
-            width.value = newWidth
+            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
         }
         else if (mouse.resizeEdge === 's') {
           const newHeight = original.value.height + (e.clientY - original.value.mouseY)
 
           if (newHeight > 0)
-            height.value = newHeight
+            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
         }
 
         else if (mouse.resizeEdge === 'n') {
@@ -113,7 +114,7 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
 
           if (newHeight > 0) {
             y.value = original.value.y + (e.clientY - original.value.mouseY)
-            height.value = newHeight
+            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
           }
         }
       })

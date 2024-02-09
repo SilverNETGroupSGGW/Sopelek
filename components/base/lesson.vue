@@ -12,7 +12,7 @@ const mouse = useMouse()
 const x = ref(0)
 const y = ref(0)
 const width = ref(runtimeConfig.public.intervalWidth * 18)
-const height = ref(runtimeConfig.public.groupHeight)
+const height = ref(runtimeConfig.public.intervalHeight)
 
 let onPointerDown: ((e: PointerEvent) => void) | null = null
 let onPointerMove: ((e: PointerEvent) => void) | null = null

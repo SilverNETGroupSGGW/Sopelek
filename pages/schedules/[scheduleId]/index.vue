@@ -97,7 +97,7 @@ async function handleTabChange(index: number) {
 
       <div class="flex w-full">
         <div>
-          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-t border-t-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.groupHeight}px` }">
+          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-t border-t-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.intervalHeight}px` }">
             {{ group.name }}
           </div>
         </div>
