@@ -17,18 +17,20 @@ export const useLecturers = defineStore('lecturers', {
   }),
   actions: {
     async get() {
+      const runtimeConfig = useRuntimeConfig()
       const { data } = await useFetch<Lecturer[]>('lecturers', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
       this.data = data.value!.sort((a, b) => a.surname.localeCompare(b.surname))
     },
     async create(lecturer: Lecturer) {
+      const runtimeConfig = useRuntimeConfig()
       // const { degrees } = useData()
       // lecturer.academicDegree = (degrees.find(degree => degree.value === lecturer.academicDegree))!.type
       const data = await $fetch<Lecturer>('lecturers', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(lecturer),
         headers: {
@@ -39,8 +41,9 @@ export const useLecturers = defineStore('lecturers', {
       this.data.push(data)
     },
     async update(lecturer: Lecturer) {
+      const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<Lecturer>('lecturers', {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(lecturer),
         headers: {
@@ -52,8 +55,9 @@ export const useLecturers = defineStore('lecturers', {
       this.data[index] = data
     },
     async delete(lecturer: Lecturer) {
+      const runtimeConfig = useRuntimeConfig()
       await $fetch(`lecturers/${lecturer.id}`, {
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+        baseURL: runtimeConfig.public.baseURL,
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
