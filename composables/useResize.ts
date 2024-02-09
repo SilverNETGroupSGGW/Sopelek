@@ -40,82 +40,39 @@ export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref
   function onResizeMove(e: PointerEvent) {
     if (mouse.isResizing) {
       requestAnimationFrame(() => {
-        if (mouse.resizeEdge === 'nw') {
-          const newWidth = original.value.width - (e.clientX - original.value.mouseX)
-          const newHeight = original.value.height - (e.clientY - original.value.mouseY)
+        const deltaX = e.clientX - original.value.mouseX
+        const deltaY = e.clientY - original.value.mouseY
+        let newX: number, newY: number, newWidth: number, newHeight: number, snappedX: number, snappedY: number
+
+        if (mouse.resizeEdge.includes('w')) {
+          newX = original.value.x + deltaX
+          snappedX = Math.round(newX / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
+          newWidth = original.value.width + original.value.x - snappedX
 
           if (newWidth > 0) {
-            x.value = original.value.x + (e.clientX - original.value.mouseX)
-            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-          }
-
-          if (newHeight > 0) {
-            y.value = original.value.y + (e.clientY - original.value.mouseY)
-            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-          }
-        }
-        else if (mouse.resizeEdge === 'ne') {
-          const newWidth = original.value.width + (e.clientX - original.value.mouseX)
-          const newHeight = original.value.height - (e.clientY - original.value.mouseY)
-
-          if (newWidth > 0)
-            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-
-          if (newHeight > 0) {
-            y.value = original.value.y + (e.clientY - original.value.mouseY)
-            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-          }
-        }
-        else if (mouse.resizeEdge === 'se') {
-          const newWidth = original.value.width + (e.clientX - original.value.mouseX)
-          const newHeight = original.value.height + (e.clientY - original.value.mouseY)
-
-          if (newWidth > 0)
-            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-
-          if (newHeight > 0)
-            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-        }
-        if (mouse.resizeEdge === 'sw') {
-          const newWidth = original.value.width - (e.clientX - original.value.mouseX)
-          const newHeight = original.value.height + (e.clientY - original.value.mouseY)
-
-          if (newWidth > 0) {
-            x.value = original.value.x + (e.clientX - original.value.mouseX)
-            width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-          }
-
-          if (newHeight > 0)
-            height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-        }
-        else if (mouse.resizeEdge === 'w') {
-          const newX = original.value.x + e.clientX - original.value.mouseX
-          const newWidth = original.value.width + original.value.x - Math.round(newX / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-
-          if (newWidth > 0) {
-            x.value = Math.round(newX / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
+            x.value = snappedX
             width.value = newWidth
           }
         }
-        else if (mouse.resizeEdge === 'e') {
-          const newWidth = original.value.width + (e.clientX - original.value.mouseX)
+        if (mouse.resizeEdge.includes('n')) {
+          newY = original.value.y + deltaY
+          snappedY = Math.round(newY / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
+          newHeight = original.value.height + original.value.y - snappedY
 
+          if (newHeight > 0) {
+            y.value = snappedY
+            height.value = newHeight
+          }
+        }
+        if (mouse.resizeEdge.includes('e')) {
+          newWidth = original.value.width + deltaX
           if (newWidth > 0)
             width.value = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
         }
-        else if (mouse.resizeEdge === 's') {
-          const newHeight = original.value.height + (e.clientY - original.value.mouseY)
-
+        if (mouse.resizeEdge.includes('s')) {
+          newHeight = original.value.height + deltaY
           if (newHeight > 0)
             height.value = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-        }
-        else if (mouse.resizeEdge === 'n') {
-          const newHeight = original.value.height + original.value.y - Math.round((original.value.y + e.clientY - original.value.mouseY) / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-
-          if (newHeight > 0) {
-            y.value = Math.round((original.value.y + e.clientY - original.value.mouseY) / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-            height.value = newHeight
-          }
         }
       })
     }
