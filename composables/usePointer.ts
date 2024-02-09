@@ -1,8 +1,5 @@
-export default function usePointer(container: HTMLElement, x: Ref<number>, y: Ref<number>) {
+export default function usePointer(container: HTMLElement, x: Ref<number>, y: Ref<number>, width: Ref<number>, height: Ref<number>) {
   const runtimeConfig = useRuntimeConfig()
-  const mouse = useMouse()
-
-  const { onDragDown } = useDrag(container, x, y)
 
   function isOutside(e: PointerEvent) {
     const target = e.target as HTMLElement
@@ -16,40 +13,81 @@ export default function usePointer(container: HTMLElement, x: Ref<number>, y: Re
     )
   }
 
+  function getResizeEdge(e: PointerEvent, rect: DOMRect, edgeThreshold: number) {
+    if (e.clientX < rect.left + edgeThreshold && e.clientY < rect.top + edgeThreshold)
+      return 'nw'
+    else if (e.clientX > rect.right - edgeThreshold && e.clientY < rect.top + edgeThreshold)
+      return 'ne'
+    else if (e.clientX > rect.right - edgeThreshold && e.clientY > rect.bottom - edgeThreshold)
+      return 'se'
+    else if (e.clientX < rect.left + edgeThreshold && e.clientY > rect.bottom - edgeThreshold)
+      return 'sw'
+    else if (e.clientX < rect.left + edgeThreshold)
+      return 'w'
+    else if (e.clientX > rect.right - edgeThreshold)
+      return 'e'
+    else if (e.clientY < rect.top + edgeThreshold)
+      return 'n'
+    else if (e.clientY > rect.bottom - edgeThreshold)
+      return 's'
+    else
+      return ''
+  }
+
   function onPointerDown(e: PointerEvent) {
-    if (!isOutside(e))
+    const { onDragDown } = useDrag(container, x, y)
+    const { onResizeDown } = useResize(container, x, y, width, height)
+
+    if (!isOutside(e)) {
       onDragDown(e)
+      return
+    }
+
+    onResizeDown(e)
   }
 
   function onPointerMove(e: PointerEvent) {
     if (e.target) {
+      const mouse = useMouse()
+
       const target = e.target as HTMLElement
       const rect = target.getBoundingClientRect()
       const edgeThreshold = runtimeConfig.public.edgeThreshold
 
-      if (e.clientX < rect.left + edgeThreshold && e.clientY < rect.top + edgeThreshold)
-        mouse.cursor = 'cursor-nw-resize'
-      else if (e.clientX > rect.right - edgeThreshold && e.clientY < rect.top + edgeThreshold)
-        mouse.cursor = 'cursor-ne-resize'
-      else if (e.clientX > rect.right - edgeThreshold && e.clientY > rect.bottom - edgeThreshold)
-        mouse.cursor = 'cursor-se-resize'
-      else if (e.clientX < rect.left + edgeThreshold && e.clientY > rect.bottom - edgeThreshold)
-        mouse.cursor = 'cursor-sw-resize'
-      else if (e.clientX < rect.left + edgeThreshold)
-        mouse.cursor = 'cursor-w-resize'
-      else if (e.clientX > rect.right - edgeThreshold)
-        mouse.cursor = 'cursor-e-resize'
-      else if (e.clientY < rect.top + edgeThreshold)
-        mouse.cursor = 'cursor-n-resize'
-      else if (e.clientY > rect.bottom - edgeThreshold)
-        mouse.cursor = 'cursor-s-resize'
-      else
-        mouse.cursor = 'cursor-move'
+      switch (getResizeEdge(e, rect, edgeThreshold)) {
+        case 'nw':
+          mouse.cursor = 'cursor-nw-resize'
+          break
+        case 'ne':
+          mouse.cursor = 'cursor-ne-resize'
+          break
+        case 'se':
+          mouse.cursor = 'cursor-se-resize'
+          break
+        case 'sw':
+          mouse.cursor = 'cursor-sw-resize'
+          break
+        case 'w':
+          mouse.cursor = 'cursor-w-resize'
+          break
+        case 'e':
+          mouse.cursor = 'cursor-e-resize'
+          break
+        case 'n':
+          mouse.cursor = 'cursor-n-resize'
+          break
+        case 's':
+          mouse.cursor = 'cursor-s-resize'
+          break
+        default:
+          mouse.cursor = 'cursor-move'
+      }
     }
   }
 
   return {
     isOutside,
+    getResizeEdge,
     onPointerDown,
     onPointerMove,
   }

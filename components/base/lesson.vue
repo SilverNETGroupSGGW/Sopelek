@@ -5,18 +5,21 @@ const props = defineProps<{
   container: HTMLElement | null
 }>()
 
+const runtimeConfig = useRuntimeConfig()
+
 const mouse = useMouse()
 
 const x = ref(0)
 const y = ref(0)
+const width = ref(runtimeConfig.public.intervalWidth * 18)
+const height = ref(runtimeConfig.public.groupHeight)
 
 let onPointerDown: ((e: PointerEvent) => void) | null = null
 let onPointerMove: ((e: PointerEvent) => void) | null = null
 
-const unwatch = watchEffect(() => {
+watchEffect(() => {
   if (props.container) {
-    unwatch()
-    ;({ onPointerDown, onPointerMove } = usePointer(props.container, x, y))
+    ;({ onPointerDown, onPointerMove } = usePointer(props.container, x, y, width, height))
   }
 })
 </script>
@@ -24,8 +27,8 @@ const unwatch = watchEffect(() => {
 <template>
   <div
     :style="{
-      width: `${$config.public.intervalWidth * 18}px`,
-      height: `${$config.public.groupHeight}px`,
+      width: `${width}px`,
+      height: `${height}px`,
       transform: `translate(${x}px, ${y}px)`,
     }"
     class="absolute border border-blue-400 bg-blue-50"

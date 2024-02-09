@@ -1,0 +1,135 @@
+export default function useResize(container: HTMLElement, x: Ref<number>, y: Ref<number>, width: Ref<number>, height: Ref<number>) {
+  const mouse = useMouse()
+
+  const original = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    mouseX: 0,
+    mouseY: 0,
+  }
+
+  function onResizeDown(e: PointerEvent) {
+    const { getResizeEdge } = usePointer(container, x, y, width, height)
+    const runtimeConfig = useRuntimeConfig()
+
+    const target = e.target as HTMLElement
+    target.setPointerCapture(e.pointerId)
+    mouse.isResizing = true
+
+    Object.assign(original, {
+      x: x.value,
+      y: y.value,
+      width: width.value,
+      height: height.value,
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+    })
+
+    const rect = target.getBoundingClientRect()
+    const edgeThreshold = runtimeConfig.public.edgeThreshold
+
+    mouse.resizeEdge = getResizeEdge(e, rect, edgeThreshold)
+
+    window.addEventListener('pointermove', onResizeMove)
+    window.addEventListener('pointerup', onResizeUp)
+  }
+
+  function onResizeMove(e: PointerEvent) {
+    if (mouse.isResizing) {
+      requestAnimationFrame(() => {
+        if (mouse.resizeEdge === 'nw') {
+          const newWidth = original.width - (e.clientX - original.mouseX)
+          const newHeight = original.height - (e.clientY - original.mouseY)
+
+          if (newWidth > 0) {
+            x.value = original.x + (e.clientX - original.mouseX)
+            width.value = newWidth
+          }
+
+          if (newHeight > 0) {
+            y.value = original.y + (e.clientY - original.mouseY)
+            height.value = newHeight
+          }
+        }
+        else if (mouse.resizeEdge === 'ne') {
+          const newWidth = original.width + (e.clientX - original.mouseX)
+          const newHeight = original.height - (e.clientY - original.mouseY)
+
+          if (newWidth > 0)
+            width.value = newWidth
+
+          if (newHeight > 0) {
+            y.value = original.y + (e.clientY - original.mouseY)
+            height.value = newHeight
+          }
+        }
+        else if (mouse.resizeEdge === 'se') {
+          const newWidth = original.width + (e.clientX - original.mouseX)
+          const newHeight = original.height + (e.clientY - original.mouseY)
+
+          if (newWidth > 0)
+            width.value = newWidth
+
+          if (newHeight > 0)
+            height.value = newHeight
+        }
+        if (mouse.resizeEdge === 'sw') {
+          const newWidth = original.width - (e.clientX - original.mouseX)
+          const newHeight = original.height + (e.clientY - original.mouseY)
+
+          if (newWidth > 0) {
+            x.value = original.x + (e.clientX - original.mouseX)
+            width.value = newWidth
+          }
+
+          if (newHeight > 0)
+            height.value = newHeight
+        }
+        else if (mouse.resizeEdge === 'w') {
+          const newWidth = original.width - (e.clientX - original.mouseX)
+
+          if (newWidth > 0) {
+            x.value = original.x + (e.clientX - original.mouseX)
+            width.value = newWidth
+          }
+        }
+        else if (mouse.resizeEdge === 'e') {
+          const newWidth = original.width + (e.clientX - original.mouseX)
+
+          if (newWidth > 0)
+            width.value = newWidth
+        }
+        else if (mouse.resizeEdge === 's') {
+          const newHeight = original.height + (e.clientY - original.mouseY)
+
+          if (newHeight > 0)
+            height.value = newHeight
+        }
+
+        else if (mouse.resizeEdge === 'n') {
+          const newHeight = original.height - (e.clientY - original.mouseY)
+
+          if (newHeight > 0) {
+            y.value = original.y + (e.clientY - original.mouseY)
+            height.value = newHeight
+          }
+        }
+      })
+    }
+  }
+
+  function onResizeUp(e: PointerEvent) {
+    const target = e.target as HTMLElement
+    target.releasePointerCapture(e.pointerId)
+    mouse.isResizing = false
+
+    window.removeEventListener('pointermove', onResizeMove)
+    window.removeEventListener('pointerup', onResizeUp)
+  }
+
+  return {
+    onResizeDown,
+  }
+}
