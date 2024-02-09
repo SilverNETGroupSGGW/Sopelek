@@ -45,7 +45,7 @@ export default function useCreate(schedule: Schedule, container: HTMLDivElement 
     // Between x = 48 and x = 72 - 08:10:00
     // ...
     const startTime = new Date(1970, 0, 1, 8, 0, 0)
-    startTime.setMinutes(startTime.getMinutes() + Math.floor(x / runtimeConfig.public.intervalWidth) * 5)    
+    startTime.setMinutes(startTime.getMinutes() + Math.floor(x / runtimeConfig.public.intervalWidth) * 5)
 
     const newSubject: Subject = {
       classroom: null,

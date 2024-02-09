@@ -74,7 +74,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
-        <base-button variant="secondary" @click="updateDialog = false" :disabled="isSubmitting" :loading="isSubmitting">
+        <base-button variant="secondary" :disabled="isSubmitting" :loading="isSubmitting" @click="updateDialog = false">
           Zamknij
         </base-button>
         <base-button variant="primary" type="submit">
@@ -93,7 +93,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete(currentItem, async() => await classrooms.delete(currentItem))" :disabled="isSubmitting" :loading="isSubmitting">
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async() => await classrooms.delete(currentItem))">
         Usuń
       </base-button>
     </div>

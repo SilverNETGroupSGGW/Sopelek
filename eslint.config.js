@@ -4,5 +4,5 @@ import { FlatCompat } from '@eslint/eslintrc'
 const compat = new FlatCompat()
 
 export default antfu({}, ...compat.config({
-    extends: ['plugin:tailwindcss/recommended'],
+  extends: ['plugin:tailwindcss/recommended'],
 }))
