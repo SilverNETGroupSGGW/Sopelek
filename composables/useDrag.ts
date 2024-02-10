@@ -10,7 +10,6 @@ export default function useDrag(container: HTMLElement) {
   const offsetY = ref(0)
 
   const baseDate = ref(new Date(1970, 0, 1, 8, 0, 0, 0))
-
   const minutes = computed(() => (mouse.currentLesson.x! / 24) * 5)
 
   function onDragDown(e: PointerEvent) {

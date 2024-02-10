@@ -1,5 +1,8 @@
+import type { Subject } from '~/types'
+
 export default function useResize(container: HTMLElement) {
   const mouse = useMouse()
+  const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
 
   const original = ref({
@@ -10,6 +13,8 @@ export default function useResize(container: HTMLElement) {
     mouseX: 0,
     mouseY: 0,
   })
+
+  const baseDate = ref(new Date(1970, 0, 1, 8, 0, 0, 0))
 
   function onResizeDown(e: PointerEvent) {
     const { getResizeEdge } = usePointer(container)
@@ -101,6 +106,21 @@ export default function useResize(container: HTMLElement) {
               mouse.currentLesson.height! = newHeight
           }
         }
+
+        // Recalculate the lesson's start time
+        baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
+        mouse.currentLesson.startTime = baseDate.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+
+        // Recalculate duration
+        baseDate.value = new Date(1970, 0, 1, 0, 0, 0, 0)
+        baseDate.value.setMinutes(baseDate.value.getMinutes() + (mouse.currentLesson.width! / runtimeConfig.public.intervalWidth) * 5)
+        mouse.currentLesson.duration = baseDate.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+
+        // Recalculate groups
+        const currentGroupIndex = mouse.currentLesson.y! / runtimeConfig.public.intervalHeight
+        const newGroupCount = mouse.currentLesson.height! / runtimeConfig.public.intervalHeight
+        mouse.currentLesson.groups = scheduler.schedule!.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
+        mouse.currentLesson.groupsIds = mouse.currentLesson?.groups!.map(group => group.id)
       })
     }
   }
@@ -112,6 +132,9 @@ export default function useResize(container: HTMLElement) {
 
     target.removeEventListener('pointermove', onResizeMove)
     target.removeEventListener('pointerup', onResizeUp)
+
+    mouse.currentLesson = {} as Subject
+    baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
   }
 
   return {
