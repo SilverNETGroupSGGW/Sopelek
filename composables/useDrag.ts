@@ -1,4 +1,4 @@
-export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<number>) {
+export default function useDrag(container: HTMLElement, x: number, y: number) {
   const runtimeConfig = useRuntimeConfig()
   const mouse = useMouse()
 
@@ -9,8 +9,8 @@ export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<n
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
     mouse.isDragging = true
 
-    offsetX = e.clientX - x.value
-    offsetY = e.clientY - y.value
+    offsetX = e.clientX - x
+    offsetY = e.clientY - y
 
     e.target?.addEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
     e.target?.addEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
@@ -41,8 +41,8 @@ export default function useDrag(container: HTMLElement, x: Ref<number>, y: Ref<n
         else if (newY > containerRect.height - elementRect.height)
           newY = containerRect.height - elementRect.height
 
-        x.value = newX
-        y.value = newY
+        x = newX
+        y = newY
       })
     }
   }

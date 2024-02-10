@@ -1,4 +1,4 @@
-export default function usePointer(container: HTMLElement, x: Ref<number>, y: Ref<number>, width: Ref<number>, height: Ref<number>) {
+export default function usePointer(container: HTMLElement, x: number, y: number, width: number, height: number) {
   const runtimeConfig = useRuntimeConfig()
 
   function isOutside(e: PointerEvent) {

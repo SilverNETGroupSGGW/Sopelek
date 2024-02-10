@@ -103,7 +103,7 @@ async function handleTabChange(index: number) {
         </div>
 
         <div ref="container" class="relative flex w-full flex-col">
-          <base-lesson :container="container!" />
+          <base-lesson v-for="(lesson, index) in scheduler.getSubjectsByDay($route.query.day as DayOfWeek)" :key="index" :container="container!" v-bind="lesson" />
 
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
