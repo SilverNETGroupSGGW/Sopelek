@@ -77,13 +77,18 @@ export const useSubjects = defineStore('subjects', {
     },
     async delete(id: string) {
       const runtimeConfig = useRuntimeConfig()
-      await $fetch<Subject>(`subjects/${id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      try {
+        await $fetch<Subject>(`subjects/${id}`, {
+          baseURL: runtimeConfig.public.baseURL,
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${useCookie('accessToken').value}`,
+          },
+        })
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
 
       this.data = this.data.filter(l => l.id !== id)
     },

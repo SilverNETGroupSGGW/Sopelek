@@ -49,11 +49,17 @@ const deleteDialog = ref(false)
 
 async function handleDelete() {
   isDeleting.value = true
-  await subjects.delete(props.id)
 
-  scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(x => x.id !== props.id)
-  deleteDialog.value = false
-  isDeleting.value = false
+  try {
+    await subjects.delete(props.id)
+  }
+  catch {
+  }
+  finally {
+    scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(x => x.id !== props.id)
+    deleteDialog.value = false
+    isDeleting.value = false
+  }
 }
 </script>
 
