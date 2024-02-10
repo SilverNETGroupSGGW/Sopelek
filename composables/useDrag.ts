@@ -6,6 +6,9 @@ export default function useDrag(container: HTMLElement) {
   const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
 
+  const rafId = ref<number | null>(null)
+  const containerRect = container.getBoundingClientRect()
+
   const offsetX = ref(0)
   const offsetY = ref(0)
 
@@ -25,14 +28,16 @@ export default function useDrag(container: HTMLElement) {
 
   function onDragMove(e: PointerEvent) {
     if (mouse.isDragging) {
-      requestAnimationFrame(() => {
+      if (rafId.value)
+        cancelAnimationFrame(rafId.value)
+
+      rafId.value = requestAnimationFrame(() => {
         let newX = e.clientX - offsetX.value
         let newY = e.clientY - offsetY.value
 
         newX = Math.round(newX / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
         newY = Math.round(newY / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
 
-        const containerRect = container.getBoundingClientRect()
         const elementRect = (e.target as HTMLElement).getBoundingClientRect()
 
         if (newX < 0)

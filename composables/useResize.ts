@@ -1,10 +1,11 @@
 import type { Subject } from '~/types'
 
-export default async function useResize(container: HTMLElement) {
+export default function useResize(container: HTMLElement) {
   const mouse = useMouse()
   const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
 
+  const rafId = ref<number | null>(null)
   const original = ref({
     x: 0,
     y: 0,
@@ -44,7 +45,10 @@ export default async function useResize(container: HTMLElement) {
 
   function onResizeMove(e: PointerEvent) {
     if (mouse.isResizing) {
-      requestAnimationFrame(() => {
+      if (rafId.value)
+        cancelAnimationFrame(rafId.value)
+
+      rafId.value = requestAnimationFrame(() => {
         const deltaX = e.clientX - original.value.mouseX
         const deltaY = e.clientY - original.value.mouseY
         let newX: number, newY: number, newWidth: number, newHeight: number, snappedX: number, snappedY: number
@@ -129,29 +133,27 @@ export default async function useResize(container: HTMLElement) {
     window.removeEventListener('pointermove', onResizeMove)
     window.removeEventListener('pointerup', onResizeUp)
 
-    {
-      if (!mouse.isResizing)
-        return
+    if (!mouse.isResizing)
+      return
 
-      const target = e.target as HTMLElement
-      target.releasePointerCapture(e.pointerId)
-      mouse.isResizing = false
+    const target = e.target as HTMLElement
+    target.releasePointerCapture(e.pointerId)
+    mouse.isResizing = false
 
-      await $fetch<Subject>('subjects', {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
-        body: JSON.stringify(mouse.currentLesson),
-      })
+    await $fetch<Subject>('subjects', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${useCookie('accessToken').value}`,
+      },
+      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+      body: JSON.stringify(mouse.currentLesson),
+    })
 
-      baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
-      mouse.currentLesson = {} as Subject
-    }
+    baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
+    mouse.currentLesson = {} as Subject
+  }
 
-    return {
-      onResizeDown,
-    }
+  return {
+    onResizeDown,
   }
 }
