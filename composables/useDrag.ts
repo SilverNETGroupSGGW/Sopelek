@@ -82,7 +82,7 @@ export default function useDrag(container: HTMLElement) {
       headers: {
         Authorization: `Bearer ${useCookie('accessToken').value}`,
       },
-      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+      baseURL: runtimeConfig.public.baseURL,
       body: JSON.stringify(mouse.currentLesson),
     })
 
