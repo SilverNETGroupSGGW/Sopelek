@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 
 const props = defineProps<Subject & {
@@ -9,6 +10,8 @@ const props = defineProps<Subject & {
 const mouse = useMouse()
 
 // Data
+const scheduler = useScheduler()
+const subjects = useSubjects()
 const { lessonTypes } = useData()
 
 // Utils
@@ -22,7 +25,7 @@ function calculateEndTime() {
   const endTime = new Date(startTime.getTime() + duration.getTime())
   endTime.setHours(endTime.getHours() + 2)
 
-  return endTime.toUTCString().slice(-12, -7)
+  return endTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
 }
 
 function stringToColor(input: string) {
@@ -39,6 +42,19 @@ function stringToColor(input: string) {
     borderColor: `hsl(${hue}, ${saturation}%, ${lightness - 10}%)`,
   }
 }
+
+// Delete
+const isDeleting = ref(false)
+const deleteDialog = ref(false)
+
+async function handleDelete() {
+  isDeleting.value = true
+  await subjects.delete(props.id)
+
+  scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(x => x.id !== props.id)
+  deleteDialog.value = false
+  isDeleting.value = false
+}
 </script>
 
 <template>
@@ -52,6 +68,9 @@ function stringToColor(input: string) {
         <NuxtLink :id="`link-${id}`" :to="`/schedules/${scheduleId}/subjects/${id}`" class="text-xs text-indigo-600">
           Edytuj
         </NuxtLink>
+        <button class="text-xs text-red-600" @click="deleteDialog = true">
+          Usuń
+        </button>
       </div>
     </div>
 
@@ -81,4 +100,19 @@ function stringToColor(input: string) {
       <b>Konflikt: </b> {{ conflictMessage }}
     </small>
   </div>
+
+  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">
+    <p class="text-base text-gray-700">
+      Czy na pewno chcesz usunąć zajęcia?
+    </p>
+
+    <div class="mt-6 flex justify-end gap-4">
+      <base-button variant="secondary" @click="deleteDialog = false">
+        Zamknij
+      </base-button>
+      <base-button variant="danger" :loading="isDeleting" @click="handleDelete">
+        Usuń
+      </base-button>
+    </div>
+  </base-dialog>
 </template>

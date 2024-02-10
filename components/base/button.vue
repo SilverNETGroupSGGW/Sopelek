@@ -50,10 +50,10 @@ watchEffect(() => {
       v-else
       :class="{
         'fill-indigo-50': variant === 'primary',
-        'fill-gray-50': variant === 'secondary',
-        'fill-red-50': variant === 'danger',
-        'fill-green-50': variant === 'success',
-        'fill-yellow-50': variant === 'warning',
+        'fill-gray-600': variant === 'secondary',
+        'fill-red-600': variant === 'danger',
+        'fill-green-600': variant === 'success',
+        'fill-yellow-600': variant === 'warning',
       }"
     />
   </component>

@@ -11,6 +11,9 @@ export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) 
   const { calculatePosition } = useSubject()
 
   function onCreateDown(e: PointerEvent) {
+    if ((e.target as HTMLElement) instanceof HTMLButtonElement)
+      return
+
     mouse.isCreating = true
 
     const offsetX = e.clientX - container.getBoundingClientRect().left
