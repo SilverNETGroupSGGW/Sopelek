@@ -11,7 +11,7 @@ export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) 
   const { calculatePosition } = useSubject()
 
   function onCreateDown(e: PointerEvent) {
-    if ((e.target as HTMLElement) instanceof HTMLButtonElement)
+    if (!(e.target as HTMLElement).parentNode?.isEqualNode(container))
       return
 
     mouse.isCreating = true
