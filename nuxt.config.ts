@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -23,8 +25,7 @@ export default defineNuxtConfig({
       edgeThreshold: 16, // resize and drag bounds
       groupHeight: 160, // height of a group cell,
       intervalWidth: 24, // width of 5 minutes interval cell
-
-      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+      baseURL: process.env.BASE_URL || 'https://kampus-sggw-api.azurewebsites.net/api',
     },
   },
 })
