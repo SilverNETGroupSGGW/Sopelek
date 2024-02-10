@@ -1,4 +1,6 @@
 export default function usePointer(container: HTMLElement, x: number, y: number, width: number, height: number) {
+  const mouse = useMouse()
+  const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
 
   function isOutside(e: PointerEvent) {
@@ -35,7 +37,9 @@ export default function usePointer(container: HTMLElement, x: number, y: number,
   }
 
   function onPointerDown(e: PointerEvent) {
-    const { onDragDown } = useDrag(container, x, y)
+    mouse.currentLesson = scheduler.schedule!.subjects.find(subject => subject.id === (e.target as HTMLElement).id)!
+
+    const { onDragDown } = useDrag(container)
     const { onResizeDown } = useResize(container, x, y, width, height)
 
     if (!isOutside(e)) {

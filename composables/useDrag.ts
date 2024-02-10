@@ -1,6 +1,8 @@
-export default function useDrag(container: HTMLElement, x: number, y: number) {
-  const runtimeConfig = useRuntimeConfig()
+import type { Subject } from '~/types'
+
+export default function useDrag(container: HTMLElement) {
   const mouse = useMouse()
+  const runtimeConfig = useRuntimeConfig()
 
   let offsetX = 0
   let offsetY = 0
@@ -9,8 +11,8 @@ export default function useDrag(container: HTMLElement, x: number, y: number) {
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
     mouse.isDragging = true
 
-    offsetX = e.clientX - x
-    offsetY = e.clientY - y
+    offsetX = e.clientX - mouse.currentLesson.x!
+    offsetY = e.clientY - mouse.currentLesson.y!
 
     e.target?.addEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
     e.target?.addEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
@@ -41,8 +43,8 @@ export default function useDrag(container: HTMLElement, x: number, y: number) {
         else if (newY > containerRect.height - elementRect.height)
           newY = containerRect.height - elementRect.height
 
-        x = newX
-        y = newY
+        mouse.currentLesson.x = newX
+        mouse.currentLesson.y = newY
       })
     }
   }
@@ -54,6 +56,8 @@ export default function useDrag(container: HTMLElement, x: number, y: number) {
 
     target.removeEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
     target.removeEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
+
+    mouse.currentLesson = {} as Subject
   }
 
   return {
