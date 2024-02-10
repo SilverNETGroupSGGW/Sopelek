@@ -22,8 +22,8 @@ export default function useDrag(container: HTMLElement) {
     offsetX.value = e.clientX - mouse.currentLesson.x!
     offsetY.value = e.clientY - mouse.currentLesson.y!
 
-    window.addEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
-    window.addEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
+    window.addEventListener('pointermove', onDragMove)
+    window.addEventListener('pointerup', onDragUp)
   }
 
   function onDragMove(e: PointerEvent) {
