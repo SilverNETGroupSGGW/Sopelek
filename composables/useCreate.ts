@@ -1,4 +1,4 @@
-import type { DayOfWeek, Subject } from '~/types'
+import { type DayOfWeek, type Subject, SubjectType } from '~/types'
 
 export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) {
   const mouse = useMouse()
@@ -23,15 +23,20 @@ export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) 
     baseTime.value.setMinutes(baseTime.value.getMinutes() + Math.floor(offsetX / 24) * 5)
 
     let subject: Subject = {
+      classroom: null,
+      classroomId: null,
       dayOfWeek,
       duration: '00:05:00',
       ghost: true,
       groups: scheduler.schedule!.groups.slice(Math.floor(offsetY / runtimeConfig.public.intervalHeight), Math.floor(offsetY / runtimeConfig.public.intervalHeight) + 1),
+      lecturers: [],
+      lecturersIds: [],
       height: runtimeConfig.public.intervalHeight,
       id: '',
       name: 'Zajęcia',
       scheduleId: scheduler.schedule!.id,
       startTime: baseTime.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+      type: SubjectType.Unknown,
       width: runtimeConfig.public.intervalWidth,
     }
 

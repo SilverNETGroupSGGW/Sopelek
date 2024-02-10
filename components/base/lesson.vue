@@ -58,7 +58,7 @@ async function handleDelete() {
 </script>
 
 <template>
-  <div :id="id" :style="{ width: `${width}px`, height: `${height}px`, transform: `translate(${x}px, ${y}px)`, backgroundColor: stringToColor(name ?? '').backgroundColor, borderColor: stringToColor(name ?? '').borderColor }" class="absolute flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none" :class="[mouse.cursor, ghost && 'opacity-50']">
+  <div :id="id" :style="{ width: `${width! - 2}px`, height: `${height! - 2}px`, transform: `translate(${x}px, ${y}px)`, backgroundColor: stringToColor(name ?? '').backgroundColor, borderColor: stringToColor(name ?? '').borderColor }" class="absolute flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none" :class="[mouse.cursor, ghost && 'opacity-50']">
     <div class="flex w-full flex-wrap items-center justify-between gap-x-2">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
         {{ startTime.slice(0, -3) }} - {{ calculateEndTime() }}
