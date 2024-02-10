@@ -59,7 +59,7 @@ export default function usePointer(container: HTMLElement, dayOfWeek: DayOfWeek)
   }
 
   function onPointerMove(e: PointerEvent) {
-    if (e.target) {
+    if (e.target && !mouse.isDragging) {
       const mouse = useMouse()
 
       const target = e.target as HTMLElement
