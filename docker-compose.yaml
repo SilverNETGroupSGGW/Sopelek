@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
 
     # Uncomment the next line if you want to use a pre-built image from a Docker registry
-    # image: ghcr.io/SilverNETGroupSGGW/kampus-sggw-frontend:latest
+    # image: ghcr.io/SilverNETGroupSGGW/plansggw:latest
     ports:
       - "3000:3000"
     environment:
