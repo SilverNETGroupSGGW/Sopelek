@@ -1,4 +1,4 @@
-export default function useResize(container: HTMLElement, x: number, y: number, width: number, height: number) {
+export default function useResize(container: HTMLElement) {
   const mouse = useMouse()
   const runtimeConfig = useRuntimeConfig()
 
@@ -12,7 +12,7 @@ export default function useResize(container: HTMLElement, x: number, y: number, 
   })
 
   function onResizeDown(e: PointerEvent) {
-    const { getResizeEdge } = usePointer(container, x, y, width, height)
+    const { getResizeEdge } = usePointer(container)
     const runtimeConfig = useRuntimeConfig()
 
     const target = e.target as HTMLElement
@@ -20,10 +20,10 @@ export default function useResize(container: HTMLElement, x: number, y: number, 
     mouse.isResizing = true
 
     original.value = {
-      x,
-      y,
-      width,
-      height,
+      x: mouse.currentLesson.x!,
+      y: mouse.currentLesson.y!,
+      width: mouse.currentLesson.width!,
+      height: mouse.currentLesson.height!,
       mouseX: e.clientX,
       mouseY: e.clientY,
     }
@@ -48,15 +48,15 @@ export default function useResize(container: HTMLElement, x: number, y: number, 
           newX = original.value.x + deltaX
           newWidth = original.value.width - deltaX
           if (newWidth <= runtimeConfig.public.intervalWidth) {
-            x += width - runtimeConfig.public.intervalWidth
-            width = runtimeConfig.public.intervalWidth
+            mouse.currentLesson.x! += mouse.currentLesson.width! - runtimeConfig.public.intervalWidth
+            mouse.currentLesson.width! = runtimeConfig.public.intervalWidth
           }
           else {
             snappedX = Math.round(newX / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
             newWidth = original.value.width + original.value.x - snappedX
             if (newWidth > 0 && newX >= 0) {
-              x = snappedX
-              width = newWidth
+              mouse.currentLesson.x! = snappedX
+              mouse.currentLesson.width! = newWidth
             }
           }
         }
@@ -65,36 +65,40 @@ export default function useResize(container: HTMLElement, x: number, y: number, 
           newY = original.value.y + deltaY
           newHeight = original.value.height - deltaY
           if (newHeight <= runtimeConfig.public.intervalHeight) {
-            y += height - runtimeConfig.public.intervalHeight
-            height = runtimeConfig.public.intervalHeight
+            mouse.currentLesson.y! += mouse.currentLesson.height! - runtimeConfig.public.intervalHeight
+            mouse.currentLesson.height! = runtimeConfig.public.intervalHeight
           }
           else {
             snappedY = Math.round(newY / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
             newHeight = original.value.height + original.value.y - snappedY
             if (newHeight > 0 && newY >= 0) {
-              y = snappedY
-              height = newHeight
+              mouse.currentLesson.y! = snappedY
+              mouse.currentLesson.height! = newHeight
             }
           }
         }
 
         if (mouse.resizeEdge.includes('e')) {
           newWidth = original.value.width + deltaX
-          if (newWidth <= runtimeConfig.public.intervalWidth) { width = runtimeConfig.public.intervalWidth }
+          if (newWidth <= runtimeConfig.public.intervalWidth) {
+            mouse.currentLesson.width! = runtimeConfig.public.intervalWidth
+          }
           else {
             newWidth = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-            if (newWidth + x <= container.offsetWidth)
-              width = newWidth
+            if (newWidth + mouse.currentLesson.x! <= container.offsetWidth)
+              mouse.currentLesson.width! = newWidth
           }
         }
 
         if (mouse.resizeEdge.includes('s')) {
           newHeight = original.value.height + deltaY
-          if (newHeight <= runtimeConfig.public.intervalHeight) { height = runtimeConfig.public.intervalHeight }
+          if (newHeight <= runtimeConfig.public.intervalHeight) {
+            mouse.currentLesson.height! = runtimeConfig.public.intervalHeight
+          }
           else {
             newHeight = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-            if (newHeight + y <= container.offsetHeight)
-              height = newHeight
+            if (newHeight + mouse.currentLesson.y! <= container.offsetHeight)
+              mouse.currentLesson.height! = newHeight
           }
         }
       })

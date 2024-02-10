@@ -13,7 +13,7 @@ let onPointerMove: ((e: PointerEvent) => void) | null = null
 
 watchEffect(() => {
   if (props.container) {
-    ;({ onPointerDown, onPointerMove } = usePointer(props.container, props.x!, props.y!, props.width!, props.height!))
+    ;({ onPointerDown, onPointerMove } = usePointer(props.container))
   }
 })
 
