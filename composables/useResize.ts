@@ -113,6 +113,7 @@ export default function useResize(container: HTMLElement) {
 
         // Recalculate the lesson's start time
         baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
+        baseDate.value.setMinutes(baseDate.value.getMinutes() + (mouse.currentLesson.x! / runtimeConfig.public.intervalWidth) * 5)
         mouse.currentLesson.startTime = baseDate.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 
         // Recalculate duration
