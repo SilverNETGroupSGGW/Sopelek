@@ -1,4 +1,4 @@
-FROM node
+FROM node:latest
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -13,4 +13,6 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "build", "&&", "npm", "run", "preview" ]
+RUN npm run build
+
+CMD [ "node", ".output/server/index.mjs" ]
