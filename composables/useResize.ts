@@ -1,6 +1,6 @@
 import type { Subject } from '~/types'
 
-export default function useResize(container: HTMLElement) {
+export default async function useResize(container: HTMLElement) {
   const mouse = useMouse()
   const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
@@ -38,8 +38,8 @@ export default function useResize(container: HTMLElement) {
 
     mouse.resizeEdge = getResizeEdge(e, rect, edgeThreshold)
 
-    target.addEventListener('pointermove', onResizeMove)
-    target.addEventListener('pointerup', onResizeUp)
+    window.addEventListener('pointermove', onResizeMove)
+    window.addEventListener('pointerup', onResizeUp)
   }
 
   function onResizeMove(e: PointerEvent) {
@@ -125,19 +125,33 @@ export default function useResize(container: HTMLElement) {
     }
   }
 
-  function onResizeUp(e: PointerEvent) {
-    const target = e.target as HTMLElement
-    target.releasePointerCapture(e.pointerId)
-    mouse.isResizing = false
+  async function onResizeUp(e: PointerEvent) {
+    window.removeEventListener('pointermove', onResizeMove)
+    window.removeEventListener('pointerup', onResizeUp)
 
-    target.removeEventListener('pointermove', onResizeMove)
-    target.removeEventListener('pointerup', onResizeUp)
+    {
+      if (!mouse.isResizing)
+        return
 
-    mouse.currentLesson = {} as Subject
-    baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
-  }
+      const target = e.target as HTMLElement
+      target.releasePointerCapture(e.pointerId)
+      mouse.isResizing = false
 
-  return {
-    onResizeDown,
+      await $fetch<Subject>('subjects', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
+        baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+        body: JSON.stringify(mouse.currentLesson),
+      })
+
+      baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
+      mouse.currentLesson = {} as Subject
+    }
+
+    return {
+      onResizeDown,
+    }
   }
 }

@@ -19,8 +19,8 @@ export default function useDrag(container: HTMLElement) {
     offsetX.value = e.clientX - mouse.currentLesson.x!
     offsetY.value = e.clientY - mouse.currentLesson.y!
 
-    e.target?.addEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
-    e.target?.addEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
+    window.addEventListener('pointermove', (e: Event) => onDragMove(e as PointerEvent))
+    window.addEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
   }
 
   function onDragMove(e: PointerEvent) {
@@ -61,13 +61,25 @@ export default function useDrag(container: HTMLElement) {
     }
   }
 
-  function onDragUp(e: PointerEvent) {
+  async function onDragUp(e: PointerEvent) {
+    window.removeEventListener('pointermove', onDragMove)
+    window.removeEventListener('pointerup', onDragUp)
+
+    if (!mouse.isDragging)
+      return
+
     const target = e.target as HTMLElement
     target.releasePointerCapture(e.pointerId)
     mouse.isDragging = false
 
-    target.removeEventListener('pointermove', onDragMove)
-    target.removeEventListener('pointerup', onDragUp)
+    await $fetch<Subject>('subjects', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${useCookie('accessToken').value}`,
+      },
+      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+      body: JSON.stringify(mouse.currentLesson),
+    })
 
     mouse.currentLesson = {} as Subject
     baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
