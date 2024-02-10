@@ -33,8 +33,8 @@ export default function useResize(container: HTMLElement) {
 
     mouse.resizeEdge = getResizeEdge(e, rect, edgeThreshold)
 
-    e.target?.addEventListener('pointermove', (e: Event) => onResizeMove(e as PointerEvent))
-    e.target?.addEventListener('pointerup', (e: Event) => onResizeUp(e as PointerEvent))
+    target.addEventListener('pointermove', onResizeMove)
+    target.addEventListener('pointerup', onResizeUp)
   }
 
   function onResizeMove(e: PointerEvent) {
@@ -110,8 +110,8 @@ export default function useResize(container: HTMLElement) {
     target.releasePointerCapture(e.pointerId)
     mouse.isResizing = false
 
-    e.target?.removeEventListener('pointermove', (e: Event) => onResizeMove(e as PointerEvent))
-    e.target?.removeEventListener('pointerup', (e: Event) => onResizeUp(e as PointerEvent))
+    target.removeEventListener('pointermove', onResizeMove)
+    target.removeEventListener('pointerup', onResizeUp)
   }
 
   return {
