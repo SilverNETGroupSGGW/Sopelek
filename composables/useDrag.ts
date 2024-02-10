@@ -2,10 +2,13 @@ import type { Subject } from '~/types'
 
 export default function useDrag(container: HTMLElement) {
   const mouse = useMouse()
+  const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
 
   let offsetX = 0
   let offsetY = 0
+
+  let baseDate = new Date(1970, 0, 1, 8, 0, 0, 0)
 
   function onDragDown(e: PointerEvent) {
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
@@ -45,6 +48,19 @@ export default function useDrag(container: HTMLElement) {
 
         mouse.currentLesson.x = newX
         mouse.currentLesson.y = newY
+
+        // Recalculate start date
+        const minutes = (newX / 24) * 5
+        baseDate.setHours(8)
+        baseDate.setMinutes(minutes)
+
+        mouse.currentLesson.startTime = baseDate.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+
+        // Recalculate groups
+        const currentGroupIndex = mouse.currentLesson.y! / runtimeConfig.public.intervalHeight
+        const newGroupCount = mouse.currentLesson.height! / runtimeConfig.public.intervalHeight
+        mouse.currentLesson.groups = scheduler.schedule!.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
+        mouse.currentLesson.groupsIds = mouse.currentLesson?.groups!.map(group => group.id)
       })
     }
   }
@@ -58,6 +74,7 @@ export default function useDrag(container: HTMLElement) {
     target.removeEventListener('pointerup', (e: Event) => onDragUp(e as PointerEvent))
 
     mouse.currentLesson = {} as Subject
+    baseDate = new Date(1970, 0, 1, 8, 0, 0, 0)
   }
 
   return {
