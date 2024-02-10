@@ -1,6 +1,6 @@
-import type { Subject } from '~/types'
+import type { DayOfWeek, Subject } from '~/types'
 
-export default function useResize(container: HTMLElement) {
+export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) {
   const mouse = useMouse()
   const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
@@ -18,7 +18,7 @@ export default function useResize(container: HTMLElement) {
   const baseDate = ref(new Date(1970, 0, 1, 8, 0, 0, 0))
 
   function onResizeDown(e: PointerEvent) {
-    const { getResizeEdge } = usePointer(container)
+    const { getResizeEdge } = usePointer(container, dayOfWeek)
     const runtimeConfig = useRuntimeConfig()
 
     const target = e.target as HTMLElement
@@ -34,10 +34,10 @@ export default function useResize(container: HTMLElement) {
       mouseY: e.clientY,
     }
 
-    const rect = target.getBoundingClientRect()
-    const edgeThreshold = runtimeConfig.public.edgeThreshold
-
-    mouse.resizeEdge = getResizeEdge(e, rect, edgeThreshold)
+    if (!mouse.isCreating)
+      mouse.resizeEdge = getResizeEdge(e, target.getBoundingClientRect(), runtimeConfig.public.edgeThreshold)
+    else
+      mouse.resizeEdge = 'se'
 
     window.addEventListener('pointermove', onResizeMove)
     window.addEventListener('pointerup', onResizeUp)
@@ -141,14 +141,21 @@ export default function useResize(container: HTMLElement) {
     target.releasePointerCapture(e.pointerId)
     mouse.isResizing = false
 
-    await $fetch<Subject>('subjects', {
-      method: 'PUT',
+    const subject = await $fetch<Subject>('subjects', {
+      method: mouse.currentLesson.id === '' ? 'POST' : 'PUT',
       headers: {
         Authorization: `Bearer ${useCookie('accessToken').value}`,
       },
       baseURL: runtimeConfig.public.baseURL,
       body: JSON.stringify(mouse.currentLesson),
     })
+
+    if (subject) {
+      if (mouse.currentLesson.id === '') {
+        mouse.currentLesson.ghost = false
+        mouse.currentLesson.id = subject.id
+      }
+    }
 
     baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
     mouse.currentLesson = {} as Subject

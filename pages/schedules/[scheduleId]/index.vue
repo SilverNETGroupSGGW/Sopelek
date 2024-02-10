@@ -17,6 +17,15 @@ if (!route.query.day) {
 // Container
 const container = ref<HTMLElement | null>(null)
 
+let onPointerDown: ((e: PointerEvent) => void) | null = null
+let onPointerMove: ((e: PointerEvent) => void) | null = null
+
+watchEffect(() => {
+  if (container.value) {
+    ;({ onPointerDown, onPointerMove } = usePointer(container.value, route.query.day as DayOfWeek))
+  }
+})
+
 // Data
 const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
@@ -102,7 +111,7 @@ async function handleTabChange(index: number) {
           </div>
         </div>
 
-        <div ref="container" class="relative flex w-full flex-col">
+        <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!">
           <base-lesson v-for="(lesson, index) in scheduler.getSubjectsByDay($route.query.day as DayOfWeek)" :key="index" :container="container!" v-bind="lesson" />
 
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />

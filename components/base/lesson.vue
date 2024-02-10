@@ -8,15 +8,6 @@ const props = defineProps<Subject & {
 // Hooks
 const mouse = useMouse()
 
-let onPointerDown: ((e: PointerEvent) => void) | null = null
-let onPointerMove: ((e: PointerEvent) => void) | null = null
-
-watchEffect(() => {
-  if (props.container) {
-    ;({ onPointerDown, onPointerMove } = usePointer(props.container))
-  }
-})
-
 // Data
 const { lessonTypes } = useData()
 
@@ -51,7 +42,7 @@ function stringToColor(input: string) {
 </script>
 
 <template>
-  <div :id="id" :style="{ width: `${width}px`, height: `${height}px`, transform: `translate(${x}px, ${y}px)`, backgroundColor: stringToColor(name ?? '').backgroundColor, borderColor: stringToColor(name ?? '').borderColor }" class="absolute flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none" :class="[mouse.cursor]" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!">
+  <div :id="id" :style="{ width: `${width}px`, height: `${height}px`, transform: `translate(${x}px, ${y}px)`, backgroundColor: stringToColor(name ?? '').backgroundColor, borderColor: stringToColor(name ?? '').borderColor }" class="absolute flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none" :class="[mouse.cursor, ghost && 'opacity-50']">
     <div class="flex w-full flex-wrap items-center justify-between gap-x-2">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
         {{ startTime.slice(0, -3) }} - {{ calculateEndTime() }}

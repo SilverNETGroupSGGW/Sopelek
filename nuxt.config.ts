@@ -25,6 +25,6 @@ export default defineNuxtConfig({
       intervalWidth: 24, // width of 5 minutes interval cell
 
       baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
-    }
-  }
+    },
+  },
 })

@@ -1,4 +1,6 @@
-export default function usePointer(container: HTMLElement) {
+import type { DayOfWeek } from '~/types'
+
+export default function usePointer(container: HTMLElement, dayOfWeek: DayOfWeek) {
   const mouse = useMouse()
   const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
@@ -40,14 +42,20 @@ export default function usePointer(container: HTMLElement) {
     mouse.currentLesson = scheduler.schedule!.subjects.find(subject => subject.id === (e.target as HTMLElement).id)!
 
     const { onDragDown } = useDrag(container)
-    const { onResizeDown } = useResize(container)
+    const { onResizeDown } = useResize(container, dayOfWeek)
+    const { onCreateDown } = useCreate(container, dayOfWeek)
 
-    if (!isOutside(e)) {
-      onDragDown(e)
-      return
+    if (mouse.currentLesson) {
+      if (!isOutside(e)) {
+        onDragDown(e)
+        return
+      }
+
+      onResizeDown(e)
     }
-
-    onResizeDown(e)
+    else {
+      onCreateDown(e)
+    }
   }
 
   function onPointerMove(e: PointerEvent) {
