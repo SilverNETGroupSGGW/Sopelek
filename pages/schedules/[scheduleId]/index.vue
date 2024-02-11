@@ -54,6 +54,15 @@ async function handleTabChange(index: number) {
     },
   })
 }
+
+// Subject dialog
+const dialog = ref(false)
+const editedSubjectId = ref('')
+
+function handleLessonEdit(id: string) {
+  dialog.value = true
+  editedSubjectId.value = id
+}
 </script>
 
 <template>
@@ -112,11 +121,13 @@ async function handleTabChange(index: number) {
         </div>
 
         <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!">
-          <base-lesson v-for="(lesson, index) in scheduler.getSubjectsByDay($route.query.day as DayOfWeek)" :key="index" :container="container!" v-bind="lesson" />
+          <base-lesson v-for="(lesson, index) in scheduler.getSubjectsByDay($route.query.day as DayOfWeek)" :key="index" :container="container!" v-bind="lesson" @edit="handleLessonEdit(lesson.id)" />
 
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
       </div>
     </div>
   </div>
+
+  <subject-dialog v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
 </template>

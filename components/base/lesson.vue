@@ -6,6 +6,10 @@ const props = defineProps<Subject & {
   container: HTMLElement | null
 }>()
 
+defineEmits<{
+  (e: 'edit'): void
+}>()
+
 // Hooks
 const mouse = useMouse()
 
@@ -71,9 +75,9 @@ async function handleDelete() {
       </small>
 
       <div class="flex items-center gap-2">
-        <NuxtLink :id="`link-${id}`" :to="`/schedules/${scheduleId}/subjects/${id}`" class="text-xs text-indigo-600">
+        <button class="text-xs text-indigo-600" @click="$emit('edit')">
           Edytuj
-        </NuxtLink>
+        </button>
         <button class="text-xs text-red-600" @click="deleteDialog = true">
           Usuń
         </button>
