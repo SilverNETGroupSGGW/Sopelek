@@ -66,8 +66,8 @@ function addLecturer(lecturer: Lecturer) {
 
 function removeLecturer(lecturer: Lecturer) {
   if (data.value!.lecturersIds?.includes(lecturer.id)) {
-    data.value!.lecturers!.splice(data.value!.lecturers!.indexOf(lecturer), 1)
-    data.value!.lecturersIds!.splice(data.value!.lecturersIds!.indexOf(lecturer.id), 1)
+    data.value!.lecturers = data.value?.lecturers?.filter(l => l.id !== lecturer.id)
+    data.value!.lecturersIds = data.value?.lecturersIds?.filter(id => id !== lecturer.id)
   }
 }
 
@@ -94,8 +94,8 @@ function addGroup(group: Group) {
 
 function removeGroup(group: Group) {
   if (data.value!.groupsIds?.includes(group.id!)) {
-    data.value!.groups!.splice(data.value!.groups!.indexOf(group), 1)
-    data.value!.groupsIds!.splice(data.value!.groupsIds!.indexOf(group.id!), 1)
+    data.value!.groups = data.value!.groups?.filter(g => g.id !== group.id)
+    data.value!.groupsIds = data.value!.groupsIds?.filter(id => id !== group.id)
   }
 }
 
