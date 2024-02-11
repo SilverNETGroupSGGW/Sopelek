@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { CalendarDaysIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/vue/20/solid'
-import { type Classroom, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
+import type { Classroom, Group, Lecturer, Lesson, Schedule, Subject } from '~/types'
 
 // Props
 const props = defineProps<{
@@ -25,16 +25,20 @@ const { daysOfWeek, lessonTypes } = useData()
 const scheduler = useScheduler()
 
 const subjects = useSubjects()
-await subjects.get(props.scheduleId)
+if (!subjects.data.length)
+  await subjects.get(props.scheduleId)
 
 const lecturers = useLecturers()
-await lecturers.get()
+if (!lecturers.data.length)
+  await lecturers.get()
 
 const classrooms = useClassrooms()
-await classrooms.get()
+if (!classrooms.data.length)
+  await classrooms.get()
 
 const groups = useGroups()
-await groups.get(props.scheduleId)
+if (!groups.data.length)
+  await groups.get(props.scheduleId)
 
 const search = reactive({
   lecturers: '',
@@ -42,36 +46,15 @@ const search = reactive({
   groups: '',
 })
 
-const data = ref<Subject | null>(null)
+const { data } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
+  baseURL: runtimeConfig.public.baseURL,
+  method: 'GET',
+})
 
-try {
-  const subject = await $fetch<Subject>(`subjects/${props.subjectId}/extended`, {
-    baseURL: runtimeConfig.public.baseURL,
-    method: 'GET',
-  })
-
-  subject.lessons ||= []
-  subject.groupsIds = subject.groups?.map(group => group.id!)
-  subject.lecturersIds = subject.lecturers?.map(lecturer => lecturer.id)
-
-  data.value = subject
-}
-catch {
-  data.value = {
-    id: 'create',
-    scheduleId: props.scheduleId,
-    name: '',
-    type: SubjectType.Unknown,
-    startTime: '08:00:00',
-    duration: '00:05:00',
-    isRemote: false,
-    lecturers: [],
-    lecturersIds: [],
-    classroom: {} as Classroom,
-    classroomId: null,
-    groups: [],
-    groupsIds: [],
-  }
+if (data.value) {
+  data.value.lessons ||= []
+  data.value.groupsIds = data.value.groups?.map(group => group.id!)
+  data.value.lecturersIds = data.value.lecturers?.map(lecturer => lecturer.id)
 }
 
 function addLecturer(lecturer: Lecturer) {
@@ -144,8 +127,6 @@ async function saveChanges() {
   try {
     await subjects.update(data.value!)
     isSubmitting.value = false
-
-    await subjects.get(props.scheduleId)
     await scheduler.get(props.scheduleId)
     model.value = false
   }
@@ -163,7 +144,7 @@ const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.sc
 
 // Generate dates
 // We have to trim T part from schedule.startDate
-if (schedule.value) {
+if (schedule.value && data.value) {
   if (data.value.lessons && data.value.lessons.length === 0) {
     const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${new Date(schedule.value.startDate).toLocaleDateString()}/${15}`, {
       baseURL: runtimeConfig.public.baseURL,
