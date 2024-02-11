@@ -39,13 +39,13 @@ export default function usePointer(container: HTMLElement, dayOfWeek: DayOfWeek)
   }
 
   function onPointerDown(e: PointerEvent) {
-    mouse.currentLesson = scheduler.schedule!.subjects.find(subject => subject.id === (e.target as HTMLElement).id)!
+    mouse.currentSubject = scheduler.schedule!.subjects.find(subject => subject.id === (e.target as HTMLElement).id)!
 
     const { onDragDown } = useDrag(container)
     const { onResizeDown } = useResize(container, dayOfWeek)
     const { onCreateDown } = useCreate(container, dayOfWeek)
 
-    if (mouse.currentLesson) {
+    if (mouse.currentSubject) {
       if (!isOutside(e)) {
         onDragDown(e)
         return

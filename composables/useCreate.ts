@@ -46,7 +46,7 @@ export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) 
     }
 
     scheduler.schedule!.subjects.push(subject)
-    mouse.currentLesson = scheduler.schedule!.subjects.at(-1) as Subject
+    mouse.currentSubject = scheduler.schedule!.subjects.at(-1) as Subject
 
     onResizeDown(e)
   }

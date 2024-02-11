@@ -13,14 +13,14 @@ export default function useDrag(container: HTMLElement) {
   const offsetY = ref(0)
 
   const baseDate = ref(new Date(1970, 0, 1, 8, 0, 0, 0))
-  const minutes = computed(() => (mouse.currentLesson.x! / 24) * 5)
+  const minutes = computed(() => (mouse.currentSubject.x! / 24) * 5)
 
   function onDragDown(e: PointerEvent) {
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
     mouse.isDragging = true
 
-    offsetX.value = e.clientX - mouse.currentLesson.x!
-    offsetY.value = e.clientY - mouse.currentLesson.y!
+    offsetX.value = e.clientX - mouse.currentSubject.x!
+    offsetY.value = e.clientY - mouse.currentSubject.y!
 
     window.addEventListener('pointermove', onDragMove)
     window.addEventListener('pointerup', onDragUp)
@@ -50,18 +50,18 @@ export default function useDrag(container: HTMLElement) {
         else if (newY > containerRect.height - elementRect.height)
           newY = containerRect.height - elementRect.height
 
-        mouse.currentLesson.x = newX
-        mouse.currentLesson.y = newY
+        mouse.currentSubject.x = newX
+        mouse.currentSubject.y = newY
 
         baseDate.value.setHours(8)
         baseDate.value.setMinutes(minutes.value)
 
-        mouse.currentLesson.startTime = baseDate.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+        mouse.currentSubject.startTime = baseDate.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 
-        const currentGroupIndex = mouse.currentLesson.y! / runtimeConfig.public.intervalHeight
-        const newGroupCount = mouse.currentLesson.height! / runtimeConfig.public.intervalHeight
-        mouse.currentLesson.groups = scheduler.schedule!.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
-        mouse.currentLesson.groupsIds = mouse.currentLesson?.groups!.map(group => group.id)
+        const currentGroupIndex = mouse.currentSubject.y! / runtimeConfig.public.intervalHeight
+        const newGroupCount = mouse.currentSubject.height! / runtimeConfig.public.intervalHeight
+        mouse.currentSubject.groups = scheduler.schedule!.groups.slice(currentGroupIndex, currentGroupIndex + newGroupCount)!
+        mouse.currentSubject.groupsIds = mouse.currentSubject?.groups!.map(group => group.id)
       })
     }
   }
@@ -83,10 +83,10 @@ export default function useDrag(container: HTMLElement) {
         Authorization: `Bearer ${useCookie('accessToken').value}`,
       },
       baseURL: runtimeConfig.public.baseURL,
-      body: JSON.stringify(mouse.currentLesson),
+      body: JSON.stringify(mouse.currentSubject),
     })
 
-    mouse.currentLesson = {} as Subject
+    mouse.currentSubject = {} as Subject
     baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
   }
 

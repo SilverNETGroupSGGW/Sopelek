@@ -7,6 +7,6 @@ export const useMouse = defineStore('mouse', {
     isCreating: false,
     isResizing: false,
     resizeEdge: '' as 'nw' | 'ne' | 'se' | 'sw' | 'w' | 'e' | 'n' | 's' | '',
-    currentLesson: {} as Subject
+    currentSubject: {} as Subject
   }),
 })
