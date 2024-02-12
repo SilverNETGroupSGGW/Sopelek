@@ -132,6 +132,7 @@ async function saveChanges() {
   }
   catch (error) {
     isSubmitting.value = false
+    model.value = false
     return Promise.reject(error)
   }
 }
