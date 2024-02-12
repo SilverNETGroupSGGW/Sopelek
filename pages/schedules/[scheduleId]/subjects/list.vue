@@ -26,6 +26,15 @@ function filter(row: Subject) {
 
   return searchFilter && daysFilter
 }
+
+// Edit
+const dialog = ref(false)
+const editedSubjectId = ref('')
+
+function handleLessonEdit(id: string) {
+  editedSubjectId.value = id
+  dialog.value = true
+}
 </script>
 
 <template>
@@ -87,7 +96,7 @@ function filter(row: Subject) {
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-button variant="primary" :to="`/schedules/${route.params.scheduleId}/subjects/${cell.id}`">
+        <base-button variant="primary" @click="handleLessonEdit(cell.id!)">
           Edytuj
         </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
@@ -111,4 +120,6 @@ function filter(row: Subject) {
       </base-button>
     </div>
   </base-dialog>
+
+  <subject-dialog :key="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
 </template>
