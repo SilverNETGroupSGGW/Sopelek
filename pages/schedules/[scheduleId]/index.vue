@@ -129,5 +129,5 @@ function handleLessonEdit(id: string) {
     </div>
   </div>
 
-  <subject-dialog v-if="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
+  <subject-dialog :key="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
 </template>
