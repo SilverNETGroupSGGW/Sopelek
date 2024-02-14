@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InboxIcon, KeyIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
-import { DayOfWeek } from '~/types';
+import { DayOfWeek } from '~/types'
 
 // Data
 const { degrees } = useData()
