@@ -46,7 +46,24 @@ const search = reactive({
   groups: '',
 })
 
-const data = ref<Subject>()
+const data = ref<Subject>({
+  classroom: null,
+  classroomId: null,
+  dayOfWeek: DayOfWeek.Monday,
+  duration: '00:05:00',
+  groups: [],
+  lecturers: [],
+  lecturersIds: [],
+  id: 'create',
+  name: 'Zajęcia',
+  scheduleId: props.scheduleId,
+  startTime: '08:00:00',
+  type: SubjectType.Unknown,
+  lessons: [],
+  groupsIds: [],
+  isRemote: false,
+  comment: '',
+})
 
 try {
   const { data: subject } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
@@ -58,20 +75,6 @@ try {
     data.value = subject.value!
 }
 catch {
-  data.value = {
-    classroom: null,
-    classroomId: null,
-    dayOfWeek: DayOfWeek.Monday,
-    duration: '00:05:00',
-    groups: [],
-    lecturers: [],
-    lecturersIds: [],
-    id: 'create',
-    name: 'Zajęcia',
-    scheduleId: props.scheduleId,
-    startTime: '08:00:00',
-    type: SubjectType.Unknown,
-  }
 }
 
 if (data.value) {
