@@ -7,7 +7,7 @@ export const useScheduler = defineStore('scheduler', {
   getters: {
     getSubjectsByDay: state => (day: DayOfWeek) => {
       return state.schedule!.subjects
-        .filter(subject => subject.dayOfWeek === day)
+        .filter(subject => subject.dayOfWeek === day && subject.groups && subject.groups.length > 0)
         .sort((a, b) => a.startTime.localeCompare(b.startTime))
         .map((subject, index) => ({ ...subject, zIndex: index + 1 }))
     },
