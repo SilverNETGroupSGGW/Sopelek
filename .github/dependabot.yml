@@ -13,3 +13,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      
+production-dependencies:
+  dependency-type: "production"
+development-dependencies:
+  dependency-type: "development"
