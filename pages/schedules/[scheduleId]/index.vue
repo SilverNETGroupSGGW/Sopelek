@@ -14,6 +14,18 @@ if (!route.query.day) {
   })
 }
 
+// Container
+const container = ref<HTMLElement | null>(null)
+
+let onPointerDown: ((e: PointerEvent) => void) | null = null
+let onPointerMove: ((e: PointerEvent) => void) | null = null
+
+watchEffect(() => {
+  if (container.value) {
+    ;({ onPointerDown, onPointerMove } = usePointer(container.value, route.query.day as DayOfWeek))
+  }
+})
+
 // Data
 const { daysOfWeek, studiesDegrees, studiesModes } = useData()
 
@@ -31,21 +43,6 @@ while (initialDate.getHours() < 20 || (initialDate.getHours() === 20 && initialD
 const scheduler = useScheduler()
 await scheduler.get(route.params.scheduleId as string)
 
-// Elements
-const container = ref<HTMLDivElement | null>(null)
-
-let onPointerMove: ((event: PointerEvent) => void) | null = null
-let onPointerDown: ((event: PointerEvent) => void) | null = null
-let onPointerOut: ((event: PointerEvent) => void) | null = null
-let onCreateMove: ((event: PointerEvent) => void) | null = null
-
-watchEffect(() => {
-  if (container.value) {
-    ({ onPointerMove, onPointerDown, onPointerOut } = usePointer(scheduler.schedule!, container.value));
-    ({ onCreateMove } = useCreate(scheduler.schedule!, container.value, route.query.day as DayOfWeek))
-  }
-})
-
 // Tabs
 const tabIndex = ref(daysOfWeek.findIndex(day => day.value === route.query.day))
 
@@ -58,9 +55,13 @@ async function handleTabChange(index: number) {
   })
 }
 
-// Delete
-function handleDelete(id: string) {
-  scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(subject => subject.id !== id)
+// Subject dialog
+const dialog = ref(false)
+const editedSubjectId = ref('')
+
+function handleLessonEdit(id: string) {
+  dialog.value = true
+  editedSubjectId.value = id
 }
 </script>
 
@@ -114,19 +115,19 @@ function handleDelete(id: string) {
 
       <div class="flex w-full">
         <div>
-          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-t border-t-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.groupHeight}px` }">
+          <div v-for="(group, index) in scheduler.schedule!.groups" v-once :id="group.id" :key="index" class="flex w-48 shrink-0 items-center justify-center border-t border-t-gray-200 text-center text-xs text-gray-700" :style="{ height: `${runtimeConfig.public.intervalHeight}px` }">
             {{ group.name }}
           </div>
         </div>
 
-        <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onCreateMove!">
-          <div v-for="(subject, index) in scheduler.getSubjectsByDay(route.query.day as DayOfWeek ?? DayOfWeek.Monday)" :id="subject.id" :key="index" :style="{ transform: `translate(${subject.x}px, ${subject.y}px)`, width: `${subject.width}px`, height: `${subject.height}px` }" class="absolute pb-0.5 pr-0.5" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!" @pointerout.prevent="onPointerOut!">
-            <base-lesson v-bind="subject" :container="container!" :copyable="true" @delete="handleDelete" />
-          </div>
+        <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!">
+          <base-lesson v-for="(lesson, index) in scheduler.getSubjectsByDay($route.query.day as DayOfWeek)" :key="index" :container="container!" v-bind="lesson" @edit="handleLessonEdit(lesson.id)" />
 
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />
         </div>
       </div>
     </div>
   </div>
+
+  <subject-dialog :key="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
 </template>
