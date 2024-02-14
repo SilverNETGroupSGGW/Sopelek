@@ -22,8 +22,8 @@
     "@nuxtjs/tailwindcss": "^6.11.4",
     "eslint": "^8.56.0",
     "eslint-plugin-tailwindcss": "^3.14.2",
-    "nuxt": "3.10.1",
-    "vue": "3.4.18",
+    "nuxt": "3.10.2",
+    "vue": "3.4.19",
     "vue-router": "^4.2.5"
   }
 }
