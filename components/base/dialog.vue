@@ -22,7 +22,7 @@ const model = defineModel<boolean>()
       <div class="fixed inset-0">
         <div class="flex h-full items-center p-4 text-center" :class="[right ? 'justify-end' : 'justify-center']">
           <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0 scale-95" enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100" leave-to="opacity-0 scale-95">
-            <DialogPanel class="flex h-full flex-col rounded-lg bg-white text-left align-middle shadow-xl transition-all" :class="fullSize ? 'w-7/12' : 'w-[32rem] max-h-[36rem]'">
+            <DialogPanel class="flex flex-col rounded-lg bg-white text-left align-middle shadow-xl transition-all" :class="fullSize ? 'h-full w-7/12' : 'w-[32rem] h-auto max-h-[36rem]'">
               <div class="flex items-center justify-between rounded-t-lg border border-b-gray-200 bg-gray-50 p-6">
                 <div class="flex items-center gap-4 text-gray-900">
                   <component :is="icon" class="size-5" />
