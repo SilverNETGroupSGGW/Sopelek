@@ -1,12 +1,12 @@
-import type { Subject } from '~/types'
+import type { Subject } from "~/types";
 
 export const useMouse = defineStore('mouse', {
   state: () => ({
-    currentSubject: null as null | Subject,
-    isCopying: false,
+    cursor: '' as 'cursor-nw-resize' | 'cursor-ne-resize' | 'cursor-se-resize' | 'cursor-sw-resize' | 'cursor-w-resize' | 'cursor-e-resize' | 'cursor-n-resize' | 'cursor-s-resize' | 'cursor-move' | '',
     isDragging: false,
     isCreating: false,
     isResizing: false,
-    resizeEdge: null as null | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left' | 'right' | 'top' | 'bottom',
+    resizeEdge: '' as 'nw' | 'ne' | 'se' | 'sw' | 'w' | 'e' | 'n' | 's' | '',
+    currentSubject: {} as Subject
   }),
 })

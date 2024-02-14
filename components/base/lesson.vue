@@ -3,26 +3,33 @@ import { TrashIcon } from '@heroicons/vue/20/solid'
 import type { Subject } from '~/types'
 
 const props = defineProps<Subject & {
-  container?: HTMLDivElement
-  copyable?: boolean
+  container: HTMLElement | null
 }>()
 
-const emits = defineEmits<{
-  (e: 'delete', id: string): void
+defineEmits<{
+  (e: 'edit'): void
 }>()
 
-const { lessonTypes } = useData()
-
-const scheduler = useScheduler()
-const subjects = useSubjects()
+// Hooks
 const mouse = useMouse()
 
-const deleteDialog = ref(false)
+// Data
+const scheduler = useScheduler()
+const subjects = useSubjects()
+const { lessonTypes } = useData()
 
-function handleDelete() {
-  subjects.delete(props.id)
-  deleteDialog.value = false
-  emits('delete', props.id)
+// Utils
+function calculateEndTime() {
+  if (!props.startTime || !props.duration)
+    return null
+
+  const startTime = new Date(`1970-01-01T${props.startTime}`)
+  const duration = new Date(`1970-01-01T${props.duration}`)
+
+  const endTime = new Date(startTime.getTime() + duration.getTime())
+  endTime.setHours(endTime.getHours() + 2)
+
+  return endTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
 }
 
 function stringToColor(input: string) {
@@ -40,70 +47,38 @@ function stringToColor(input: string) {
   }
 }
 
-// Copy
-const container = ref<HTMLDivElement | null>(null)
-let onDragDown: ((event: MouseEvent) => void) | null = null
+// Delete
+const isDeleting = ref(false)
+const deleteDialog = ref(false)
 
-watchEffect(() => {
-  if (props.container) {
-    container.value = props.container;
-    // const drag = useDrag(scheduler.schedule!, container.value!)
-    // onDragDown = drag.onDragDown
-    ({ onDragDown } = useDrag(scheduler.schedule!, container.value!))
+async function handleDelete() {
+  isDeleting.value = true
+
+  try {
+    await subjects.delete(props.id)
   }
-})
-
-function handleCopy(event: MouseEvent) {
-  mouse.currentSubject = {
-    ...scheduler.schedule!.subjects.find(subject => subject.id === props.id)!,
-    id: 'create',
-    ghost: true,
+  catch {
   }
-
-  scheduler.schedule!.subjects.push(mouse.currentSubject)
-
-  mouse.isCopying = true
-  onDragDown!(event)
-}
-
-// End time
-function calculateEndTime() {
-  if (!props.startTime || !props.duration)
-    return null
-
-  const startTime = new Date(`1970-01-01T${props.startTime}`)
-  const duration = new Date(`1970-01-01T${props.duration}`)
-
-  const endTime = new Date(startTime.getTime() + duration.getTime())
-  endTime.setHours(endTime.getHours() + 2)
-
-  return endTime.toUTCString().slice(-12, -7)
+  finally {
+    scheduler.schedule!.subjects = scheduler.schedule!.subjects.filter(x => x.id !== props.id)
+    deleteDialog.value = false
+    isDeleting.value = false
+  }
 }
 </script>
 
 <template>
-  <div
-    :id="id"
-    data-lesson
-    class="relative flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none"
-    :class="[
-      { 'opacity-50': ghost },
-    ]"
-    :style="{ zIndex, backgroundColor: stringToColor(name!).backgroundColor, borderColor: stringToColor(name!).borderColor }"
-  >
+  <div :id="id" :style="{ width: `${width! - 2}px`, height: `${height! - 2}px`, transform: `translate(${x}px, ${y}px)`, backgroundColor: stringToColor(name ?? '').backgroundColor, borderColor: stringToColor(name ?? '').borderColor }" class="absolute flex size-full flex-col items-start rounded-md border-2 p-4 text-left outline-none" :class="[mouse.cursor, ghost && 'opacity-50']">
     <div class="flex w-full flex-wrap items-center justify-between gap-x-2">
       <small v-if="startTime && duration" class="text-xs text-gray-600">
         {{ startTime.slice(0, -3) }} - {{ calculateEndTime() }}
       </small>
 
       <div class="flex items-center gap-2">
-        <NuxtLink :id="`link-${id}`" :to="`/schedules/${scheduleId}/subjects/${id}`" class="text-xs text-indigo-600">
+        <button class="text-xs text-indigo-600" @click="$emit('edit')">
           Edytuj
-        </NuxtLink>
-        <button v-if="copyable" :id="`copy-${id}`" class="text-xs text-indigo-600" @click="handleCopy">
-          Kopiuj
         </button>
-        <button :id="`delete-${id}`" class="text-xs text-red-600" @click.prevent="deleteDialog = true">
+        <button class="text-xs text-red-600" @click="deleteDialog = true">
           Usuń
         </button>
       </div>
@@ -145,7 +120,7 @@ function calculateEndTime() {
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button variant="danger" @click="handleDelete">
+      <base-button variant="danger" :loading="isDeleting" @click="handleDelete">
         Usuń
       </base-button>
     </div>

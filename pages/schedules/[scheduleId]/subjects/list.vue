@@ -26,6 +26,15 @@ function filter(row: Subject) {
 
   return searchFilter && daysFilter
 }
+
+// Edit
+const dialog = ref(false)
+const editedSubjectId = ref('')
+
+function handleLessonEdit(id: string) {
+  editedSubjectId.value = id
+  dialog.value = true
+}
 </script>
 
 <template>
@@ -43,7 +52,7 @@ function filter(row: Subject) {
       <base-input v-model="search" placeholder="Szukaj" class="w-64" :icon="MagnifyingGlassIcon" />
       <base-select v-model="days" :options="daysOfWeek.map(x => ({ value: x.label }))" placeholder="Dzień tygodnia" class="w-64" :icon="CalendarDaysIcon" />
 
-      <base-button variant="primary" :to="`/schedules/${route.params.scheduleId}/subjects/create`">
+      <base-button variant="primary" @click="handleLessonEdit('create')">
         Dodaj przedmiot
       </base-button>
       <base-button variant="secondary" :to="`/schedules/${route.params.scheduleId}`">
@@ -87,7 +96,7 @@ function filter(row: Subject) {
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-button variant="primary" :to="`/schedules/${route.params.scheduleId}/subjects/${cell.id}`">
+        <base-button variant="primary" @click="handleLessonEdit(cell.id!)">
           Edytuj
         </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
@@ -111,4 +120,6 @@ function filter(row: Subject) {
       </base-button>
     </div>
   </base-dialog>
+
+  <subject-dialog v-if="editedSubjectId" :key="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
 </template>

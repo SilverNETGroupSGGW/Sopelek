@@ -1,69 +1,106 @@
-import type { Schedule } from '~/types'
+import type { DayOfWeek } from '~/types'
 
-export default function usePointer(schedule: Schedule, container: HTMLDivElement | null) {
+export default function usePointer(container: HTMLElement, dayOfWeek: DayOfWeek) {
+  const mouse = useMouse()
+  const scheduler = useScheduler()
   const runtimeConfig = useRuntimeConfig()
 
-  const { onResizeDown, onResizeMove, onResizeUp } = useResize(schedule, container)
-  const { onDragDown } = useDrag(schedule, container)
+  function isOutside(e: PointerEvent) {
+    const target = e.target as HTMLElement
+    const rect = target.getBoundingClientRect()
 
-  function onPointerMove(event: PointerEvent) {
-    const rect = (event.target as HTMLElement).getBoundingClientRect()
-
-    if (!(event.currentTarget as HTMLElement).id) {
-      document.body.style.cursor = 'default'
-      return
-    }
-
-    const nearLeft = Math.abs(event.clientX - rect.left) < runtimeConfig.public.edgeThreshold
-    const nearRight = Math.abs(event.clientX - rect.right) < runtimeConfig.public.edgeThreshold
-    const nearTop = Math.abs(event.clientY - rect.top) < runtimeConfig.public.edgeThreshold
-    const nearBottom = Math.abs(event.clientY - rect.bottom) < runtimeConfig.public.edgeThreshold
-
-    if (!nearLeft && !nearRight && !nearTop && !nearBottom) {
-      (event.currentTarget as HTMLElement).style.cursor = 'move'
-      return
-    }
-
-    if ((nearTop && nearLeft) || (nearBottom && nearRight))
-      (event.currentTarget as HTMLElement).style.cursor = 'nwse-resize'
-
-    else if ((nearTop && nearRight) || (nearBottom && nearLeft))
-      (event.currentTarget as HTMLElement).style.cursor = 'nesw-resize'
-
-    else if (nearLeft || nearRight)
-      (event.currentTarget as HTMLElement).style.cursor = 'ew-resize'
-
-    else if (nearTop || nearBottom)
-      (event.currentTarget as HTMLElement).style.cursor = 'ns-resize'
+    return (
+      e.clientX < rect.left + runtimeConfig.public.edgeThreshold
+      || e.clientX > rect.right - runtimeConfig.public.edgeThreshold
+      || e.clientY < rect.top + runtimeConfig.public.edgeThreshold
+      || e.clientY > rect.bottom - runtimeConfig.public.edgeThreshold
+    )
   }
 
-  function onPointerOut() {
-    document.body.style.cursor = 'default'
+  function getResizeEdge(e: PointerEvent, rect: DOMRect, edgeThreshold: number) {
+    if (e.clientX < rect.left + edgeThreshold && e.clientY < rect.top + edgeThreshold)
+      return 'nw'
+    else if (e.clientX > rect.right - edgeThreshold && e.clientY < rect.top + edgeThreshold)
+      return 'ne'
+    else if (e.clientX > rect.right - edgeThreshold && e.clientY > rect.bottom - edgeThreshold)
+      return 'se'
+    else if (e.clientX < rect.left + edgeThreshold && e.clientY > rect.bottom - edgeThreshold)
+      return 'sw'
+    else if (e.clientX < rect.left + edgeThreshold)
+      return 'w'
+    else if (e.clientX > rect.right - edgeThreshold)
+      return 'e'
+    else if (e.clientY < rect.top + edgeThreshold)
+      return 'n'
+    else if (e.clientY > rect.bottom - edgeThreshold)
+      return 's'
+    else
+      return ''
   }
 
-  function onPointerDown(event: PointerEvent) {
-    // Cleanup existing window event listeners
-    window.removeEventListener('pointermove', onResizeMove)
-    window.removeEventListener('pointerup', onResizeUp)
+  function onPointerDown(e: PointerEvent) {
+    mouse.currentSubject = scheduler.schedule!.subjects.find(subject => subject.id === (e.target as HTMLElement).id)!
 
-    if (event.button !== 0 || (event.target as HTMLElement).id.startsWith('link-') || (event.target as HTMLElement).id.startsWith('copy-') || !(event.target as HTMLElement).id)
-      return
+    const { onDragDown } = useDrag(container)
+    const { onResizeDown } = useResize(container, dayOfWeek)
+    const { onCreateDown } = useCreate(container, dayOfWeek)
 
-    // Determine if we're dragging or resizing
-    const rect = (event.target as HTMLElement).getBoundingClientRect()
-    if (Math.abs(event.clientX - rect.left) < runtimeConfig.public.edgeThreshold || Math.abs(event.clientX - rect.right) < runtimeConfig.public.edgeThreshold || Math.abs(event.clientY - rect.top) < runtimeConfig.public.edgeThreshold || Math.abs(event.clientY - rect.bottom) < runtimeConfig.public.edgeThreshold) {
-      // We're resizing
-      onResizeDown(event)
+    if (mouse.currentSubject) {
+      if (!isOutside(e)) {
+        onDragDown(e)
+        return
+      }
+
+      onResizeDown(e)
     }
     else {
-      // We're dragging
-      onDragDown(event)
+      onCreateDown(e)
+    }
+  }
+
+  function onPointerMove(e: PointerEvent) {
+    if (e.target && !mouse.isDragging) {
+      const mouse = useMouse()
+
+      const target = e.target as HTMLElement
+      const rect = target.getBoundingClientRect()
+      const edgeThreshold = runtimeConfig.public.edgeThreshold
+
+      switch (getResizeEdge(e, rect, edgeThreshold)) {
+        case 'nw':
+          mouse.cursor = 'cursor-nw-resize'
+          break
+        case 'ne':
+          mouse.cursor = 'cursor-ne-resize'
+          break
+        case 'se':
+          mouse.cursor = 'cursor-se-resize'
+          break
+        case 'sw':
+          mouse.cursor = 'cursor-sw-resize'
+          break
+        case 'w':
+          mouse.cursor = 'cursor-w-resize'
+          break
+        case 'e':
+          mouse.cursor = 'cursor-e-resize'
+          break
+        case 'n':
+          mouse.cursor = 'cursor-n-resize'
+          break
+        case 's':
+          mouse.cursor = 'cursor-s-resize'
+          break
+        default:
+          mouse.cursor = 'cursor-move'
+      }
     }
   }
 
   return {
-    onPointerMove,
-    onPointerOut,
+    isOutside,
+    getResizeEdge,
     onPointerDown,
+    onPointerMove,
   }
 }

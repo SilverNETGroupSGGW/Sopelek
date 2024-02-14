@@ -1,89 +1,57 @@
-import { SubjectType } from '~/types'
-import type { DayOfWeek, Schedule, Subject } from '~/types'
+import { type DayOfWeek, type Subject, SubjectType } from '~/types'
 
-export default function useCreate(schedule: Schedule, container: HTMLDivElement | null, dayOfWeek: DayOfWeek) {
-  const runtimeConfig = useRuntimeConfig()
-
+export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) {
   const mouse = useMouse()
+  const runtimeConfig = useRuntimeConfig()
+  const scheduler = useScheduler()
 
-  const { onResizeDown } = useResize(schedule, container)
+  const baseTime = ref(new Date(1970, 0, 0, 8, 0, 0))
 
-  function onCreateMove(event: PointerEvent) {
-    if (event.button !== 0)
+  const { onResizeDown } = useResize(container, dayOfWeek)
+  const { calculatePosition } = useSubject()
+
+  function onCreateDown(e: PointerEvent) {
+    if (!(e.target as HTMLElement).parentNode?.isEqualNode(container))
       return
 
-    const target = event.target as HTMLElement
+    mouse.isCreating = true
 
-    // Prevent creating a new subject when clicking on an existing subject
-    // If nearest target parent has data-lesson, it means we're clicking on an existing subject
-    if (target.closest('[data-lesson]'))
-      return
+    const offsetX = e.clientX - container.getBoundingClientRect().left
+    const offsetY = e.clientY - container.getBoundingClientRect().top
 
-    let x = Math.round((event.clientX - container!.getBoundingClientRect().left - 12) / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-    let y = Math.round((event.clientY - container!.getBoundingClientRect().top - 96) / runtimeConfig.public.groupHeight) * runtimeConfig.public.groupHeight
+    baseTime.value.setHours(8, 0, 0, 0)
+    baseTime.value.setMinutes(baseTime.value.getMinutes() + Math.floor(offsetX / 24) * 5)
 
-    // Check if x or y is outside the bounds and set them to the closest boundary
-    const containerRect = container!.getBoundingClientRect()
-    if (x < 0)
-      x = 0
-    if (y < 0)
-      y = 0
-    if (x > containerRect.width - runtimeConfig.public.intervalWidth)
-      x = containerRect.width - runtimeConfig.public.intervalWidth
-    if (y > containerRect.height - runtimeConfig.public.groupHeight)
-      y = containerRect.height - runtimeConfig.public.groupHeight
-
-    // We need to find the group by the y position
-    // One group is of height runtimeConfig.public.groupHeight
-    const groupIndex = Math.floor(y / runtimeConfig.public.groupHeight)
-    const group = schedule.groups[groupIndex]
-
-    // Same applies for startTime
-    // 5 minutes = runtimeConfig.public.intervalWidth
-    // Between x = 0 and x = 24 - 08:00:00
-    // Between x = 24 and x = 48 - 08:05:00
-    // Between x = 48 and x = 72 - 08:10:00
-    // ...
-    const startTime = new Date(1970, 0, 1, 8, 0, 0)
-    startTime.setMinutes(startTime.getMinutes() + Math.floor(x / runtimeConfig.public.intervalWidth) * 5)
-
-    const newSubject: Subject = {
+    let subject: Subject = {
       classroom: null,
       classroomId: null,
-      comment: '',
-      conflict: false,
-      conflictMessage: undefined,
       dayOfWeek,
       duration: '00:05:00',
       ghost: true,
-      groups: [group],
-      groupsIds: [group.id],
-      height: runtimeConfig.public.groupHeight,
-      id: '',
+      groups: scheduler.schedule!.groups.slice(Math.floor(offsetY / runtimeConfig.public.intervalHeight), Math.floor(offsetY / runtimeConfig.public.intervalHeight) + 1),
       lecturers: [],
       lecturersIds: [],
-      lessons: [],
+      height: runtimeConfig.public.intervalHeight,
+      id: '',
       name: 'Zajęcia',
-      scheduleId: schedule.id,
-      startTime: startTime.toTimeString().slice(0, 8),
+      scheduleId: scheduler.schedule!.id,
+      startTime: baseTime.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
       type: SubjectType.Unknown,
       width: runtimeConfig.public.intervalWidth,
-      x,
-      y,
     }
 
-    mouse.resizeEdge = 'bottom-right'
-    mouse.currentSubject = newSubject
-    mouse.isCreating = true
+    subject = {
+      ...subject,
+      ...calculatePosition(subject, scheduler.schedule!.groups.map(x => x.name)),
+    }
 
-    // Add the new subject to the subjects array
-    schedule.subjects.push(newSubject)
+    scheduler.schedule!.subjects.push(subject)
+    mouse.currentSubject = scheduler.schedule!.subjects.at(-1) as Subject
 
-    // Trigger the resize event
-    onResizeDown(event)
+    onResizeDown(e)
   }
 
   return {
-    onCreateMove,
+    onCreateDown,
   }
 }
