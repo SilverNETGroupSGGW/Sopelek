@@ -48,15 +48,16 @@ const search = reactive({
 
 const data = ref<Subject>()
 
-const { data: subject } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
-  baseURL: runtimeConfig.public.baseURL,
-  method: 'GET',
-})
+try {
+  const { data: subject } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
+    baseURL: runtimeConfig.public.baseURL,
+    method: 'GET',
+  })
 
-if (subject.value) {
-  data.value = subject.value!
+  if (subject.value)
+    data.value = subject.value!
 }
-else {
+catch {
   data.value = {
     classroom: null,
     classroomId: null,
