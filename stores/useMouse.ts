@@ -1,4 +1,4 @@
-import type { Subject } from "~/types";
+import type { Subject } from '~/types'
 
 export const useMouse = defineStore('mouse', {
   state: () => ({
@@ -7,6 +7,6 @@ export const useMouse = defineStore('mouse', {
     isCreating: false,
     isResizing: false,
     resizeEdge: '' as 'nw' | 'ne' | 'se' | 'sw' | 'w' | 'e' | 'n' | 's' | '',
-    currentSubject: {} as Subject
+    currentSubject: {} as Subject,
   }),
 })

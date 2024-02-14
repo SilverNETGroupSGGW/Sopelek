@@ -1,6 +1,6 @@
 services:
   frontend:
-    #! Choose one of the following options to specify the source of the service
+    # ! Choose one of the following options to specify the source of the service
 
     # Uncomment the next line if you want to use a Dockerfile to build the service from source (requrires whole git repo to be cloned)
     build:
@@ -9,6 +9,6 @@ services:
     # Uncomment the next line if you want to use a pre-built image from a Docker registry
     # image: ghcr.io/SilverNETGroupSGGW/plansggw:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - BASE_URL=https://kampus-sggw-api.azurewebsites.net/api
