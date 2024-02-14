@@ -52,7 +52,7 @@ function handleLessonEdit(id: string) {
       <base-input v-model="search" placeholder="Szukaj" class="w-64" :icon="MagnifyingGlassIcon" />
       <base-select v-model="days" :options="daysOfWeek.map(x => ({ value: x.label }))" placeholder="Dzień tygodnia" class="w-64" :icon="CalendarDaysIcon" />
 
-      <base-button variant="primary" :to="`/schedules/${route.params.scheduleId}/subjects/create`">
+      <base-button variant="primary" @click="handleLessonEdit('create')">
         Dodaj przedmiot
       </base-button>
       <base-button variant="secondary" :to="`/schedules/${route.params.scheduleId}`">
@@ -121,5 +121,5 @@ function handleLessonEdit(id: string) {
     </div>
   </base-dialog>
 
-  <subject-dialog :key="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
+  <subject-dialog v-if="editedSubjectId" :key="editedSubjectId" v-model="dialog" :schedule-id="($route.params.scheduleId as string)" :subject-id="editedSubjectId" />
 </template>

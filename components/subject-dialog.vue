@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { CalendarDaysIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/vue/20/solid'
-import type { Classroom, Group, Lecturer, Lesson, Schedule, Subject } from '~/types'
+import { type Classroom, DayOfWeek, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
 
 // Props
 const props = defineProps<{
@@ -46,10 +46,32 @@ const search = reactive({
   groups: '',
 })
 
-const { data } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
+const data = ref<Subject>()
+
+const { data: subject } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
   baseURL: runtimeConfig.public.baseURL,
   method: 'GET',
 })
+
+if (subject.value) {
+  data.value = subject.value!
+}
+else {
+  data.value = {
+    classroom: null,
+    classroomId: null,
+    dayOfWeek: DayOfWeek.Monday,
+    duration: '00:05:00',
+    groups: [],
+    lecturers: [],
+    lecturersIds: [],
+    id: 'create',
+    name: 'Zajęcia',
+    scheduleId: props.scheduleId,
+    startTime: '08:00:00',
+    type: SubjectType.Unknown,
+  }
+}
 
 if (data.value) {
   data.value.lessons ||= []
@@ -126,6 +148,7 @@ async function saveChanges() {
 
   try {
     await subjects.update(data.value!)
+    await subjects.get(props.scheduleId)
     isSubmitting.value = false
     await scheduler.get(props.scheduleId)
     model.value = false
