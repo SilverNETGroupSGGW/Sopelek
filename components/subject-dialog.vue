@@ -174,7 +174,7 @@ const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.sc
 // We have to trim T part from schedule.startDate
 if (schedule.value && data.value) {
   if (data.value.lessons && data.value.lessons.length === 0) {
-    const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${new Date(schedule.value.startDate).toLocaleDateString()}/${15}`, {
+    const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${schedule.value.startDate}/${15}`, {
       baseURL: runtimeConfig.public.baseURL,
       method: 'GET',
     })
