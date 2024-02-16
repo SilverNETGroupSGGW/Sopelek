@@ -27,7 +27,7 @@ function calculateEndTime() {
   const duration = new Date(`1970-01-01T${props.duration}`)
 
   const endTime = new Date(startTime.getTime() + duration.getTime())
-  endTime.setHours(endTime.getHours() + 2)
+  endTime.setHours(endTime.getHours() + 1)
 
   return endTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
 }
