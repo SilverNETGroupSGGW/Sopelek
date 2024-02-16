@@ -87,6 +87,7 @@ export default function useDrag(container: HTMLElement) {
     })
 
     mouse.currentSubject = {} as Subject
+    mouse.resizeEdge = ''
     baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
   }
 

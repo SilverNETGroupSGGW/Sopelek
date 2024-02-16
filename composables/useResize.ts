@@ -134,6 +134,9 @@ export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) 
     window.removeEventListener('pointermove', onResizeMove)
     window.removeEventListener('pointerup', onResizeUp)
 
+    if (mouse.isCreating)
+      mouse.isCreating = false
+
     if (!mouse.isResizing)
       return
 
@@ -159,6 +162,7 @@ export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) 
 
     baseDate.value = new Date(1970, 0, 1, 8, 0, 0, 0)
     mouse.currentSubject = {} as Subject
+    mouse.resizeEdge = ''
   }
 
   return {
