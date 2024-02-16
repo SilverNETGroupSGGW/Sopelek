@@ -23,12 +23,11 @@ function calculateEndTime() {
   if (!props.startTime || !props.duration)
     return null
 
-  const startTime = new Date(`1970-01-01T${props.startTime}`)
-  const duration = new Date(`1970-01-01T${props.duration}`)
+  const startTime = new Date(`1970-01-01T${props.startTime}Z`)
+  const duration = new Date(`1970-01-01T${props.duration}Z`)
 
   const endTime = new Date(startTime.getTime() + duration.getTime())
-  endTime.setHours(endTime.getHours() + 1)
-
+  endTime.setHours(endTime.getHours() - 1)
   return endTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
 }
 
