@@ -53,6 +53,30 @@ export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) 
         const deltaY = e.clientY - original.value.mouseY
         let newX: number, newY: number, newWidth: number, newHeight: number, snappedX: number, snappedY: number
 
+        if (mouse.resizeEdge.includes('e')) {
+          newWidth = original.value.width + deltaX
+          if (newWidth <= runtimeConfig.public.intervalWidth) {
+            mouse.currentSubject.width! = runtimeConfig.public.intervalWidth
+          }
+          else {
+            newWidth = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
+            if (newWidth + mouse.currentSubject.x! <= container.offsetWidth)
+              mouse.currentSubject.width! = newWidth
+          }
+        }
+
+        if (mouse.resizeEdge.includes('s')) {
+          newHeight = original.value.height + deltaY
+          if (newHeight <= runtimeConfig.public.intervalHeight) {
+            mouse.currentSubject.height! = runtimeConfig.public.intervalHeight
+          }
+          else {
+            newHeight = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
+            if (newHeight + mouse.currentSubject.y! <= container.offsetHeight)
+              mouse.currentSubject.height! = newHeight
+          }
+        }
+
         if (mouse.resizeEdge.includes('w')) {
           newX = original.value.x + deltaX
           newWidth = original.value.width - deltaX
@@ -84,30 +108,6 @@ export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) 
               mouse.currentSubject.y! = snappedY
               mouse.currentSubject.height! = newHeight
             }
-          }
-        }
-
-        if (mouse.resizeEdge.includes('e')) {
-          newWidth = original.value.width + deltaX
-          if (newWidth <= runtimeConfig.public.intervalWidth) {
-            mouse.currentSubject.width! = runtimeConfig.public.intervalWidth
-          }
-          else {
-            newWidth = Math.round(newWidth / runtimeConfig.public.intervalWidth) * runtimeConfig.public.intervalWidth
-            if (newWidth + mouse.currentSubject.x! <= container.offsetWidth)
-              mouse.currentSubject.width! = newWidth
-          }
-        }
-
-        if (mouse.resizeEdge.includes('s')) {
-          newHeight = original.value.height + deltaY
-          if (newHeight <= runtimeConfig.public.intervalHeight) {
-            mouse.currentSubject.height! = runtimeConfig.public.intervalHeight
-          }
-          else {
-            newHeight = Math.round(newHeight / runtimeConfig.public.intervalHeight) * runtimeConfig.public.intervalHeight
-            if (newHeight + mouse.currentSubject.y! <= container.offsetHeight)
-              mouse.currentSubject.height! = newHeight
           }
         }
 
