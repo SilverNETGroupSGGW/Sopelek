@@ -25,6 +25,9 @@ export const useSchedule = defineStore('schedule', {
       const { data } = await useFetch<Schedule[]>('schedules', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
       })
 
       // Update data.startDate to match YYYY-MM-DD format

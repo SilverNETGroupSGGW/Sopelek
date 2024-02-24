@@ -20,6 +20,9 @@ export const useScheduler = defineStore('scheduler', {
       const { data } = await useFetch<Schedule>(`schedules/${scheduleId}/extended`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
       })
 
       data.value!.subjects = data.value!.subjects.map((subject) => {
