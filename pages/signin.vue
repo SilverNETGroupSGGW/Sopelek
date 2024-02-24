@@ -12,6 +12,8 @@ interface UserResponse {
   accessToken: string
 }
 
+const runtimeConfig = useRuntimeConfig()
+
 definePageMeta({
   layout: 'user',
 })
@@ -33,7 +35,7 @@ async function handleFormSubmit() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(form),
-      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api/',
+      baseURL: runtimeConfig.public.baseURL,
     })
     isSubmitting.value = false
 

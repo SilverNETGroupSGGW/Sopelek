@@ -11,4 +11,4 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - BASE_URL=https://kampus-sggw-api.azurewebsites.net/api
+      - BASE_URL=https://boleroapi.azurewebsites.net/api
