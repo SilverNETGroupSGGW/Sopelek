@@ -24,7 +24,7 @@ export default defineNuxtConfig({
       intervalHeight: 160, // height of a group cell,
       intervalWidth: 24, // width of 5 minutes interval cell
 
-      baseURL: 'https://kampus-sggw-api.azurewebsites.net/api',
+      baseURL: 'https://boleroapi.azurewebsites.net/api',
     },
   },
 })
