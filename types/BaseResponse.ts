@@ -8,10 +8,10 @@ export interface BaseResponse<T> {
     pageSize: number
     page: number
     totalPages: number
-  }
+  } | null
   hasError: boolean
   errorMessage: string | null
   isAuthorized: boolean
-  tenantId: string
-  organizationId: string
+  tenantId: string | null
+  organizationId: string | null
 }
