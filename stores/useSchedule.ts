@@ -1,4 +1,4 @@
-import type { Schedule } from '~/types'
+import type { BaseResponse, Schedule } from '~/types'
 
 export const useSchedule = defineStore('schedule', {
   state: () => ({
@@ -22,7 +22,7 @@ export const useSchedule = defineStore('schedule', {
   actions: {
     async get() {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<Schedule[]>('schedules', {
+      const { data } = await useFetch<BaseResponse<Schedule[]>>('schedules', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
@@ -31,12 +31,12 @@ export const useSchedule = defineStore('schedule', {
       })
 
       // Update data.startDate to match YYYY-MM-DD format
-      data.value!.forEach((schedule) => {
+      data.value!.data.forEach((schedule) => {
         schedule.startDate = schedule.startDate.split('T')[0]
         schedule.isDownloading = false
       })
 
-      this.data = data.value!
+      this.data = data.value!.data
     },
     async create(schedule: Schedule) {
       const runtimeConfig = useRuntimeConfig()

@@ -1,4 +1,4 @@
-import type { Subject, SubjectConflict } from '~/types'
+import type { BaseResponse, Subject, SubjectConflict } from '~/types'
 
 export const useSubjects = defineStore('subjects', {
   state: () => ({
@@ -23,7 +23,7 @@ export const useSubjects = defineStore('subjects', {
   actions: {
     async get(scheduleId: string) {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<Subject[]>(`subjects/schedule/${scheduleId}/extended`, {
+      const { data } = await useFetch<BaseResponse<Subject[]>>(`subjects/schedule/${scheduleId}/extended`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
@@ -31,7 +31,7 @@ export const useSubjects = defineStore('subjects', {
         },
       })
 
-      this.data = data.value!.sort((a, b) => {
+      this.data = data.value!.data.sort((a, b) => {
         if (a.dayOfWeek === b.dayOfWeek)
           return a.startTime!.localeCompare(b.startTime!)
 

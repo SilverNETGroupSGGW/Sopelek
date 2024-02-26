@@ -1,4 +1,4 @@
-import type { DayOfWeek, Schedule, SubjectConflict } from '~/types'
+import type { BaseResponse, DayOfWeek, Schedule, SubjectConflict } from '~/types'
 
 export const useScheduler = defineStore('scheduler', {
   state: () => ({
@@ -17,7 +17,7 @@ export const useScheduler = defineStore('scheduler', {
       const runtimeConfig = useRuntimeConfig()
       const { calculatePosition } = useSubject()
 
-      const { data } = await useFetch<Schedule>(`schedules/${scheduleId}/extended`, {
+      const { data } = await useFetch<BaseResponse<Schedule>>(`schedules/${scheduleId}/extended`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
@@ -25,8 +25,8 @@ export const useScheduler = defineStore('scheduler', {
         },
       })
 
-      data.value!.subjects = data.value!.subjects.map((subject) => {
-        const { x, y, width, height } = calculatePosition(subject, data.value!.groups.map(x => x.name))
+      data.value!.data.subjects = data.value!.data.subjects.map((subject) => {
+        const { x, y, width, height } = calculatePosition(subject, data.value!.data.groups.map(x => x.name))
         return {
           ...subject,
           conflict: false,
@@ -43,7 +43,7 @@ export const useScheduler = defineStore('scheduler', {
         }
       })
 
-      this.schedule = data.value!
+      this.schedule = data.value!.data
     },
     async getConflicts(scheduleId: string, dayOfWeek: DayOfWeek) {
       const runtimeConfig = useRuntimeConfig()

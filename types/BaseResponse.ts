@@ -1,7 +1,7 @@
 export interface BaseResponse<T> {
-  data: T[]
-  isPaginated: true
-  alreadyPaginated: true
+  data: T
+  isPaginated: boolean
+  alreadyPaginated: boolean
   pagination: {
     total: number
     count: number

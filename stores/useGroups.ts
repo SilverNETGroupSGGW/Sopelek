@@ -1,4 +1,4 @@
-import type { Group } from '~/types'
+import type { BaseResponse, Group } from '~/types'
 
 export const useGroups = defineStore('groups', {
   state: () => ({
@@ -22,7 +22,7 @@ export const useGroups = defineStore('groups', {
   actions: {
     async get(scheduleId: string) {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<Group[]>(`groups/schedule/${scheduleId}`, {
+      const { data } = await useFetch<BaseResponse<Group[]>>(`groups/schedule/${scheduleId}`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
@@ -30,7 +30,7 @@ export const useGroups = defineStore('groups', {
         },
       })
 
-      this.data = data.value!.sort((a, b) => a.name.localeCompare(b.name))
+      this.data = data.value!.data.sort((a, b) => a.name.localeCompare(b.name))
     },
     async create(group: Group) {
       const runtimeConfig = useRuntimeConfig()

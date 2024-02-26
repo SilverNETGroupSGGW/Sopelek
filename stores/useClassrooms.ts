@@ -1,4 +1,4 @@
-import type { Classroom } from '~/types'
+import type { BaseResponse, Classroom } from '~/types'
 
 export const useClassrooms = defineStore('classrooms', {
   state: () => ({
@@ -22,15 +22,16 @@ export const useClassrooms = defineStore('classrooms', {
   actions: {
     async get() {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<Classroom[]>('classrooms', {
+      const { data } = await useFetch<BaseResponse<Classroom[]>>('classrooms', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
         },
       })
+      
 
-      this.data = data.value!.sort((a, b) => {
+      this.data = data.value!.data.sort((a, b) => {
         const aNumber = Number(a.name)
         const bNumber = Number(b.name)
 
