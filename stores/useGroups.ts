@@ -34,7 +34,7 @@ export const useGroups = defineStore('groups', {
     },
     async create(group: Group) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<Group>('groups', {
+      const data = await $fetch<BaseResponse<Group>>('groups', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(group),
@@ -43,11 +43,11 @@ export const useGroups = defineStore('groups', {
         },
       })
 
-      this.data.push(data)
+      this.data.push(data.data)
     },
     async update(group: Group) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<Group>('groups', {
+      const data = await $fetch<BaseResponse<Group>>('groups', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(group),
@@ -56,8 +56,8 @@ export const useGroups = defineStore('groups', {
         },
       })
 
-      const index = this.data.findIndex(l => l.id === data.id)
-      this.data[index] = data
+      const index = this.data.findIndex(l => l.id === data.data.id)
+      this.data[index] = data.data
     },
     async delete(group: Group) {
       const runtimeConfig = useRuntimeConfig()

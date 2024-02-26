@@ -42,7 +42,7 @@ export const useSubjects = defineStore('subjects', {
     async create(subject: Subject) {
       try {
         const runtimeConfig = useRuntimeConfig()
-        const data = await $fetch<Subject>('subjects', {
+        const data = await $fetch<BaseResponse<Subject>>('subjects', {
           baseURL: runtimeConfig.public.baseURL,
           method: 'POST',
           body: JSON.stringify(subject),
@@ -51,7 +51,7 @@ export const useSubjects = defineStore('subjects', {
           },
         })
 
-        this.data.push(data)
+        this.data.push(data.data)
       }
       catch (error) {
         return Promise.reject(error)
@@ -60,7 +60,7 @@ export const useSubjects = defineStore('subjects', {
     async update(subject: Subject) {
       try {
         const runtimeConfig = useRuntimeConfig()
-        const data = await $fetch<Subject>('subjects', {
+        const data = await $fetch<BaseResponse<Subject>>('subjects', {
           baseURL: runtimeConfig.public.baseURL,
           method: subject.id === 'create' ? 'POST' : 'PUT',
           body: JSON.stringify(subject),
@@ -69,8 +69,8 @@ export const useSubjects = defineStore('subjects', {
           },
         })
 
-        const index = this.data.findIndex(l => l.id === data.id)
-        this.data[index] = data
+        const index = this.data.findIndex(l => l.id === data.data.id)
+        this.data[index] = data.data
 
         return data
       }

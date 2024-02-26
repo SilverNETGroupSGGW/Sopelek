@@ -43,7 +43,7 @@ export const useClassrooms = defineStore('classrooms', {
     },
     async create(classroom: Classroom) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<Classroom>('classrooms', {
+      const data = await $fetch<BaseResponse<Classroom>>('classrooms', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(classroom),
@@ -52,11 +52,11 @@ export const useClassrooms = defineStore('classrooms', {
         },
       })
 
-      this.data.push(data)
+      this.data.push(data.data)
     },
     async update(classroom: Classroom) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<Classroom>('classrooms', {
+      const data = await $fetch<BaseResponse<Classroom>>('classrooms', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(classroom),
@@ -65,8 +65,8 @@ export const useClassrooms = defineStore('classrooms', {
         },
       })
 
-      const index = this.data.findIndex(l => l.id === data.id)
-      this.data[index] = data
+      const index = this.data.findIndex(l => l.id === data.data.id)
+      this.data[index] = data.data
     },
     async delete(classroom: Classroom) {
       const runtimeConfig = useRuntimeConfig()

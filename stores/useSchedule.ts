@@ -45,7 +45,7 @@ export const useSchedule = defineStore('schedule', {
       schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
       schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
 
-      const data = await $fetch<Schedule>('schedules', {
+      const data = await $fetch<BaseResponse<Schedule>>('schedules', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(schedule),
@@ -54,7 +54,7 @@ export const useSchedule = defineStore('schedule', {
         },
       })
 
-      this.data.push(data)
+      this.data.push(data.data)
     },
     async update(schedule: Schedule) {
       const runtimeConfig = useRuntimeConfig()
@@ -63,7 +63,7 @@ export const useSchedule = defineStore('schedule', {
       schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
       schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
 
-      const data = await $fetch<Schedule>('schedules', {
+      const data = await $fetch<BaseResponse<Schedule>>('schedules', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(schedule),
@@ -72,8 +72,8 @@ export const useSchedule = defineStore('schedule', {
         },
       })
 
-      const index = this.data.findIndex(l => l.id === data.id)
-      this.data[index] = data
+      const index = this.data.findIndex(l => l.id === data.data.id)
+      this.data[index] = data.data
     },
     async delete(schedule: Schedule) {
       const runtimeConfig = useRuntimeConfig()

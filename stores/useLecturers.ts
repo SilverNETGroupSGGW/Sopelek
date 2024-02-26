@@ -18,7 +18,7 @@ export const useLecturers = defineStore('lecturers', {
   actions: {
     async get() {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Lecturer>>('lecturers', {
+      const { data } = await useFetch<BaseResponse<Lecturer[]>>('lecturers', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
@@ -32,7 +32,7 @@ export const useLecturers = defineStore('lecturers', {
       const runtimeConfig = useRuntimeConfig()
       // const { degrees } = useData()
       // lecturer.academicDegree = (degrees.find(degree => degree.value === lecturer.academicDegree))!.type
-      const data = await $fetch<Lecturer>('lecturers', {
+      const data = await $fetch<BaseResponse<Lecturer>>('lecturers', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(lecturer),
@@ -41,11 +41,11 @@ export const useLecturers = defineStore('lecturers', {
         },
       })
 
-      this.data.push(data)
+      this.data.push(data.data)
     },
     async update(lecturer: Lecturer) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<Lecturer>('lecturers', {
+      const data = await $fetch<BaseResponse<Lecturer>>('lecturers', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
         body: JSON.stringify(lecturer),
@@ -54,8 +54,8 @@ export const useLecturers = defineStore('lecturers', {
         },
       })
 
-      const index = this.data.findIndex(l => l.id === data.id)
-      this.data[index] = data
+      const index = this.data.findIndex(l => l.id === data.data.id)
+      this.data[index] = data.data
     },
     async delete(lecturer: Lecturer) {
       const runtimeConfig = useRuntimeConfig()
