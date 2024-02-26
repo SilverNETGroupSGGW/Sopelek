@@ -1,4 +1,4 @@
-import type { Lecturer } from '~/types'
+import type { BaseResponse, Lecturer } from '~/types'
 
 export const useLecturers = defineStore('lecturers', {
   state: () => ({
@@ -18,7 +18,7 @@ export const useLecturers = defineStore('lecturers', {
   actions: {
     async get() {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<Lecturer[]>('lecturers', {
+      const { data } = await useFetch<BaseResponse<Lecturer>>('lecturers', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
         headers: {
@@ -26,7 +26,7 @@ export const useLecturers = defineStore('lecturers', {
         },
       })
 
-      this.data = data.value!.sort((a, b) => a.surname.localeCompare(b.surname))
+      this.data = data.value!.data.sort((a, b) => a.surname.localeCompare(b.surname))
     },
     async create(lecturer: Lecturer) {
       const runtimeConfig = useRuntimeConfig()
