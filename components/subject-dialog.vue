@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { CalendarDaysIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/vue/20/solid'
-import { type Classroom, DayOfWeek, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
+import { type BaseResponse, type Classroom, DayOfWeek, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
 
 // Props
 const props = defineProps<{
@@ -66,13 +66,13 @@ const data = ref<Subject>({
 })
 
 try {
-  const { data: subject } = await useFetch<Subject>(`subjects/${props.subjectId}/extended`, {
+  const { data: subject } = await useFetch<BaseResponse<Subject>>(`subjects/${props.subjectId}/extended`, {
     baseURL: runtimeConfig.public.baseURL,
     method: 'GET',
   })
 
   if (subject.value)
-    data.value = subject.value!
+    data.value = subject.value!.data
 }
 catch {
 }
