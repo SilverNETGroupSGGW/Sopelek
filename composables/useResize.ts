@@ -1,4 +1,4 @@
-import type { DayOfWeek, Subject } from '~/types'
+import type { BaseResponse, DayOfWeek, Subject } from '~/types'
 
 export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) {
   const mouse = useMouse()
@@ -144,7 +144,7 @@ export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) 
     target.releasePointerCapture(e.pointerId)
     mouse.isResizing = false
 
-    const subject = await $fetch<Subject>('subjects', {
+    const subject = await $fetch<BaseResponse<Subject>>('subjects', {
       method: mouse.currentSubject.id === '' ? 'POST' : 'PUT',
       headers: {
         Authorization: `Bearer ${useCookie('accessToken').value}`,
@@ -156,7 +156,7 @@ export default function useResize(container: HTMLElement, dayOfWeek: DayOfWeek) 
     if (subject) {
       if (mouse.currentSubject.id === '') {
         mouse.currentSubject.ghost = false
-        mouse.currentSubject.id = subject.id
+        mouse.currentSubject.id = subject.data.id
       }
     }
 

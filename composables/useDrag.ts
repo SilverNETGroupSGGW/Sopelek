@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import type { Subject } from '~/types'
+import type { BaseResponse, Subject } from '~/types'
 
 export default function useDrag(container: HTMLElement) {
   const mouse = useMouse()
@@ -77,7 +77,7 @@ export default function useDrag(container: HTMLElement) {
     target.releasePointerCapture(e.pointerId)
     mouse.isDragging = false
 
-    await $fetch<Subject>('subjects', {
+    await $fetch<BaseResponse<Subject>>('subjects', {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${useCookie('accessToken').value}`,
