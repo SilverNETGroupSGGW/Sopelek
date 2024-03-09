@@ -25,9 +25,6 @@ export const useGroups = defineStore('groups', {
       const { data } = await useFetch<BaseResponse<Group[]>>(`groups/schedule/${scheduleId}`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
       })
 
       this.data = data.value!.data.sort((a, b) => a.name.localeCompare(b.name))

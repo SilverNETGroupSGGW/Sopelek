@@ -25,12 +25,8 @@ export const useClassrooms = defineStore('classrooms', {
       const { data } = await useFetch<BaseResponse<Classroom[]>>('classrooms', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
       })
       
-
       this.data = data.value!.data.sort((a, b) => {
         const aNumber = Number(a.name)
         const bNumber = Number(b.name)

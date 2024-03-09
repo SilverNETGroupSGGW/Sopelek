@@ -1,5 +1,4 @@
-import { AcademicDegree, DayOfWeek, StudyMode, SubjectType } from '~/types'
-import { DegreeOfStudy } from '~/types/Schedule'
+import { AcademicDegree, DayOfWeek, DegreeOfStudy, StudyMode, SubjectType } from '~/types'
 
 export default function useData() {
   const fieldOfStudies = [

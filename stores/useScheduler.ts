@@ -5,9 +5,10 @@ export const useScheduler = defineStore('scheduler', {
     schedule: null as Schedule | null,
   }),
   getters: {
-    getSubjectsByDay: state => (day: DayOfWeek) => {
+    getSubjectsByDay: state => (day: DayOfWeek[]) => {
       return state.schedule!.subjects
-        .filter(subject => subject.dayOfWeek === day && subject.groups && subject.groups.length > 0)
+        .filter(subject => !!subject.dayOfWeek)
+        .filter(subject => day.includes(subject.dayOfWeek!) && subject.groups && subject.groups.length > 0)
         .sort((a, b) => a.startTime.localeCompare(b.startTime))
         .map((subject, index) => ({ ...subject, zIndex: index + 1 }))
     },
@@ -20,9 +21,6 @@ export const useScheduler = defineStore('scheduler', {
       const { data } = await useFetch<BaseResponse<Schedule>>(`schedules/${scheduleId}/extended`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
       })
 
       data.value!.data.subjects = data.value!.data.subjects.map((subject) => {

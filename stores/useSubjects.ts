@@ -26,9 +26,6 @@ export const useSubjects = defineStore('subjects', {
       const { data } = await useFetch<BaseResponse<Subject[]>>(`subjects/schedule/${scheduleId}/extended`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
       })
 
       this.data = data.value!.data.sort((a, b) => {

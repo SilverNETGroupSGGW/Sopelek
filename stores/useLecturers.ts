@@ -21,9 +21,6 @@ export const useLecturers = defineStore('lecturers', {
       const { data } = await useFetch<BaseResponse<Lecturer[]>>('lecturers', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
       })
 
       this.data = data.value!.data.sort((a, b) => a.surname.localeCompare(b.surname))
