@@ -49,9 +49,6 @@ watchEffect(() => {
         <base-button variant="primary" @click="handleDialogOpen('update', cell.id!)">
           Edytuj
         </base-button>
-        <base-button :to="`/lecturers/${cell.id}?day=${DayOfWeek.Monday}`" variant="secondary">
-          Plan
-        </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
           Usuń
         </base-button>
