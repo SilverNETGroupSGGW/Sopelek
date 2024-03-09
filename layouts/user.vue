@@ -16,8 +16,11 @@ const isOfetchEmpty = computed(() => {
 </script>
 
 <template>
-  <div class="flex h-[100dvh] w-screen items-center justify-center bg-[url('~/assets/shapes.svg')] p-4">
-    <slot />
+  <div class="flex h-screen w-screen">
+    <div class="h-full w-1/3">
+      <slot />
+    </div>
+    <div class="w-2/3 bg-indigo-600" />
   </div>
 
   <base-toast type="error" :show="!isOfetchEmpty" @close="resetOfetchStatus">

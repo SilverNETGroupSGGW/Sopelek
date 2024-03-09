@@ -52,13 +52,14 @@ async function handleFormSubmit() {
 </script>
 
 <template>
-  <div class="flex w-96 flex-col items-center rounded-2xl border-2 border-gray-200 bg-white px-8 py-12">
-    <h1 class="mb-2 text-center text-3xl font-bold text-gray-900">
+  <div class="flex h-full flex-col justify-center bg-white px-16">
+    <h1 class="mb-2 text-left text-3xl font-bold text-gray-900">
       Witamy!
     </h1>
-    <p class="mb-6 text-balance text-center text-gray-700">
+    <p class="mb-6 text-balance text-left text-gray-700">
       Zaloguj się za pomocą swojego maila.
     </p>
+
     <form class="w-full" @submit.prevent="handleFormSubmit">
       <div class="mb-8 space-y-5">
         <base-input v-model="form.email" :icon="InboxIcon" type="email" placeholder="pXXXXXX@sggw.edu.pl" label="Adres e-mail" autocomplete="false" />
