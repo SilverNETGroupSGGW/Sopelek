@@ -15,9 +15,6 @@ export default defineNuxtConfig({
       'Open+Sans': [400, 500, 600, 700],
     },
   },
-  devtools: {
-    enabled: true,
-  },
   runtimeConfig: {
     public: {
       edgeThreshold: 16, // resize and drag bounds
