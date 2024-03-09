@@ -27,7 +27,7 @@ watchEffect(() => {
 })
 
 // Data
-const { daysOfWeek, studiesDegrees, studiesModes } = useData()
+const { daysOfWeek } = useData()
 
 // Time range
 const timeRange: Date[] = []
@@ -75,15 +75,6 @@ function handleLessonEdit(id: string) {
 
         <p class="font-semibold text-indigo-600">
           {{ scheduler.schedule!.name }}
-        </p>
-        <p class="text-indigo-600">
-          {{ scheduler.schedule!.faculty }}, {{ scheduler.schedule!.fieldOfStudy }}
-        </p>
-        <p class="text-indigo-600">
-          {{ studiesModes.find(x => x.type === scheduler.schedule!.studyMode)?.value }}, {{ studiesDegrees.find(x => x.type === scheduler.schedule!.degreeOfStudy)?.value }}
-        </p>
-        <p class="text-gray-700">
-          Rok {{ scheduler.schedule!.year }}, semestr {{ scheduler.schedule!.semester }}
         </p>
       </div>
 

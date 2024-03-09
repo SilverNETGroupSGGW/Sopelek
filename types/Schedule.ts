@@ -1,3 +1,6 @@
+import type { Group } from './Group'
+import type { Subject } from './Subject'
+
 export enum DegreeOfStudy {
   BachelorsDegree = 'BachelorsDegree',
   MastersDegree = 'MastersDegree',
@@ -15,8 +18,10 @@ export enum StudyMode {
 export interface Schedule {
   created?: string
   id: string
+  groups: Group[]
   name: string
   studyProgramId: string | null
+  subjects: Subject[]
   updated?: string
   year: number
 
