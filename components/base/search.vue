@@ -40,7 +40,7 @@ const filteredOptions = computed(() => {
 
           <ComboboxOptions v-else class="absolute z-10 mt-4 max-h-96 w-full overflow-auto rounded-lg border border-gray-200 bg-white px-1 py-2 text-base shadow-lg focus:outline-none">
             <ComboboxOption v-for="(option, index) in filteredOptions" :key="index" v-slot="{ active }" as="template" :value="option.value">
-              <li class="relative cursor-default select-none rounded-lg px-5 py-2" :class="{ 'bg-indigo-600 text-white': active, 'text-gray-900': !active }">
+              <li class="relative cursor-pointer select-none rounded-lg px-5 py-2" :class="{ 'bg-indigo-600 text-white': active, 'text-gray-900': !active }">
                 <slot v-if="$slots.options" name="options" :option="option" :active="active" />
                 <span v-else class="block truncate">{{ option.value }}</span>
               </li>

@@ -74,10 +74,10 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
-        <base-button variant="secondary" :disabled="isSubmitting" :loading="isSubmitting" @click="updateDialog = false">
+        <base-button variant="secondary" @click="updateDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit">
+        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>

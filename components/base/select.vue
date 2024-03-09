@@ -34,7 +34,7 @@ const modelValue = defineModel<string>()
         <Transition leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
           <ListboxOptions class="absolute z-10 mt-4 max-h-40 w-full overflow-auto rounded-lg border border-gray-200 bg-white px-1 py-2 text-base shadow-lg focus:outline-none">
             <ListboxOption v-for="(option, index) in options" :key="index" v-slot="{ active }" as="template" :value="option.value">
-              <li class="relative cursor-default select-none rounded-lg px-5 py-2" :class="{ 'bg-indigo-600 text-white': active, 'text-gray-900': !active }">
+              <li class="relative cursor-pointer select-none rounded-lg px-5 py-2" :class="{ 'bg-indigo-600 text-white': active, 'text-gray-900': !active }">
                 <slot v-if="$slots.options" name="options" :option="option" :active="active" />
                 <span v-else class="block truncate">{{ option.value }}</span>
               </li>

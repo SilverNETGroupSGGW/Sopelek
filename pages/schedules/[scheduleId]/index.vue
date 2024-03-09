@@ -111,7 +111,7 @@ function handleLessonEdit(id: string) {
           </div>
         </div>
 
-        <div ref="container" class="relative flex w-full flex-col" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!">
+        <div ref="container" class="relative flex w-full flex-col cursor-pointer" @pointerdown.prevent="onPointerDown!" @pointermove.prevent="onPointerMove!">
           <base-lesson v-for="(lesson, index) in scheduler.getSubjectsByDay($route.query.day as DayOfWeek)" :key="index" :container="container!" v-bind="lesson" @edit="handleLessonEdit(lesson.id)" />
 
           <div class="size-full" :style="{ backgroundImage: `linear-gradient(to right, #e5e7eb 1px, transparent 1px), repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, #fff 1px, #fff 160px)`, backgroundSize: `24px 160px` }" />

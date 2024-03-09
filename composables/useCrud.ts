@@ -22,9 +22,9 @@ export default function useCrud<T extends { id: string }>(items: T[]) {
   if (route.query.id)
     handleDialogOpen('update', route.query.id as string)
 
-  async function handleCreate(currentItem: T, callback: () => void) {
+  async function handleCreate(currentItem: T, callback: (id?: string) => void) {
     isSubmitting.value = true
-    callback()
+    await callback()
     createDialog.value = false
     currentItem = {} as T
     isSubmitting.value = false
@@ -32,7 +32,7 @@ export default function useCrud<T extends { id: string }>(items: T[]) {
 
   async function handleUpdate(currentItem: T, callback: (id?: string) => void) {
     isSubmitting.value = true
-    callback()
+    await callback()
     updateDialog.value = false
     currentItem = {} as T
     isSubmitting.value = false
@@ -40,7 +40,7 @@ export default function useCrud<T extends { id: string }>(items: T[]) {
 
   async function handleDelete(currentItem: T, callback: (id?: string) => void) {
     isSubmitting.value = true
-    callback()
+    await callback()
     deleteDialog.value = false
     currentItem = {} as T
     isSubmitting.value = false
