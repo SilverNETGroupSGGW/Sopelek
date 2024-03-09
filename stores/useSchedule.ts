@@ -10,10 +10,6 @@ export const useSchedule = defineStore('schedule', {
         header: 'Nazwa',
       },
       {
-        key: 'info',
-        header: 'Informacje',
-      },
-      {
         key: 'actions',
         header: 'Akcje',
       },
@@ -27,23 +23,10 @@ export const useSchedule = defineStore('schedule', {
         method: 'GET',
       })
 
-      // Update data.startDate to match YYYY-MM-DD format
-      data.value!.data.forEach((schedule) => {
-        if (schedule.startDate)
-          schedule.startDate = schedule.startDate.split('T')[0]
-
-        schedule.isDownloading = false
-      })
-
       this.data = data.value!.data
     },
     async create(schedule: Schedule) {
       const runtimeConfig = useRuntimeConfig()
-
-      const { studiesModes, studiesDegrees } = useData()
-      schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
-      schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
-
       const data = await $fetch<BaseResponse<Schedule>>('schedules', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
@@ -57,11 +40,6 @@ export const useSchedule = defineStore('schedule', {
     },
     async update(schedule: Schedule) {
       const runtimeConfig = useRuntimeConfig()
-
-      const { studiesModes, studiesDegrees } = useData()
-      schedule.studyMode = (studiesModes.find(mode => mode.value === schedule.studyMode))!.type
-      schedule.degreeOfStudy = (studiesDegrees.find(degree => degree.value === schedule.degreeOfStudy))!.type
-
       const data = await $fetch<BaseResponse<Schedule>>('schedules', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'PUT',
@@ -76,7 +54,6 @@ export const useSchedule = defineStore('schedule', {
     },
     async delete(schedule: Schedule) {
       const runtimeConfig = useRuntimeConfig()
-
       await $fetch<Schedule>(`schedules/${schedule.id}`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'DELETE',

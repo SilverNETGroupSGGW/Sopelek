@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { ClipboardDocumentCheckIcon, HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 
@@ -9,6 +9,12 @@ const tabs = reactive([
     label: 'Strona główna',
     to: '/',
     active: computed(() => route.path === '/'),
+  },
+  {
+    icon: ClipboardDocumentCheckIcon,
+    label: 'Kierunki studiów',
+    to: '/study-programs',
+    active: computed(() => route.path === '/study-programs'),
   },
   {
     icon: RectangleGroupIcon,

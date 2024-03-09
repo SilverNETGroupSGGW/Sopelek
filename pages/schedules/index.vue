@@ -1,37 +1,12 @@
 <script setup lang="ts">
-import { ViewfinderCircleIcon } from '@heroicons/vue/20/solid'
-import { BriefcaseIcon, CalendarIcon, CloudIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CalendarIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { DayOfWeek } from '~/types'
-
-// Data
-const { fieldOfStudies, studiesDegrees, studiesModes } = useData()
 
 // Schedules
 const schedules = useSchedule()
 await schedules.get()
 
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(schedules.data)
-
-watchEffect(() => {
-  const course = fieldOfStudies.find(course => course.value.includes(currentItem.value.fieldOfStudy))
-  if (course)
-    currentItem.value.faculty = course.department
-})
-
-watchEffect(() => {
-  const studyMode = studiesModes.find(mode => mode.type === currentItem.value.studyMode)
-  if (studyMode)
-    currentItem.value.studyMode = studyMode.value
-
-  const degreeOfStudy = studiesDegrees.find(degree => degree.type === currentItem.value.degreeOfStudy)
-  if (degreeOfStudy)
-    currentItem.value.degreeOfStudy = degreeOfStudy.value
-})
-
-watchEffect(() => {
-  if (currentItem.value.semester)
-    currentItem.value.year = Math.floor((currentItem.value.semester - 1) / 2) + 1
-})
 </script>
 
 <template>
@@ -59,15 +34,7 @@ watchEffect(() => {
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
-      <span class="text-base text-gray-700">Semestr od {{ new Date(cell.startDate).toLocaleDateString('pl-PL') }}</span>
-    </template>
-
-    <template #info="{ cell }">
-      <span class="text-base font-medium text-gray-900">
-        {{ fieldOfStudies.find(course => course.value.includes(cell.fieldOfStudy))?.value }} {{ studiesModes.find(mode => mode.type === cell.studyMode)?.value }} {{ studiesDegrees.find(degree => degree.type === cell.degreeOfStudy)?.value }}
-      </span>
-      <br>
-      <span class="text-base text-gray-700">rok {{ cell.year }}, semestr {{ cell.semester }}</span>
+      <span class="text-base text-gray-700">Start od {{ new Date(cell.year).toLocaleDateString('pl-PL') }}</span>
     </template>
 
     <template #actions="{ cell }">
@@ -99,21 +66,8 @@ watchEffect(() => {
   <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="UserIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia semestru" />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
-        <template #options="{ option, active }">
-          <span class="text-base font-medium" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.value }}</span>
-          <br>
-          <span class="text-base" :class="{ 'text-gray-50': active, 'text-gray-700': !active }">
-            {{ option.department }}
-          </span>
-        </template>
-      </base-search>
-      <base-select v-model="currentItem.studyMode" :options="studiesModes" :icon="CloudIcon" label="Tryb studiów" />
-      <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
       <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
-      <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">
@@ -129,21 +83,8 @@ watchEffect(() => {
   <base-dialog v-model="createDialog" title="Utwórz plan" :icon="UserIcon">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem))">
       <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia semestru" />
       <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
-        <template #options="{ option, active }">
-          <span class="text-base font-medium" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.value }}</span>
-          <br>
-          <span class="text-base" :class="{ 'text-gray-50': active, 'text-gray-700': !active }">
-            {{ option.department }}
-          </span>
-        </template>
-      </base-search>
-      <base-select v-model="currentItem.studyMode" :icon="CloudIcon" label="Tryb studiów" :options="studiesModes" />
-      <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
       <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
-      <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">

@@ -4,7 +4,7 @@ import type { Lesson } from './Lesson'
 import type { Schedule } from './Schedule'
 import type { Subject } from './Subject'
 
-export enum AcademicDegree {
+enum AcademicDegree {
   AssociateDegree = 'AssociateDegree',
   BachelorsDegree = 'BachelorsDegree',
   MastersDegree = 'MastersDegree',
@@ -29,3 +29,5 @@ interface LecturerSubject extends Subject {
   lessons: Lesson[]
   groups: Group[]
 }
+
+export { AcademicDegree }
