@@ -24,26 +24,41 @@ export default function useCrud<T extends { id: string }>(items: T[]) {
 
   async function handleCreate(currentItem: T, callback: (id?: string) => void) {
     isSubmitting.value = true
-    await callback()
-    createDialog.value = false
-    currentItem = {} as T
-    isSubmitting.value = false
+    try {
+      await callback()
+      createDialog.value = false
+      currentItem = {} as T
+      isSubmitting.value = false
+    }
+    catch {
+      isSubmitting.value = false
+    }
   }
 
   async function handleUpdate(currentItem: T, callback: (id?: string) => void) {
     isSubmitting.value = true
-    await callback()
-    updateDialog.value = false
-    currentItem = {} as T
-    isSubmitting.value = false
+    try {
+      await callback()
+      updateDialog.value = false
+      currentItem = {} as T
+      isSubmitting.value = false
+    }
+    catch {
+      isSubmitting.value = false
+    }
   }
 
   async function handleDelete(currentItem: T, callback: (id?: string) => void) {
     isSubmitting.value = true
-    await callback()
-    deleteDialog.value = false
-    currentItem = {} as T
-    isSubmitting.value = false
+    try {
+      await callback()
+      deleteDialog.value = false
+      currentItem = {} as T
+      isSubmitting.value = false
+    }
+    catch {
+      isSubmitting.value = false
+    }
   }
 
   async function handleDialogOpen(mode: 'create' | 'update' | 'delete', id?: string) {
