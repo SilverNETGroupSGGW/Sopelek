@@ -10,14 +10,14 @@ const props = defineProps<{
 }>()
 
 // Types
-interface DateTimeSequence {
-  count: number
-  dateTimes: string[]
-}
+// interface DateTimeSequence {
+//   count: number
+//   dateTimes: string[]
+// }
 
 // Nuxt hooks
 const runtimeConfig = useRuntimeConfig()
-const route = useRoute()
+// const route = useRoute()
 
 // Data
 const { daysOfWeek, lessonTypes } = useData()
@@ -166,28 +166,28 @@ async function saveChanges() {
 }
 
 // Obtain schedule
-const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.scheduleId}`, {
-  baseURL: runtimeConfig.public.baseURL,
-  method: 'GET',
-})
+// const { data: schedule } = await useFetch<Schedule>(`schedules/${route.params.scheduleId}`, {
+//   baseURL: runtimeConfig.public.baseURL,
+//   method: 'GET',
+// })
 
 // Generate dates
 // We have to trim T part from schedule.startDate
-if (schedule.value && data.value) {
-  if (data.value.lessons && data.value.lessons.length === 0) {
-    const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${schedule.value.startDate}/${15}`, {
-      baseURL: runtimeConfig.public.baseURL,
-      method: 'GET',
-    })
+// if (schedule.value && data.value) {
+//   if (data.value.lessons && data.value.lessons.length === 0) {
+//     const { data: dates } = await useFetch<DateTimeSequence>(`LessonsDateTimeSequenceGeneration/${schedule.value.startDate}/${15}`, {
+//       baseURL: runtimeConfig.public.baseURL,
+//       method: 'GET',
+//     })
 
-    if (dates.value) {
-      data.value!.lessons = dates.value.dateTimes.map(dateTime => ({
-        duration: data.value!.duration,
-        startTime: dateTime,
-      }) as Lesson)
-    }
-  }
-}
+//     if (dates.value) {
+//       data.value!.lessons = dates.value.dateTimes.map(dateTime => ({
+//         duration: data.value!.duration,
+//         startTime: dateTime,
+//       }) as Lesson)
+//     }
+//   }
+// }
 </script>
 
 <template>
