@@ -67,6 +67,7 @@ function handleLessonEdit(id: string) {
 
       <div class="text-sm text-indigo-600">
         <span>{{ lessonTypes.find(x => x.value === cell.type)?.label }}</span>,
+        <span v-if="cell.isConditional">zajęcia warunkowe</span>,
         <span>{{ cell.isRemote ? 'zdalnie' : 'stacjonarnie' }}</span>
       </div>
 

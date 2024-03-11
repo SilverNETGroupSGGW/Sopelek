@@ -44,6 +44,7 @@ export interface Subject {
   groupsIds?: string[]
   id: string
   isRemote?: boolean
+  isConditional?: boolean
   lecturers?: Lecturer[]
   lecturersIds?: string[]
   lessons?: Lesson[]
@@ -53,6 +54,7 @@ export interface Subject {
   type?: SubjectType
   updated?: string
 
+  /* internal */
   conflict?: boolean
   conflictMessage?: string
   ghost?: boolean

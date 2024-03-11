@@ -102,6 +102,9 @@ async function handleDelete() {
     <small v-if="isRemote" class="text-xs text-gray-700">
       <b>Zajęcia zdalne</b>
     </small>
+    <small v-if="isConditional" class="text-xs text-gray-700">
+      <b>Zajęcia warunkowe</b>
+    </small>
     <small v-if="comment" class="text-xs text-gray-700">
       <b>Komentarz: </b> {{ comment }}
     </small>

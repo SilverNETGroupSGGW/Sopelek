@@ -62,6 +62,7 @@ const data = ref<Subject>({
   lessons: [],
   groupsIds: [],
   isRemote: false,
+  isConditional: false,
   comment: '',
 })
 
@@ -204,9 +205,6 @@ if (schedule.value && data.value) {
         </div>
 
         <div class="flex gap-4">
-          <!-- <base-button v-if="data!.id !== 'create'" variant="danger" class="h-10" type="button" @click="deleteDialog = true">
-            Usuń zajęcia
-          </base-button> -->
           <base-button variant="primary" class="h-10" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
             Zapisz zmiany
           </base-button>
@@ -215,6 +213,7 @@ if (schedule.value && data.value) {
 
       <div class="mb-6 rounded-lg border border-gray-200 p-4">
         <base-checkbox v-model="data!.isRemote" label="Zajęcia zdalne" />
+        <base-checkbox v-model="data!.isConditional" label="Zajęcia warunkowe" />
       </div>
 
       <div class="mb-6 flex items-end gap-4 rounded-lg border border-gray-200 p-4">
