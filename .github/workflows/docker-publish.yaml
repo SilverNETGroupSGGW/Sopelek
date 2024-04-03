@@ -11,13 +11,12 @@ on:
     # Publish semver tags as releases.
     tags: ['v*.*.*']
     paths-ignore:
-      - ".devcontainer/**"
-      - ".github/**"
-      - ".vscode/**"
-      - "readme.md"
+      - '.devcontainer/**'
+      - '.github/**'
+      - '.vscode/**'
+      - readme.md
   pull_request:
     branches: [main]
-
 
 env:
   # Use docker.io for Docker Hub if empty

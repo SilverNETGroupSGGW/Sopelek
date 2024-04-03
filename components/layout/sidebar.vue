@@ -5,34 +5,34 @@ const route = useRoute()
 
 const tabs = reactive([
   {
+    active: computed(() => route.path === '/'),
     icon: HomeIcon,
     label: 'Strona główna',
     to: '/',
-    active: computed(() => route.path === '/'),
   },
   {
-    icon: ClipboardDocumentCheckIcon,
-    label: 'Kierunki studiów',
-    to: '/study-programs',
     active: computed(() => route.path === '/study-programs'),
+    icon: ClipboardDocumentCheckIcon,
+    label: 'Programy studiów',
+    to: '/study-programs',
   },
   {
+    active: computed(() => route.path.startsWith('/schedules')),
     icon: RectangleGroupIcon,
     label: 'Plany zajęć',
     to: '/schedules',
-    active: computed(() => route.path.startsWith('/schedules')),
   },
   {
+    active: computed(() => route.path === '/lecturers'),
     icon: UserIcon,
     label: 'Wykładowcy',
     to: '/lecturers',
-    active: computed(() => route.path === '/lecturers'),
   },
   {
+    active: computed(() => route.path === '/classrooms'),
     icon: PresentationChartBarIcon,
     label: 'Sale',
     to: '/classrooms',
-    active: computed(() => route.path === '/classrooms'),
   },
 ])
 </script>
