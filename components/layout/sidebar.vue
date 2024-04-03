@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ClipboardDocumentCheckIcon, HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
+import type { FunctionalComponent } from 'vue'
 
 const route = useRoute()
 
@@ -11,10 +12,10 @@ const tabs = reactive([
     to: '/',
   },
   {
-    active: computed(() => route.path === '/study-programs'),
+    active: computed(() => route.path === '/study-plans'),
     icon: ClipboardDocumentCheckIcon,
     label: 'Programy studiów',
-    to: '/study-programs',
+    to: '/study-plans',
   },
   {
     active: computed(() => route.path.startsWith('/schedules')),
@@ -34,12 +35,17 @@ const tabs = reactive([
     label: 'Sale',
     to: '/classrooms',
   },
-])
+]) satisfies Array<{
+  active: boolean
+  icon: FunctionalComponent
+  label: string
+  to: string
+}>
 </script>
 
 <template>
   <aside class="h-screen border-r bg-indigo-600 p-9">
-    <logo class="mb-9" />
+    <base-logo class="mb-9" />
     <ul>
       <li v-for="tab in tabs" :key="tab.label" class="group mb-2 group-hover:mb-4">
         <base-tab v-bind="tab" />
