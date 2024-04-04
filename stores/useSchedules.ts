@@ -1,8 +1,4 @@
-// // import type { Database } from '~/.'
-
 import type { Database } from '~'
-
-// type StudyPlan = Database['public']['Tables']['study_plans']['Row']
 
 type Schedule = Database['public']['Tables']['schedules']['Row']
 
