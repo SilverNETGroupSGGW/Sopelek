@@ -21,12 +21,13 @@ export const useStudyPlans = defineStore('studyPlans', {
     async get() {
       const client = useSupabaseClient<Database>()
 
-      const { data } = await useAsyncData('study-plans', async () => {
+      const { data } = await useAsyncData('study_plans', async () => {
         const { data } = await client.from('study_plans').select('*')
         return data
       })
 
-      this.data = data.value!
+      if (data.value)
+        this.data = data.value
     },
     async create(studyPlan: StudyPlan) {
       const client = useSupabaseClient<Database>()

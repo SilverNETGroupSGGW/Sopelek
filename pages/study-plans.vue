@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { BriefcaseIcon, CalendarIcon, CloudIcon, MagnifyingGlassIcon, PencilIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+
 const studyPlans = useStudyPlans()
 await studyPlans.get()
 
-const { handleDialogOpen, search } = useCrud(studyPlans.data)
+const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting, search, updateDialog } = useCrud(studyPlans.data)
 </script>
 
 <template>
@@ -17,6 +19,35 @@ const { handleDialogOpen, search } = useCrud(studyPlans.data)
           <li>Pod plany studiów należy podpinać plany zajęć.</li>
         </ul>
       </p>
+    </div>
+
+    <div class="flex gap-4">
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+
+      <base-dialog v-model="updateDialog" title="Utwórz plan studiów" :icon="UserIcon">
+        <template #trigger>
+          <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
+            Dodaj kierunek
+          </base-button>
+        </template>
+
+        <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await studyPlans.create(currentItem))">
+          <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
+          <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
+          <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
+          <base-input v-model="currentItem.type" :icon="CloudIcon" label="Stopień studiów" />
+          <base-input v-model="currentItem.mode" :icon="CloudIcon" label="Tryb studiów" />
+
+          <div class="mt-6 flex justify-end gap-4">
+            <base-button variant="secondary" @click="createDialog = false">
+              Zamknij
+            </base-button>
+            <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
+              Zapisz zmiany
+            </base-button>
+          </div>
+        </form>
+      </base-dialog>
     </div>
   </div>
 
@@ -37,6 +68,7 @@ const { handleDialogOpen, search } = useCrud(studyPlans.data)
         <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
           Edytuj
         </base-button>
+
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
           Usuń
         </base-button>
