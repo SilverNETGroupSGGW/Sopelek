@@ -30,7 +30,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     <div class="flex gap-4">
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
 
-      <base-dialog v-model="createDialog" title="Utwórz plan studiów" :icon="UserIcon">
+      <base-dialog :open="createDialog" title="Utwórz plan studiów" :icon="UserIcon">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj kierunek
@@ -44,9 +44,11 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
 
           <div class="mt-6 flex justify-end gap-4">
-            <base-button variant="secondary" @click="createDialog = false">
-              Zamknij
-            </base-button>
+            <DialogClose aria-label="Close">
+              <base-button variant="secondary" type="button" @click="createDialog = false">
+                Zamknij
+              </base-button>
+            </DialogClose>
             <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
               Zapisz zmiany
             </base-button>
@@ -70,7 +72,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-dialog v-model="updateDialog" title="Utwórz plan studiów" :icon="UserIcon">
+        <base-dialog :open="updateDialog" title="Edytuj plan studiów" :icon="UserIcon">
           <template #trigger>
             <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
               Edytuj
@@ -96,7 +98,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </form>
         </base-dialog>
 
-        <base-dialog v-model="deleteDialog" title="Utwórz plan studiów" :icon="TrashIcon">
+        <base-dialog :open="deleteDialog" title="Usuń plan studiów" :icon="TrashIcon">
           <template #trigger>
             <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
               Usuń

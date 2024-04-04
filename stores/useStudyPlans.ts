@@ -32,7 +32,7 @@ export const useStudyPlans = defineStore('studyPlans', {
     async create(studyPlan: StudyPlan) {
       const client = useSupabaseClient<Database>()
 
-      const { data } = await client.from('study_plans').insert(studyPlan).limit(1).single()
+      const { data } = await client.from('study_plans').insert(studyPlan).select().order('id').limit(1).single()
       this.data.push(data!)
     },
     async update(studyPlan: StudyPlan) {
