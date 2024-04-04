@@ -309,7 +309,6 @@ export interface Database {
           field: string | null
           id: number
           mode: number
-          name: string | null
           start: string
           type: number
         }
@@ -318,7 +317,6 @@ export interface Database {
           field?: string | null
           id?: number
           mode?: number
-          name?: string | null
           start: string
           type?: number
         }
@@ -327,7 +325,6 @@ export interface Database {
           field?: string | null
           id?: number
           mode?: number
-          name?: string | null
           start?: string
           type?: number
         }

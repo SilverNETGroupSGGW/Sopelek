@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarIcon, ClockIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { CalendarIcon, ClockIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
 import { DialogClose, DialogDescription } from 'radix-vue'
 
 // Supabase
@@ -14,32 +14,23 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 </script>
 
 <template>
-  <div class="flex w-full flex-wrap items-center justify-between gap-4 border border-b-gray-200 px-12 py-9">
-    <div>
-      <h1 class="text-2xl font-bold leading-9 text-gray-950">
-        Plany studiów
-      </h1>
-      <p class="text-base text-gray-700">
-        <ul class="list-inside list-disc">
-          <li>Plan studiów zawiera informacje o kierunku, trybie i stopniu studiów, oraz o dacie rozpoczęcia obowiązywania planu.</li>
-          <li>Pod plany studiów należy podpinać plany zajęć.</li>
-        </ul>
-      </p>
-    </div>
+  <div class="flex w-full flex-wrap items-center justify-between gap-4 border-b bg-gray-50 px-12 py-4">
+    <h1 class="text-2xl font-bold leading-9 text-gray-950">
+      Plany studiów
+    </h1>
 
-    <div class="flex gap-4">
+    <div class="flex items-center gap-4">
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
 
       <base-dialog :open="createDialog" title="Utwórz plan studiów" :icon="UserIcon">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
-            Dodaj kierunek
+            Dodaj plan studiów
           </base-button>
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await studyPlans.create(currentItem))">
           <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
-          <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
           <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
           <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
           <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
@@ -61,10 +52,10 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 
   <base-table :search="search" :data="studyPlans.data" :columns="studyPlans.columns">
     <template #name="{ cell }">
-      <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
+      <span class="text-base font-medium text-gray-900">{{ cell.field }}</span>
       <br>
       <span class="text-sm text-gray-700">
-        {{ cell.field }}, od {{ new Date(cell.start).getFullYear() }}/{{ new Date(cell.start).getFullYear() + 1 }}
+        od roku akademickiego {{ new Date(cell.start).getFullYear() }}/{{ new Date(cell.start).getFullYear() + 1 }}
         <br>
         {{ data.studyTypes[cell.type - 1] }}, {{ data.studyModes[cell.mode - 1] }}
         <br>
@@ -82,7 +73,6 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await studyPlans.update(currentItem))">
             <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
-            <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
             <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
             <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
             <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
