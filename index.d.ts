@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
       __EFMigrationsHistory: {
@@ -69,11 +69,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_faculties_institutes_institute_id"
-            columns: ["institute_id"]
+            foreignKeyName: 'fk_faculties_institutes_institute_id'
+            columns: ['institute_id']
             isOneToOne: false
-            referencedRelation: "institutes"
-            referencedColumns: ["id"]
+            referencedRelation: 'institutes'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -92,18 +92,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_group_lesson_groups_groups_id"
-            columns: ["groups_id"]
+            foreignKeyName: 'fk_group_lesson_groups_groups_id'
+            columns: ['groups_id']
             isOneToOne: false
-            referencedRelation: "groups"
-            referencedColumns: ["id"]
+            referencedRelation: 'groups'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_group_lesson_lessons_lessons_id"
-            columns: ["lessons_id"]
+            foreignKeyName: 'fk_group_lesson_lessons_lessons_id'
+            columns: ['lessons_id']
             isOneToOne: false
-            referencedRelation: "lessons"
-            referencedColumns: ["id"]
+            referencedRelation: 'lessons'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -122,18 +122,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_group_schedule_groups_groups_id"
-            columns: ["groups_id"]
+            foreignKeyName: 'fk_group_schedule_groups_groups_id'
+            columns: ['groups_id']
             isOneToOne: false
-            referencedRelation: "groups"
-            referencedColumns: ["id"]
+            referencedRelation: 'groups'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_group_schedule_schedules_schedules_id"
-            columns: ["schedules_id"]
+            foreignKeyName: 'fk_group_schedule_schedules_schedules_id'
+            columns: ['schedules_id']
             isOneToOne: false
-            referencedRelation: "schedules"
-            referencedColumns: ["id"]
+            referencedRelation: 'schedules'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -173,11 +173,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_institutes_universities_university_id"
-            columns: ["university_id"]
+            foreignKeyName: 'fk_institutes_universities_university_id'
+            columns: ['university_id']
             isOneToOne: false
-            referencedRelation: "universities"
-            referencedColumns: ["id"]
+            referencedRelation: 'universities'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -205,11 +205,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_lecturers_institutes_institute_id"
-            columns: ["institute_id"]
+            foreignKeyName: 'fk_lecturers_institutes_institute_id'
+            columns: ['institute_id']
             isOneToOne: false
-            referencedRelation: "institutes"
-            referencedColumns: ["id"]
+            referencedRelation: 'institutes'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -246,25 +246,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_lessons_classrooms_classroom_id"
-            columns: ["classroom_id"]
+            foreignKeyName: 'fk_lessons_classrooms_classroom_id'
+            columns: ['classroom_id']
             isOneToOne: false
-            referencedRelation: "classrooms"
-            referencedColumns: ["id"]
+            referencedRelation: 'classrooms'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_lessons_lecturers_lecturer_id"
-            columns: ["lecturer_id"]
+            foreignKeyName: 'fk_lessons_lecturers_lecturer_id'
+            columns: ['lecturer_id']
             isOneToOne: false
-            referencedRelation: "lecturers"
-            referencedColumns: ["id"]
+            referencedRelation: 'lecturers'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_lessons_subjects_subject_id"
-            columns: ["subject_id"]
+            foreignKeyName: 'fk_lessons_subjects_subject_id'
+            columns: ['subject_id']
             isOneToOne: false
-            referencedRelation: "subjects"
-            referencedColumns: ["id"]
+            referencedRelation: 'subjects'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -295,11 +295,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_schedules_study_plans_study_plan_id"
-            columns: ["study_plan_id"]
+            foreignKeyName: 'fk_schedules_study_plans_study_plan_id'
+            columns: ['study_plan_id']
             isOneToOne: false
-            referencedRelation: "study_plans"
-            referencedColumns: ["id"]
+            referencedRelation: 'study_plans'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -333,11 +333,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_study_plans_faculties_faculty_id"
-            columns: ["faculty_id"]
+            foreignKeyName: 'fk_study_plans_faculties_faculty_id'
+            columns: ['faculty_id']
             isOneToOne: false
-            referencedRelation: "faculties"
-            referencedColumns: ["id"]
+            referencedRelation: 'faculties'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -359,11 +359,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_subjects_schedules_schedule_id"
-            columns: ["schedule_id"]
+            foreignKeyName: 'fk_subjects_schedules_schedule_id'
+            columns: ['schedule_id']
             isOneToOne: false
-            referencedRelation: "schedules"
-            referencedColumns: ["id"]
+            referencedRelation: 'schedules'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -391,13 +391,13 @@ export type Database = {
     }
     Enums: {
       continents:
-        | "Africa"
-        | "Antarctica"
-        | "Asia"
-        | "Europe"
-        | "Oceania"
-        | "North America"
-        | "South America"
+        | 'Africa'
+        | 'Antarctica'
+        | 'Asia'
+        | 'Europe'
+        | 'Oceania'
+        | 'North America'
+        | 'South America'
     }
     CompositeTypes: {
       [_ in never]: never
@@ -405,84 +405,84 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, 'public'>]
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
+  | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+  | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+    Database[PublicTableNameOrOptions['schema']]['Views'])
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+  Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R
     }
-    ? R
-    : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
       ? R
       : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
+  PublicSchema['Views'])
+    ? (PublicSchema['Tables'] &
+    PublicSchema['Views'])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+        ? R
+        : never
     : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
+  | keyof PublicSchema['Tables']
+  | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+    Insert: infer I
+  }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
-      }
+  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+      Insert: infer I
+    }
       ? I
       : never
     : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
+  | keyof PublicSchema['Tables']
+  | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+    Update: infer U
+  }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
+  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+      Update: infer U
+    }
       ? U
       : never
     : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
+  | keyof PublicSchema['Enums']
+  | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
     : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
+    ? PublicSchema['Enums'][PublicEnumNameOrOptions]
     : never

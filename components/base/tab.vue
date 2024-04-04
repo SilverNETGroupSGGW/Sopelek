@@ -19,7 +19,7 @@ defineProps<{
       </TooltipTrigger>
 
       <TooltipPortal>
-        <TooltipContent class="text-gray-700 select-none rounded-lg bg-white px-4 py-3 border" :side-offset="24" side="right">
+        <TooltipContent class="select-none rounded-lg border bg-white px-4 py-3 text-gray-700" :side-offset="24" side="right">
           {{ label }}
           <TooltipArrow class="fill-white" :width="8" />
         </TooltipContent>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { BriefcaseIcon, CalendarIcon, CloudIcon, MagnifyingGlassIcon, PencilIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { CalendarIcon, CloudIcon, MagnifyingGlassIcon, PencilIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
 
 const studyPlans = useStudyPlans()
 await studyPlans.get()
+
+const data = useData()
 
 const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting, search, updateDialog } = useCrud(studyPlans.data)
 </script>
@@ -36,7 +38,7 @@ const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting,
           <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
           <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
           <base-input v-model="currentItem.type" :icon="CloudIcon" label="Stopień studiów" />
-          <base-input v-model="currentItem.mode" :icon="CloudIcon" label="Tryb studiów" />
+          <base-select v-model="currentItem.mode" :icon="CloudIcon" label="Tryb studiów" :options="data.studyModes" />
 
           <div class="mt-6 flex justify-end gap-4">
             <base-button variant="secondary" @click="createDialog = false">

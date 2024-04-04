@@ -29,12 +29,7 @@ watchEffect(() => {
 
 <template>
   <component
-    :is="to ? NuxtLink : 'button'"
-    ref="button"
-    :to="to"
-    v-bind="$attrs"
-    :style="{ width, height }"
-    class="flex cursor-pointer items-center justify-center gap-2 px-4 py-2 font-medium transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 active:ring-2"
+    :is="to ? NuxtLink : 'button'" ref="button" :to v-bind="$attrs" :style="{ width, height }" class="flex cursor-pointer items-center justify-center gap-2 px-4 py-2 font-medium transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 active:ring-2"
     :class="{
       'disabled:opacity-50': $attrs.disabled,
       'rounded-lg bg-indigo-600 text-indigo-50 hover:bg-indigo-700 focus:ring-indigo-700/50 active:ring-indigo-700/50': variant === 'primary',

@@ -21,7 +21,7 @@ const model = defineModel<boolean>()
     <DialogPortal>
       <DialogOverlay class="fixed inset-0 bg-black/25" />
 
-      <DialogContent class="flex flex-col rounded-lg bg-white text-left align-middle shadow-xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" :class="fullSize ? 'h-full w-7/12' : 'w-[32rem] h-auto max-h-[36rem]'">
+      <DialogContent class="fixed left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col rounded-lg bg-white text-left align-middle shadow-xl" :class="fullSize ? 'h-full w-7/12' : 'w-[32rem] h-auto max-h-[36rem]'">
         <div class="flex items-center justify-between rounded-t-lg border border-b-gray-200 bg-gray-50 p-6">
           <div class="flex items-center gap-4 text-gray-900">
             <component :is="icon" class="size-5" />
