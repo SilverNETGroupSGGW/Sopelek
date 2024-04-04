@@ -5,11 +5,4 @@ export const useData = defineStore('data', {
       studyTypes: ['licencjackie', 'inżynierskie', 'magisterskie'],
     }
   },
-  actions: {
-    mapArrayToLabelValue<T>(array: T[]) {
-      return array.map((item, index) => {
-        return { label: item, value: index }
-      })
-    },
-  },
 })

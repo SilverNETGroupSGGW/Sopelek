@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { CalendarIcon, ClockIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
 import { DialogClose, DialogDescription } from 'radix-vue'
 
 // Supabase
@@ -41,11 +41,12 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
           <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
           <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
-          <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+          <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+          <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
 
           <div class="mt-6 flex justify-end gap-4">
-            <DialogClose aria-label="Close">
-              <base-button variant="secondary" type="button" @click="createDialog = false">
+            <DialogClose as-child>
+              <base-button variant="secondary" type="button">
                 Zamknij
               </base-button>
             </DialogClose>
@@ -63,9 +64,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
       <span class="text-sm text-gray-700">
-        od {{ new Date(cell.start).toLocaleDateString('pl-PL') }} r.
+        {{ cell.field }}, od {{ new Date(cell.start).getFullYear() }}/{{ new Date(cell.start).getFullYear() + 1 }}
         <br>
-        {{ cell.field }}
+        {{ data.studyTypes[cell.type - 1] }}, {{ data.studyModes[cell.mode - 1] }}
         <br>
       </span>
     </template>
@@ -83,11 +84,12 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
             <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
             <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
             <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
-            <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+            <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+            <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
 
             <div class="mt-6 flex justify-end gap-4">
-              <DialogClose aria-label="Close">
-                <base-button variant="secondary" @click="updateDialog = false">
+              <DialogClose as-child>
+                <base-button variant="secondary">
                   Zamknij
                 </base-button>
               </DialogClose>
@@ -111,8 +113,8 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
             </DialogDescription>
 
             <div class="mt-6 flex justify-end gap-4">
-              <DialogClose aria-label="Close">
-                <base-button variant="secondary" type="button" @click="deleteDialog = false">
+              <DialogClose as-child>
+                <base-button variant="secondary" type="button">
                   Zamknij
                 </base-button>
               </DialogClose>

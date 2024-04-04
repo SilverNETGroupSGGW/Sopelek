@@ -29,7 +29,7 @@ defineProps<{
             </DialogTitle>
           </div>
 
-          <DialogClose aria-label="Close">
+          <DialogClose as-child>
             <XMarkIcon class="size-6 cursor-pointer text-gray-400" />
           </DialogClose>
         </div>

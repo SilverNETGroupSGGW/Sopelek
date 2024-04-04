@@ -317,7 +317,7 @@ export interface Database {
           faculty_id?: number | null
           field?: string | null
           id?: number
-          mode: number
+          mode?: number
           name?: string | null
           start: string
           type?: number
