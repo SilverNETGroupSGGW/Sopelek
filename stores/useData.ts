@@ -2,11 +2,14 @@ export const useData = defineStore('data', {
   state: () => {
     return {
       studyModes: ['stacjonarne', 'zaoczne'],
+      studyTypes: ['licencjackie', 'inżynierskie', 'magisterskie'],
     }
   },
   actions: {
-    mapStudyMode(mode: 'stacjonarne' | 'zaoczne') {
-      return mode === 'stacjonarne' ? 0 : 1
+    mapArrayToLabelValue<T>(array: T[]) {
+      return array.map((item, index) => {
+        return { label: item, value: index }
+      })
     },
   },
 })

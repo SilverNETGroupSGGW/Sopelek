@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { CalendarIcon, CloudIcon, MagnifyingGlassIcon, PencilIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { CalendarIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { DialogClose, DialogDescription } from 'radix-vue'
 
+// Supabase
 const studyPlans = useStudyPlans()
 await studyPlans.get()
 
+// Utils
 const data = useData()
 
-const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting, search, updateDialog } = useCrud(studyPlans.data)
+const { mapArrayToLabelValue } = useArray()
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(studyPlans.data)
 </script>
 
 <template>
@@ -26,7 +30,7 @@ const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting,
     <div class="flex gap-4">
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
 
-      <base-dialog v-model="updateDialog" title="Utwórz plan studiów" :icon="UserIcon">
+      <base-dialog v-model="createDialog" title="Utwórz plan studiów" :icon="UserIcon">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj kierunek
@@ -37,8 +41,7 @@ const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting,
           <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
           <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
           <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
-          <base-input v-model="currentItem.type" :icon="CloudIcon" label="Stopień studiów" />
-          <base-select v-model="currentItem.mode" :icon="CloudIcon" label="Tryb studiów" :options="data.studyModes" />
+          <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
 
           <div class="mt-6 flex justify-end gap-4">
             <base-button variant="secondary" @click="createDialog = false">
@@ -67,13 +70,56 @@ const { currentItem, createDialog, handleCreate, handleDialogOpen, isSubmitting,
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
-          Edytuj
-        </base-button>
+        <base-dialog v-model="updateDialog" title="Utwórz plan studiów" :icon="UserIcon">
+          <template #trigger>
+            <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
+              Edytuj
+            </base-button>
+          </template>
 
-        <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
-          Usuń
-        </base-button>
+          <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await studyPlans.update(currentItem))">
+            <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
+            <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
+            <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
+            <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+
+            <div class="mt-6 flex justify-end gap-4">
+              <DialogClose aria-label="Close">
+                <base-button variant="secondary" @click="updateDialog = false">
+                  Zamknij
+                </base-button>
+              </DialogClose>
+              <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
+                Zapisz zmiany
+              </base-button>
+            </div>
+          </form>
+        </base-dialog>
+
+        <base-dialog v-model="deleteDialog" title="Utwórz plan studiów" :icon="TrashIcon">
+          <template #trigger>
+            <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
+              Usuń
+            </base-button>
+          </template>
+
+          <form @submit.prevent="handleDelete(currentItem, async() => await studyPlans.delete(currentItem))">
+            <DialogDescription class="text-base text-gray-700">
+              Czy na pewno chcesz usunąć plan?
+            </DialogDescription>
+
+            <div class="mt-6 flex justify-end gap-4">
+              <DialogClose aria-label="Close">
+                <base-button variant="secondary" type="button" @click="deleteDialog = false">
+                  Zamknij
+                </base-button>
+              </DialogClose>
+              <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" type="submit">
+                Usuń
+              </base-button>
+            </div>
+          </form>
+        </base-dialog>
       </div>
     </template>
   </base-table>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue'
+import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue'
 import { XMarkIcon } from '@heroicons/vue/20/solid'
 
 defineProps<{
@@ -9,11 +9,11 @@ defineProps<{
   fullSize?: boolean
 }>()
 
-const model = defineModel<boolean>()
+const model = defineModel<boolean>('open')
 </script>
 
 <template>
-  <DialogRoot :open="model" @update:open="model = $event">
+  <DialogRoot v-model:open="model">
     <DialogTrigger>
       <slot name="trigger" />
     </DialogTrigger>

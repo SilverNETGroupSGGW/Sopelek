@@ -38,7 +38,7 @@ export const useStudyPlans = defineStore('studyPlans', {
     async update(studyPlan: StudyPlan) {
       const client = useSupabaseClient<Database>()
 
-      const { data } = await client.from('study_plans').update(studyPlan).eq('id', studyPlan.id).select().limit(1).single()
+      const { data } = await client.from('study_plans').update(studyPlan).eq('id', studyPlan.id).select().order('id').limit(1).single()
       const index = this.data.findIndex(l => l.id === data!.id)
       this.data[index] = data!
     },
