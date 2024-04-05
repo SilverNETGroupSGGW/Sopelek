@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CalendarIcon, ClockIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import type { DateValue } from '@internationalized/date'
 import { DialogClose, DialogDescription } from 'radix-vue'
 
 // Supabase
@@ -11,6 +12,12 @@ const data = useData()
 
 const { mapArrayToLabelValue } = useArray()
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(studyPlans.data)
+
+const start = ref<DateValue>()
+watchEffect(() => {
+  if (start.value)
+    currentItem.value.start = `${start.value.month}/${start.value.day}/${start.value.year}`
+})
 </script>
 
 <template>
@@ -30,7 +37,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await studyPlans.create(currentItem))">
-          <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
+          <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
           <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
           <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
           <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
@@ -72,7 +79,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </template>
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await studyPlans.update(currentItem))">
-            <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
+            <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
             <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
             <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
             <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />

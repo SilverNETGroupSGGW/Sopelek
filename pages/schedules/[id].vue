@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CalendarIcon, ChartBarIcon, MagnifyingGlassIcon, TrashIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import type { DateValue } from '@internationalized/date'
 import { DialogClose, DialogDescription } from 'radix-vue'
 
 const route = useRoute()
@@ -11,6 +12,12 @@ await schedules.get(Number.parseInt(route.params.id as string))
 // Utils
 const data = useData()
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(schedules.data.schedules)
+
+const start = ref<DateValue>()
+watchEffect(() => {
+  if (start.value)
+    currentItem.value.start = `${start.value.month}/${start.value.day}/${start.value.year}`
+})
 </script>
 
 <template>
@@ -38,7 +45,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem, Number.parseInt(route.params.id as string)))">
-          <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
+          <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
           <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa" />
           <base-input v-model="currentItem.term" type="number" :icon="ChartBarIcon" label="Semestr" />
 
@@ -78,7 +85,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </template>
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
-            <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
+            <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
             <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa" />
             <base-input v-model="currentItem.term" type="number" :icon="ChartBarIcon" label="Semestr" />
 
