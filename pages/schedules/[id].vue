@@ -9,14 +9,23 @@ const schedules = useSchedules()
 await schedules.get(Number.parseInt(route.params.id as string))
 
 // Utils
-const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(schedules.data)
+const data = useData()
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(schedules.data.schedules)
 </script>
 
 <template>
   <div class="flex w-full flex-wrap items-center justify-between gap-4 border-b bg-gray-50 px-12 py-4">
-    <h1 class="text-2xl font-bold leading-9 text-gray-950">
-      Plany zajęć
-    </h1>
+    <span>
+      <h1 class="text-2xl font-bold leading-9 text-gray-950">
+        Plany zajęć
+      </h1>
+      <p class="font-medium text-gray-800">
+        {{ schedules.data.field }}, {{ data.studyTypes[schedules.data.type - 1] }} {{ data.studyModes[schedules.data.mode - 1] }}
+      </p>
+      <p class="text-gray-800">
+        od roku akademickiego {{ new Date(schedules.data.start).getFullYear() }}/{{ new Date(schedules.data.start).getFullYear() + 1 }}
+      </p>
+    </span>
 
     <div class="flex items-center gap-4">
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
@@ -48,7 +57,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </div>
   </div>
 
-  <base-table :search="search" :data="schedules.data" :columns="schedules.columns">
+  <base-table :search="search" :data="schedules.data.schedules" :columns="schedules.columns">
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
