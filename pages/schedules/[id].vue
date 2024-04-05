@@ -28,7 +28,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </base-button>
         </template>
 
-        <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem, Number.parseInt(route.query.id as string)))">
+        <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem, Number.parseInt(route.params.id as string)))">
           <base-input v-model="currentItem.start" :icon="CalendarIcon" label="Data rozpoczęcia" />
           <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa" />
           <base-input v-model="currentItem.term" type="number" :icon="ChartBarIcon" label="Semestr" />
