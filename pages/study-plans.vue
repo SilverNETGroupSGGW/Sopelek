@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarIcon, ClockIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
-import type { DateValue } from '@internationalized/date'
+import { CalendarDate, type DateValue } from '@internationalized/date'
 import { DialogClose, DialogDescription } from 'radix-vue'
 
 // Supabase
@@ -16,7 +16,14 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 const start = ref<DateValue>()
 watchEffect(() => {
   if (start.value)
-    currentItem.value.start = `${start.value.month}/${start.value.day}/${start.value.year}`
+    currentItem.value.start = `${start.value.year}-${start.value.month}-${start.value.day}`
+})
+
+watchEffect(() => {
+  if (currentItem.value.start) {
+    const [year, month, day] = currentItem.value.start.split('-')
+    start.value = new CalendarDate(Number(year), Number(month), Number(day))
+  }
 })
 </script>
 
