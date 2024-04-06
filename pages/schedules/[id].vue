@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CalendarIcon, ChartBarIcon, MagnifyingGlassIcon, TrashIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
 import { CalendarDate, type DateValue } from '@internationalized/date'
-import { DialogClose, DialogDescription } from 'radix-vue'
+import { DialogDescription } from 'radix-vue'
 
 const route = useRoute()
 
@@ -23,6 +23,9 @@ watchEffect(() => {
   if (currentItem.value.start) {
     const [year, month, day] = currentItem.value.start.split('-')
     start.value = new CalendarDate(Number(year), Number(month), Number(day))
+  }
+  else {
+    start.value = undefined
   }
 })
 </script>
