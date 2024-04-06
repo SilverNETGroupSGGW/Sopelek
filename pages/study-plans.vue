@@ -36,7 +36,7 @@ watchEffect(() => {
     <div class="flex items-center gap-4">
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
 
-      <base-dialog :open="createDialog" title="Utwórz plan studiów" :icon="UserIcon">
+      <base-dialog :open="createDialog" title="Utwórz plan studiów" :icon="UserIcon" @update:open="createDialog = $event">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj plan studiów
@@ -50,11 +50,9 @@ watchEffect(() => {
           <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
 
           <div class="mt-6 flex justify-end gap-4">
-            <DialogClose as-child>
-              <base-button variant="secondary" type="button">
-                Zamknij
-              </base-button>
-            </DialogClose>
+            <base-button variant="secondary" type="button" @click="createDialog = false">
+              Zamknij
+            </base-button>
             <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
               Zapisz zmiany
             </base-button>
@@ -78,7 +76,7 @@ watchEffect(() => {
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-dialog :open="updateDialog" title="Edytuj plan studiów" :icon="UserIcon">
+        <base-dialog :open="updateDialog" title="Edytuj plan studiów" :icon="UserIcon" @update:open="updateDialog = $event">
           <template #trigger>
             <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
               Edytuj
@@ -92,11 +90,9 @@ watchEffect(() => {
             <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
 
             <div class="mt-6 flex justify-end gap-4">
-              <DialogClose as-child>
-                <base-button variant="secondary">
-                  Zamknij
-                </base-button>
-              </DialogClose>
+              <base-button variant="secondary" type="button" @click="updateDialog = false">
+                Zamknij
+              </base-button>
               <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
                 Zapisz zmiany
               </base-button>
@@ -108,7 +104,7 @@ watchEffect(() => {
           Plany zajęć
         </base-button>
 
-        <base-dialog :open="deleteDialog" title="Usuń plan studiów" :icon="TrashIcon">
+        <base-dialog :open="deleteDialog" title="Usuń plan studiów" :icon="TrashIcon" @update:open="deleteDialog = $event">
           <template #trigger>
             <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
               Usuń
@@ -121,11 +117,9 @@ watchEffect(() => {
             </DialogDescription>
 
             <div class="mt-6 flex justify-end gap-4">
-              <DialogClose as-child>
-                <base-button variant="secondary" type="button">
-                  Zamknij
-                </base-button>
-              </DialogClose>
+              <base-button variant="secondary" type="button" @click="deleteDialog = false">
+                Zamknij
+              </base-button>
               <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" type="submit">
                 Usuń
               </base-button>
