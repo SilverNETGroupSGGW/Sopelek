@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarIcon, ClockIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { PhCalendar, PhDevices, PhMagnifyingGlass, PhPencilSimpleLine, PhTrash, PhTrophy, PhUserPlus, PhVideo } from '@phosphor-icons/vue'
 import { CalendarDate, type DateValue } from '@internationalized/date'
 import { DialogDescription } from 'radix-vue'
 
@@ -37,9 +37,9 @@ watchEffect(() => {
     </h1>
 
     <div class="flex items-center gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="PhMagnifyingGlass" />
 
-      <base-dialog :open="createDialog" title="Utwórz plan studiów" :icon="UserIcon" @update:open="createDialog = $event">
+      <base-dialog :open="createDialog" title="Utwórz plan studiów" :icon="PhUserPlus" @update:open="createDialog = $event">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj plan studiów
@@ -47,10 +47,10 @@ watchEffect(() => {
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await studyPlans.create(currentItem))">
-          <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
-          <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
-          <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
-          <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
+          <base-date-input v-model="start" :icon="PhCalendar" label="Data rozpoczęcia" />
+          <base-input v-model="currentItem.field" :icon="PhVideo" label="Kierunek" />
+          <base-select v-model.number="currentItem.type" :icon="PhTrophy" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+          <base-select v-model.number="currentItem.mode" :icon="PhDevices" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
 
           <div class="mt-6 flex justify-end gap-4">
             <base-button variant="secondary" type="button" @click="createDialog = false">
@@ -79,7 +79,7 @@ watchEffect(() => {
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-dialog :open="updateDialog" title="Edytuj plan studiów" :icon="UserIcon" @update:open="updateDialog = $event">
+        <base-dialog :open="updateDialog" title="Edytuj plan studiów" :icon="PhPencilSimpleLine" @update:open="updateDialog = $event">
           <template #trigger>
             <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
               Edytuj
@@ -87,10 +87,10 @@ watchEffect(() => {
           </template>
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await studyPlans.update(currentItem))">
-            <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
-            <base-input v-model="currentItem.field" :icon="ViewfinderCircleIcon" label="Kierunek" />
-            <base-select v-model.number="currentItem.type" :icon="TrophyIcon" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
-            <base-select v-model.number="currentItem.mode" :icon="ClockIcon" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
+            <base-date-input v-model="start" :icon="PhCalendar" label="Data rozpoczęcia" />
+            <base-input v-model="currentItem.field" :icon="PhVideo" label="Kierunek" />
+            <base-select v-model.number="currentItem.type" :icon="PhTrophy" label="Typ studiów" :options="mapArrayToLabelValue(data.studyTypes)" />
+            <base-select v-model.number="currentItem.mode" :icon="PhDevices" label="Tryb studiów" :options="mapArrayToLabelValue(data.studyModes)" />
 
             <div class="mt-6 flex justify-end gap-4">
               <base-button variant="secondary" type="button" @click="updateDialog = false">
@@ -107,7 +107,7 @@ watchEffect(() => {
           Plany zajęć
         </base-button>
 
-        <base-dialog :open="deleteDialog" title="Usuń plan studiów" :icon="TrashIcon" @update:open="deleteDialog = $event">
+        <base-dialog :open="deleteDialog" title="Usuń plan studiów" :icon="PhTrash" @update:open="deleteDialog = $event">
           <template #trigger>
             <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
               Usuń

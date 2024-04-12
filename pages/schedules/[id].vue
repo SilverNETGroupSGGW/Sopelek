@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarIcon, ChartBarIcon, MagnifyingGlassIcon, TrashIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
+import { PhCalendar, PhListNumbers, PhMagnifyingGlass, PhPen, PhPencilSimpleLine, PhTrash, PhUserPlus } from '@phosphor-icons/vue'
 import { CalendarDate, type DateValue } from '@internationalized/date'
 import { DialogDescription } from 'radix-vue'
 
@@ -45,9 +45,9 @@ watchEffect(() => {
     </span>
 
     <div class="flex items-center gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="PhMagnifyingGlass" />
 
-      <base-dialog :open="createDialog" title="Utwórz plan zajęć" :icon="UserIcon" @update:open="createDialog = $event">
+      <base-dialog :open="createDialog" title="Utwórz plan zajęć" :icon="PhUserPlus" @update:open="createDialog = $event">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj plan zajęć
@@ -55,9 +55,9 @@ watchEffect(() => {
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem, Number.parseInt(route.params.id as string)))">
-          <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
-          <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa" />
-          <base-input v-model="currentItem.term" type="number" :icon="ChartBarIcon" label="Semestr" />
+          <base-date-input v-model="start" :icon="PhCalendar" label="Data rozpoczęcia" />
+          <base-input v-model="currentItem.name" :icon="PhPen" label="Nazwa" />
+          <base-input v-model.number="currentItem.term" :icon="PhListNumbers" label="Semestr" />
 
           <div class="mt-6 flex justify-end gap-4">
             <base-button variant="secondary" type="button" @click="createDialog = false">
@@ -85,7 +85,7 @@ watchEffect(() => {
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-dialog :open="updateDialog" title="Edytuj plan zajęć" :icon="UserIcon" @update:open="updateDialog = $event">
+        <base-dialog :open="updateDialog" title="Edytuj plan zajęć" :icon="PhPencilSimpleLine" @update:open="updateDialog = $event">
           <template #trigger>
             <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
               Edytuj
@@ -93,9 +93,9 @@ watchEffect(() => {
           </template>
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
-            <base-date-input v-model="start" :icon="CalendarIcon" label="Data rozpoczęcia" />
-            <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa" />
-            <base-input v-model="currentItem.term" type="number" :icon="ChartBarIcon" label="Semestr" />
+            <base-date-input v-model="start" :icon="PhCalendar" label="Data rozpoczęcia" />
+            <base-input v-model="currentItem.name" :icon="PhPen" label="Nazwa" />
+            <base-input v-model.number="currentItem.term" :icon="PhListNumbers" label="Semestr" />
 
             <div class="mt-6 flex justify-end gap-4">
               <base-button variant="secondary" type="button" @click="updateDialog = false">
@@ -108,7 +108,7 @@ watchEffect(() => {
           </form>
         </base-dialog>
 
-        <base-dialog :open="deleteDialog" title="Usuń plan zajęć" :icon="TrashIcon" @update:open="deleteDialog = $event">
+        <base-dialog :open="deleteDialog" title="Usuń plan zajęć" :icon="PhTrash" @update:open="deleteDialog = $event">
           <template #trigger>
             <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
               Usuń

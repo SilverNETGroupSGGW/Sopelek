@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MagnifyingGlassIcon, TrashIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
-import { DialogClose, DialogDescription } from 'radix-vue'
+import { DialogDescription } from 'radix-vue'
+import { PhBuilding, PhElevator, PhMagnifyingGlass, PhPen, PhPencilSimpleLine, PhRowsPlusBottom, PhTrash, PhUserPlus, PhUsersThree } from '@phosphor-icons/vue'
 
 // Supabase
 const classrooms = useClassrooms()
@@ -17,9 +17,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </h1>
 
     <div class="flex items-center gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="PhMagnifyingGlass" />
 
-      <base-dialog :open="createDialog" title="Utwórz salę" :icon="UserIcon" @update:open="createDialog = $event">
+      <base-dialog :open="createDialog" title="Utwórz salę" :icon="PhUserPlus" @update:open="createDialog = $event">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj salę
@@ -27,11 +27,11 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await classrooms.create(currentItem))">
-          <base-input v-model="currentItem.building" :icon="ViewfinderCircleIcon" label="Budynek" />
-          <base-input v-model.number="currentItem.floor" :icon="ViewfinderCircleIcon" label="Piętro" type="number" />
-          <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa sali" />
-          <base-input v-model.number="currentItem.capacity" :icon="ViewfinderCircleIcon" label="Pojemność" type="number" />
-          <base-input v-model="currentItem.type" :icon="ViewfinderCircleIcon" label="Typ sali" />
+          <base-input v-model="currentItem.building" :icon="PhBuilding" label="Budynek" />
+          <base-input v-model.number="currentItem.floor" :icon="PhElevator" label="Piętro" type="number" />
+          <base-input v-model="currentItem.name" :icon="PhPen" label="Nazwa sali" />
+          <base-input v-model.number="currentItem.capacity" :icon="PhUsersThree" label="Pojemność" type="number" />
+          <base-input v-model="currentItem.type" :icon="PhRowsPlusBottom" label="Typ sali" />
 
           <div class="mt-6 flex justify-end gap-4">
             <base-button variant="secondary" type="button" @click="createDialog = false">
@@ -57,7 +57,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-dialog :open="updateDialog" title="Edytuj salę" :icon="UserIcon" @update:open="updateDialog = $event">
+        <base-dialog :open="updateDialog" title="Edytuj salę" :icon="PhPencilSimpleLine" @update:open="updateDialog = $event">
           <template #trigger>
             <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
               Edytuj
@@ -65,11 +65,11 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </template>
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await classrooms.update(currentItem))">
-            <base-input v-model="currentItem.building" :icon="ViewfinderCircleIcon" label="Budynek" />
-            <base-input v-model.number="currentItem.floor" :icon="ViewfinderCircleIcon" label="Piętro" type="number" />
-            <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Nazwa sali" />
-            <base-input v-model.number="currentItem.capacity" :icon="ViewfinderCircleIcon" label="Pojemność" type="number" />
-            <base-input v-model="currentItem.type" :icon="ViewfinderCircleIcon" label="Typ sali" />
+            <base-input v-model="currentItem.building" :icon="PhBuilding" label="Budynek" />
+            <base-input v-model.number="currentItem.floor" :icon="PhElevator" label="Piętro" type="number" />
+            <base-input v-model="currentItem.name" :icon="PhPen" label="Nazwa sali" />
+            <base-input v-model.number="currentItem.capacity" :icon="PhUsersThree" label="Pojemność" type="number" />
+            <base-input v-model="currentItem.type" :icon="PhRowsPlusBottom" label="Typ sali" />
 
             <div class="mt-6 flex justify-end gap-4">
               <base-button variant="secondary" type="button" @click="updateDialog = false">
@@ -82,7 +82,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </form>
         </base-dialog>
 
-        <base-dialog :open="deleteDialog" title="Usuń salę" :icon="TrashIcon" @update:open="deleteDialog = $event">
+        <base-dialog :open="deleteDialog" title="Usuń salę" :icon="PhTrash" @update:open="deleteDialog = $event">
           <template #trigger>
             <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
               Usuń

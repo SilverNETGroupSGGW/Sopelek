@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InboxIcon, KeyIcon } from '@heroicons/vue/20/solid'
+import { PhAt, PhPassword } from '@phosphor-icons/vue'
 
 const supabase = useSupabaseClient()
 
@@ -40,8 +40,8 @@ async function handleFormSubmit() {
 
     <form class="w-full" @submit.prevent="handleFormSubmit">
       <div class="mb-8 space-y-5">
-        <base-input v-model="form.email" :icon="InboxIcon" type="email" placeholder="pXXXXXX@sggw.edu.pl" label="Adres e-mail" autocomplete="false" />
-        <base-input v-model="form.password" :icon="KeyIcon" type="password" placeholder="********" label="Hasło" autocomplete="false" />
+        <base-input v-model="form.email" :icon="PhAt" type="email" placeholder="pXXXXXX@sggw.edu.pl" label="Adres e-mail" autocomplete="false" />
+        <base-input v-model="form.password" :icon="PhPassword" type="password" placeholder="********" label="Hasło" autocomplete="false" />
       </div>
 
       <div class="flex w-full justify-end">

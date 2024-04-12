@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { AtSymbolIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/solid'
 import { DialogClose, DialogDescription } from 'radix-vue'
+import { PhAt, PhIdentificationCard, PhMagnifyingGlass, PhPencilSimpleLine, PhTrash, PhTrophy, PhUserPlus } from '@phosphor-icons/vue'
 
 // Supabase
 const lecturers = useLecturers()
@@ -20,9 +20,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </h1>
 
     <div class="flex items-center gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="PhMagnifyingGlass" />
 
-      <base-dialog :open="createDialog" title="Utwórz wykładowcę" :icon="UserIcon">
+      <base-dialog :open="createDialog" title="Utwórz wykładowcę" :icon="PhUserPlus">
         <template #trigger>
           <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
             Dodaj wykładowcę
@@ -30,9 +30,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         </template>
 
         <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await lecturers.create(currentItem))">
-          <base-select v-model.number="currentItem.degree" :icon="TrophyIcon" label="Stopień naukowy" :options="mapArrayToLabelValue(data.degrees)" />
-          <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Imię i nazwisko" />
-          <base-input v-model="currentItem.email" type="email" :icon="AtSymbolIcon" label="Email" />
+          <base-select v-model.number="currentItem.degree" :icon="PhTrophy" label="Stopień naukowy" :options="mapArrayToLabelValue(data.degrees)" />
+          <base-input v-model="currentItem.name" :icon="PhIdentificationCard" label="Imię i nazwisko" />
+          <base-input v-model="currentItem.email" type="email" :icon="PhAt" label="Email" />
 
           <div class="mt-6 flex justify-end gap-4">
             <DialogClose as-child>
@@ -60,7 +60,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
 
     <template #actions="{ cell }">
       <div class="flex gap-4">
-        <base-dialog :open="updateDialog" title="Edytuj wykładowcę" :icon="UserIcon">
+        <base-dialog :open="updateDialog" title="Edytuj wykładowcę" :icon="PhPencilSimpleLine">
           <template #trigger>
             <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
               Edytuj
@@ -68,9 +68,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </template>
 
           <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await lecturers.update(currentItem))">
-            <base-select v-model.number="currentItem.degree" :icon="TrophyIcon" label="Stopień naukowy" :options="mapArrayToLabelValue(data.degrees)" />
-            <base-input v-model="currentItem.name" :icon="ViewfinderCircleIcon" label="Imię i nazwisko" />
-            <base-input v-model="currentItem.email" type="email" :icon="AtSymbolIcon" label="Email" />
+            <base-select v-model.number="currentItem.degree" :icon="PhTrophy" label="Stopień naukowy" :options="mapArrayToLabelValue(data.degrees)" />
+            <base-input v-model="currentItem.name" :icon="PhIdentificationCard" label="Imię i nazwisko" />
+            <base-input v-model="currentItem.email" type="email" :icon="PhAt" label="Email" />
 
             <div class="mt-6 flex justify-end gap-4">
               <DialogClose as-child>
@@ -85,7 +85,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </form>
         </base-dialog>
 
-        <base-dialog :open="deleteDialog" title="Usuń wykładowcę" :icon="TrashIcon">
+        <base-dialog :open="deleteDialog" title="Usuń wykładowcę" :icon="PhTrash">
           <template #trigger>
             <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
               Usuń
