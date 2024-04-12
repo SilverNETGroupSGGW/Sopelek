@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import { ClipboardDocumentCheckIcon, HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
-import type { FunctionalComponent } from 'vue'
+import { PhChalkboard, PhGridNine, PhHouseLine, PhListMagnifyingGlass, PhUser } from '@phosphor-icons/vue'
+import type { Component } from 'vue'
 
 const route = useRoute()
 
 const tabs = reactive([
   {
     active: computed(() => route.path === '/'),
-    icon: HomeIcon,
+    icon: PhHouseLine,
     label: 'Strona główna',
     to: '/',
   },
   {
     active: computed(() => route.path === '/study-plans'),
-    icon: ClipboardDocumentCheckIcon,
+    icon: PhListMagnifyingGlass,
     label: 'Programy studiów',
     to: '/study-plans',
   },
   {
     active: computed(() => route.path.startsWith('/schedules')),
-    icon: RectangleGroupIcon,
+    icon: PhGridNine,
     label: 'Plany zajęć',
     to: '/schedules',
   },
   {
     active: computed(() => route.path === '/lecturers'),
-    icon: UserIcon,
+    icon: PhUser,
     label: 'Wykładowcy',
     to: '/lecturers',
   },
   {
     active: computed(() => route.path === '/classrooms'),
-    icon: PresentationChartBarIcon,
+    icon: PhChalkboard,
     label: 'Sale',
     to: '/classrooms',
   },
 ]) satisfies Array<{
   active: boolean
-  icon: FunctionalComponent
+  icon: Component
   label: string
   to: string
 }>

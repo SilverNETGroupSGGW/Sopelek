@@ -27,7 +27,7 @@ defineEmits<{
       <DialogContent class="fixed left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col rounded-lg bg-white text-left align-middle shadow-xl" :class="fullSize ? 'h-full w-7/12' : 'w-[32rem] h-auto max-h-[36rem]'" @pointer-down-outside="$emit('update:open', false)">
         <div class="flex items-center justify-between rounded-t-lg border border-b-gray-200 bg-gray-50 p-6">
           <div class="flex items-center gap-4 text-gray-900">
-            <component :is="icon" class="size-5" />
+            <component :is="{ ...icon }" class="size-5" />
             <DialogTitle as="h3" class="text-lg font-medium">
               {{ title }}
             </DialogTitle>

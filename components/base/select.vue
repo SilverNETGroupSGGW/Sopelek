@@ -23,7 +23,7 @@ const computedModel = computed(() => props.options.find(option => option.value =
 
       <SelectTrigger class="relative flex h-12 w-full items-center justify-between rounded-lg border border-gray-200 py-4 pl-12 pr-3 text-gray-700 transition-colors duration-200 ease-in-out placeholder:text-gray-400 hover:transition-all hover:duration-200 hover:ease-in-out focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:transition-all focus:duration-200 focus:ease-in-out active:ring-2 active:ring-indigo-600 disabled:bg-gray-100">
         <SelectValue>
-          <component :is="icon" v-if="icon" class="absolute left-6 top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-gray-400" />
+          <component :is="{ ...icon }" v-if="icon" class="absolute left-6 top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-gray-700" />
 
           <span v-if="model" class="block">{{ computedModel }}</span>
           <span v-else class="block text-gray-400">{{ placeholder }}</span>
