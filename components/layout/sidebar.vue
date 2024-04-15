@@ -40,7 +40,6 @@ const tabs = reactive([
     to: '/user',
     active: computed(() => route.path === '/user'),
   },
-
 ])
 </script>
 
