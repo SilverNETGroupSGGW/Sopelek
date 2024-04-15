@@ -76,29 +76,11 @@ const newPassword = ''
 
       <div class="mb-6">
         <div class="mb-4">
-          <label for="oldPassword" class="block text-gray-700">
-            Stare hasło
-          </label>
-
-          <input
-            id="oldPassword"
-            v-model="oldPassword"
-            type="password"
-            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500"
-          >
+          <base-input v-model="oldPassword" label="Stare hasło" />
         </div>
 
         <div class="mb-4">
-          <label for="confirmPassword" class="block text-gray-700">
-            Nowe hasło
-          </label>
-
-          <input
-            id="newPassword"
-            v-model="newPassword"
-            type="password"
-            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500"
-          >
+          <base-input v-model="newPassword" label="Nowe hasło" />
         </div>
 
         <base-button variant="primary" @click="account.changePassword(newPassword, newPassword)">
