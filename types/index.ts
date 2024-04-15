@@ -8,7 +8,8 @@ import { DegreeOfStudy, StudyMode } from './Schedule'
 import type { Group } from './Group'
 import type { Lecturer } from './Lecturer'; import type { Lesson } from './Lesson'
 import type { StudyProgram } from './StudyProgram'
+import type { Account } from './Account'
 
-export type { Subject, Lecturer, Classroom, Schedule, Lesson, Group, SubjectConflict, SubjectConflictItem, BaseResponse, StudyProgram }
+export type { Account, Subject, Lecturer, Classroom, Schedule, Lesson, Group, SubjectConflict, SubjectConflictItem, BaseResponse, StudyProgram }
 
 export { AcademicDegree, DayOfWeek, SubjectType, StudyMode, DegreeOfStudy }
