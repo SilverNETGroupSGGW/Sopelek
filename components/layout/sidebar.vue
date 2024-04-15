@@ -36,7 +36,7 @@ const tabs = reactive([
   },
   {
     icon: UserIcon,
-    label: 'User',
+    label: 'Użytkownicy',
     to: '/user',
     active: computed(() => route.path === '/user'),
   },
