@@ -3,8 +3,8 @@
 const account = useAccount()
 await account.get()
 
-const oldPassword = ''
-const newPassword = ''
+const oldPassword = ref('')
+const newPassword = ref('')
 </script>
 
 <template>
