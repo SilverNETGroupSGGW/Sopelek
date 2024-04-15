@@ -27,7 +27,7 @@ export const useStudyPrograms = defineStore('studyPrograms', {
     },
     async create(studyProgram: StudyProgram) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram', {
+      const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram/all', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(studyProgram),

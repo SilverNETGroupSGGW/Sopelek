@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClipboardDocumentCheckIcon, HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { ClipboardDocumentCheckIcon, HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 
@@ -23,7 +23,7 @@ const tabs = reactive([
     active: computed(() => route.path.startsWith('/schedules')),
   },
   {
-    icon: UserIcon,
+    icon: UserGroupIcon,
     label: 'Wykładowcy',
     to: '/lecturers',
     active: computed(() => route.path === '/lecturers'),
@@ -33,6 +33,12 @@ const tabs = reactive([
     label: 'Sale',
     to: '/classrooms',
     active: computed(() => route.path === '/classrooms'),
+  },
+  {
+    icon: UserIcon,
+    label: 'Użytkownicy',
+    to: '/user',
+    active: computed(() => route.path === '/user'),
   },
 ])
 </script>
