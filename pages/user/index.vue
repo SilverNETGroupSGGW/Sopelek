@@ -5,8 +5,6 @@ await account.get()
 
 const oldPassword = ''
 const newPassword = ''
-
-console.log(account.data)
 </script>
 
 <template>
@@ -103,12 +101,9 @@ console.log(account.data)
           >
         </div>
 
-        <button
-          class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-          @click="account.changePassword(newPassword, newPassword)"
-        >
+        <base-button variant="primary" @click="account.changePassword(newPassword, newPassword)">
           Zmień hasło
-        </button>
+        </base-button>
 
         <small class="block w-full text-right text-gray-700">
           Projekt realizowany przez <a href="mailto:kontakt@silver.sggw.pl" class="font-semibold transition-colors duration-200 hover:text-gray-900">Koło Naukowe Informatyków SGGW Silver .NET</a>
