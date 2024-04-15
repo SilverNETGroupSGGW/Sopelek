@@ -71,6 +71,10 @@ const isOfetchEmpty = computed(() => {
       <template v-else-if="ofetchStatus.status === 400 && ofetchStatus.request.includes('groups') && ofetchStatus.method === 'DELETE'">
         <span class="text-sm font-medium text-gray-700">Nie można usunąć grupy, ponieważ jest ona przypisana do zajęć.</span>
       </template>
+
+      <template v-else-if="ofetchStatus.status === 400 && ofetchStatus.request.includes('change-password')">
+        <span class="text-sm font-medium text-gray-700">Nieprawidłowe hasło.</span>
+      </template>
     </template>
   </base-toast>
 </template>
