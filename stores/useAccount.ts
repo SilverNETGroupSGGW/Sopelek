@@ -17,11 +17,15 @@ export const useAccount = defineStore('account', {
 
       this.data = data.value
     },
-    async changePassword(currentPassword: string, newPassword: string) {
+    async changePassword(oldPassword: string, newPassword: string) {
       const runtimeConfig = useRuntimeConfig()
 
-      await useFetch(`account/change-password?CurrentPassword=${currentPassword}&NewPassword=${newPassword}`, {
+      await useFetch(`account/change-password`, {
         baseURL: runtimeConfig.public.baseURL,
+        query: {
+          CurrentPassword: oldPassword,
+          NewPassword: newPassword,
+        },
         method: 'POST',
         headers: {
           Authorization: `Bearer ${useCookie('accessToken').value}`,
