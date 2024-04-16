@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BuildingLibraryIcon, HomeIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { IconBuilding, IconEdit, IconKey, IconNumber, IconPlus, IconTrash, IconZoom } from '@tabler/icons-vue'
 
 const classrooms = useClassrooms()
 await classrooms.get()
@@ -16,7 +16,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
       <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
         Dodaj salę
       </base-button>
@@ -46,13 +46,13 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </template>
   </base-table>
 
-  <base-dialog v-model="createDialog" title="Dodaj salę" :icon="BuildingLibraryIcon">
+  <base-dialog v-model="createDialog" title="Dodaj salę" :icon="IconBuilding">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async () => await classrooms.create(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-input v-model="currentItem.building" :icon="BuildingLibraryIcon" label="Budynek" />
-      <base-input v-model="currentItem.floor" :icon="HomeIcon" label="Piętro" />
-      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-input v-model="currentItem.building" :icon="IconBuilding" label="Budynek" />
+      <base-input v-model="currentItem.floor" :icon="IconNumber" label="Piętro" />
+      <base-input v-model="currentItem.capacity" :icon="IconPlus" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -65,13 +65,13 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="updateDialog" title="Edytuj salę" :icon="BuildingLibraryIcon">
+  <base-dialog v-model="updateDialog" title="Edytuj salę" :icon="IconBuilding">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await classrooms.update(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-input v-model="currentItem.building" :icon="BuildingLibraryIcon" label="Budynek" />
-      <base-input v-model="currentItem.floor" :icon="HomeIcon" label="Piętro" />
-      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-input v-model="currentItem.building" :icon="IconBuilding" label="Budynek" />
+      <base-input v-model="currentItem.floor" :icon="IconNumber" label="Piętro" />
+      <base-input v-model="currentItem.capacity" :icon="IconPlus" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">
@@ -84,7 +84,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="deleteDialog" title="Usuń salę" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń salę" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć salę?
     </p>

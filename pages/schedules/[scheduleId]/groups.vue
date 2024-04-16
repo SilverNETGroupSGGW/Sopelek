@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { KeyIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon, UserGroupIcon } from '@heroicons/vue/20/solid'
+import { IconEdit, IconKey, IconPlus, IconTrash, IconUsersGroup, IconZoom } from '@tabler/icons-vue'
 
 // Nuxt hooks
 const route = useRoute()
@@ -30,7 +30,7 @@ watchEffect(() => {
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
       <base-button variant="primary" @click="handleDialogOpen('create')">
         Dodaj grupę
       </base-button>
@@ -61,12 +61,12 @@ watchEffect(() => {
     </template>
   </base-table>
 
-  <base-dialog v-model="createDialog" title="Dodaj grupę" :icon="UserGroupIcon">
+  <base-dialog v-model="createDialog" title="Dodaj grupę" :icon="IconUsersGroup">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async () => await groups.create(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.scheduleId" :icon="KeyIcon" label="ID planu" disabled />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.scheduleId" :icon="IconKey" label="ID planu" disabled />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-input v-model="currentItem.capacity" :icon="IconPlus" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -79,12 +79,12 @@ watchEffect(() => {
     </form>
   </base-dialog>
 
-  <base-dialog v-model="updateDialog" title="Edytuj grupę" :icon="UserGroupIcon">
+  <base-dialog v-model="updateDialog" title="Edytuj grupę" :icon="IconUsersGroup">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async () => await groups.update(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.scheduleId" :icon="KeyIcon" label="ID planu" disabled />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-input v-model="currentItem.capacity" :icon="PlusIcon" label="Pojemność" type="number" min="0" />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.scheduleId" :icon="IconKey" label="ID planu" disabled />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-input v-model="currentItem.capacity" :icon="IconPlus" label="Pojemność" type="number" min="0" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">
@@ -97,7 +97,7 @@ watchEffect(() => {
     </form>
   </base-dialog>
 
-  <base-dialog v-model="deleteDialog" title="Usuń grupę" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń grupę" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć grupę?
     </p>

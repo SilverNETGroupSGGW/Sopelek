@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { KeyIcon } from '@heroicons/vue/20/solid'
+import { IconKey } from '@tabler/icons-vue'
 
 const account = useAccount()
 await account.get()
@@ -54,8 +54,8 @@ async function changePassword() {
         Zmiana hasła
       </h2>
       <form class="space-y-4" @submit.prevent="changePassword()">
-        <base-input v-model="oldPassword" label="Stare hasło" :icon="KeyIcon" type="password" />
-        <base-input v-model="newPassword" label="Nowe hasło" :icon="KeyIcon" type="password" />
+        <base-input v-model="oldPassword" label="Stare hasło" :icon="IconKey" type="password" />
+        <base-input v-model="newPassword" label="Nowe hasło" :icon="IconKey" type="password" />
         <base-button variant="primary" type="submit" :loading="isSubmitting" :disabled="isSubmitting">
           Zmień hasło
         </base-button>

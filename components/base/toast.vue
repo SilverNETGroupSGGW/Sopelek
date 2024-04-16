@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
+import { IconCircleCheck, IconX } from '@tabler/icons-vue'
 
 const props = defineProps<{
   show: boolean
@@ -54,8 +54,8 @@ watchEffect(() => {
         <div class="w-full p-4">
           <div class="flex items-start">
             <div class="mr-3 flex h-full items-start">
-              <CheckCircleIcon v-if="type === 'success'" class="size-6 text-green-600" />
-              <XMarkIcon v-if="type === 'error'" class="size-6 text-red-600" />
+              <IconCircleCheck v-if="type === 'success'" class="size-6 text-green-600" />
+              <IconX v-if="type === 'error'" class="size-6 text-red-600" />
             </div>
 
             <p class="flex-1">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/20/solid'
+import { IconX } from '@tabler/icons-vue'
 
 defineProps<{
   icon: /* FunctionalComponent */ any
@@ -30,7 +30,7 @@ const model = defineModel<boolean>()
                     {{ title }}
                   </DialogTitle>
                 </div>
-                <XMarkIcon class="size-6 cursor-pointer text-gray-400" @click="model = false" />
+                <IconX class="size-6 cursor-pointer text-gray-400" @click="model = false" />
               </div>
 
               <div class="overflow-auto rounded-b-lg p-6" :class="[fullSize ? 'h-full' : '']">

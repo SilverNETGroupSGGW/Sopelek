@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseIcon, CalendarIcon, CloudIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, TrophyIcon, UserIcon, ViewfinderCircleIcon } from '@heroicons/vue/24/outline'
+import { IconBriefcase, IconCalendarEvent, IconCloud, IconEdit, IconKey, IconSettings2, IconTrash, IconTrophy, IconUser, IconZoom } from '@tabler/icons-vue'
 
 const { fieldOfStudies, studiesDegrees, studiesModes } = useData()
 
@@ -24,7 +24,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
       <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
         Dodaj kierunek
       </base-button>
@@ -56,12 +56,12 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </template>
   </base-table>
 
-  <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="UserIcon">
+  <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="IconUser">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await studyPrograms.update(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia semestru" />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.startDate" type="date" :icon="IconCalendarEvent" label="Data rozpoczęcia semestru" />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="IconSettings2" label="Kierunek">
         <template #options="{ option, active }">
           <span class="text-base font-medium" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.value }}</span>
           <br>
@@ -70,10 +70,10 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </span>
         </template>
       </base-search>
-      <base-select v-model="currentItem.studyMode" :options="studiesModes" :icon="CloudIcon" label="Tryb studiów" />
-      <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
-      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
-      <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
+      <base-select v-model="currentItem.studyMode" :options="studiesModes" :icon="IconCloud" label="Tryb studiów" />
+      <base-select v-model="currentItem.degreeOfStudy" :icon="IconTrophy" label="Stopień studiów" :options="studiesDegrees" />
+      <base-input v-model="currentItem.year" type="number" :icon="IconCalendarEvent" label="Rok" disabled />
+      <base-input v-model="currentItem.semester" type="number" :icon="IconBriefcase" label="Semestr" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">
@@ -86,12 +86,12 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="createDialog" title="Utwórz plan" :icon="UserIcon">
+  <base-dialog v-model="createDialog" title="Utwórz plan" :icon="IconUser">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await studyPrograms.create(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.startDate" type="date" :icon="CalendarIcon" label="Data rozpoczęcia semestru" />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="ViewfinderCircleIcon" label="Kierunek">
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.startDate" type="date" :icon="IconCalendarEvent" label="Data rozpoczęcia semestru" />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-search v-model="currentItem.fieldOfStudy" :options="fieldOfStudies" :icon="IconSettings2" label="Kierunek">
         <template #options="{ option, active }">
           <span class="text-base font-medium" :class="{ 'text-gray-100': active, 'text-gray-900': !active }">{{ option.value }}</span>
           <br>
@@ -100,10 +100,10 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
           </span>
         </template>
       </base-search>
-      <base-select v-model="currentItem.studyMode" :icon="CloudIcon" label="Tryb studiów" :options="studiesModes" />
-      <base-select v-model="currentItem.degreeOfStudy" :icon="TrophyIcon" label="Stopień studiów" :options="studiesDegrees" />
-      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
-      <base-input v-model="currentItem.semester" type="number" :icon="BriefcaseIcon" label="Semestr" />
+      <base-select v-model="currentItem.studyMode" :icon="IconCloud" label="Tryb studiów" :options="studiesModes" />
+      <base-select v-model="currentItem.degreeOfStudy" :icon="IconTrophy" label="Stopień studiów" :options="studiesDegrees" />
+      <base-input v-model="currentItem.year" type="number" :icon="IconCalendarEvent" label="Rok" disabled />
+      <base-input v-model="currentItem.semester" type="number" :icon="IconBriefcase" label="Semestr" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -116,7 +116,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="deleteDialog" title="Usuń plan" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń plan" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć plan?
     </p>
