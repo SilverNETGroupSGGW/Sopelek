@@ -2,7 +2,6 @@
 import { IconCircleCheck, IconX } from '@tabler/icons-vue'
 
 defineProps<{
-  show: boolean
   type: 'success' | 'error'
 }>()
 
@@ -12,30 +11,28 @@ defineEmits<{
 </script>
 
 <template>
-  <transition enter-active-class="transition duration-200 ease-out" enter-from-class="transform translate-y-2 opacity-0" enter-to-class="transform translate-y-0 opacity-100" leave-active-class="transition duration-200 ease-out" leave-from-class="transform translate-y-0 opacity-100" leave-to-class="transform translate-y-2 opacity-0">
-    <div v-if="show" class="pointer-events-none fixed inset-0 flex h-screen items-end justify-end p-6">
-      <div v-if="show" class="pointer-events-auto relative overflow-hidden rounded-lg border border-t-4 border-gray-200 bg-white shadow-lg" :class="type === 'success' ? 'border-t-green-600' : 'border-red-600'">
-        <div class="w-full p-4">
+  <div class="pointer-events-none fixed inset-0 flex h-screen items-end justify-end p-6">
+    <div class="pointer-events-auto relative overflow-hidden rounded-lg border border-t-4 border-gray-200 bg-white shadow-lg" :class="type === 'success' ? 'border-t-green-600' : 'border-red-600'">
+      <div class="w-full p-4">
+        <div class="flex items-start">
           <div class="flex items-start">
-            <div class="flex items-start">
-              <div class="mr-3 flex h-full items-start">
-                <IconCircleCheck v-if="type === 'success'" class="size-6 text-green-600" />
-                <IconX v-else class="size-6 text-red-600" />
-              </div>
-
-              <p class="flex-1">
-                <slot />
-              </p>
+            <div class="mr-3 flex h-full items-start">
+              <IconCircleCheck v-if="type === 'success'" class="size-6 text-green-600" />
+              <IconX v-else class="size-6 text-red-600" />
             </div>
 
-            <div class="flex items-center justify-center size-6">
-              <button class="ml-4" @click="$emit('close')">
-                <IconX class="text-gray-700 size-4" />
-              </button>
-            </div>
+            <p class="flex-1">
+              <slot />
+            </p>
+          </div>
+
+          <div class="flex items-center justify-center size-6">
+            <button class="ml-4" @click="$emit('close')">
+              <IconX class="text-gray-700 size-4" />
+            </button>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>

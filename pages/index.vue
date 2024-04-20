@@ -1,3 +1,15 @@
+<script setup lang="ts">
+const router = useRouter()
+const toasts = useToasts()
+
+if (router.options.history.state?.back === '/signin') {
+  toasts.addToast({
+    type: 'success',
+    message: 'Witamy w aplikacji!',
+  })
+}
+</script>
+
 <template>
   <div class="px-12 py-9">
     <div class="mb-8">
