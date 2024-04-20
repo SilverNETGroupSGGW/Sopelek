@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarIcon, KeyIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { IconCalendarEvent, IconEdit, IconKey, IconTrash, IconUser, IconZoom } from '@tabler/icons-vue'
 import { DayOfWeek } from '~/types'
 
 // Schedules
@@ -18,7 +18,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
       <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
         Dodaj plan
       </base-button>
@@ -63,11 +63,11 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </template>
   </base-table>
 
-  <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="UserIcon">
+  <base-dialog v-model="updateDialog" title="Edytuj plan" :icon="IconUser">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await schedules.update(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-input v-model="currentItem.year" type="number" :icon="IconCalendarEvent" label="Rok" disabled />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">
@@ -80,11 +80,11 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="createDialog" title="Utwórz plan" :icon="UserIcon">
+  <base-dialog v-model="createDialog" title="Utwórz plan" :icon="IconUser">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await schedules.create(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-input v-model="currentItem.name" :icon="PencilIcon" label="Nazwa" />
-      <base-input v-model="currentItem.year" type="number" :icon="CalendarIcon" label="Rok" disabled />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-input v-model="currentItem.name" :icon="IconEdit" label="Nazwa" />
+      <base-input v-model="currentItem.year" type="number" :icon="IconCalendarEvent" label="Rok" disabled />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -97,7 +97,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </form>
   </base-dialog>
 
-  <base-dialog v-model="deleteDialog" title="Usuń plan" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń plan" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć plan?
     </p>

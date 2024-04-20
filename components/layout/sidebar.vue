@@ -1,41 +1,41 @@
 <script setup lang="ts">
-import { ClipboardDocumentCheckIcon, HomeIcon, PresentationChartBarIcon, RectangleGroupIcon, UserGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { IconChalkboard, IconChartArrows, IconHome, IconTableColumn, IconUser, IconUsersGroup } from '@tabler/icons-vue'
 
 const route = useRoute()
 
 const tabs = reactive([
   {
-    icon: HomeIcon,
+    icon: IconHome,
     label: 'Strona główna',
     to: '/',
     active: computed(() => route.path === '/'),
   },
   {
-    icon: ClipboardDocumentCheckIcon,
+    icon: IconChartArrows,
     label: 'Kierunki studiów',
     to: '/study-programs',
     active: computed(() => route.path === '/study-programs'),
   },
   {
-    icon: RectangleGroupIcon,
+    icon: IconTableColumn,
     label: 'Plany zajęć',
     to: '/schedules',
     active: computed(() => route.path.startsWith('/schedules')),
   },
   {
-    icon: UserGroupIcon,
+    icon: IconUsersGroup,
     label: 'Wykładowcy',
     to: '/lecturers',
     active: computed(() => route.path === '/lecturers'),
   },
   {
-    icon: PresentationChartBarIcon,
+    icon: IconChalkboard,
     label: 'Sale',
     to: '/classrooms',
     active: computed(() => route.path === '/classrooms'),
   },
   {
-    icon: UserIcon,
+    icon: IconUser,
     label: 'Użytkownicy',
     to: '/user',
     active: computed(() => route.path === '/user'),

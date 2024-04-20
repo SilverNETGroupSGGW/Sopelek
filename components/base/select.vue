@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends { value: string }">
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
-import { XMarkIcon } from '@heroicons/vue/20/solid'
+import { IconX } from '@tabler/icons-vue'
 
 defineProps<{
   caption?: string
@@ -28,7 +28,7 @@ const modelValue = defineModel<string>()
             <span v-else class="block text-gray-400">{{ placeholder }}</span>
           </div>
 
-          <XMarkIcon v-if="modelValue" class="size-5 text-gray-600" @click.prevent="modelValue = ''" />
+          <IconX v-if="modelValue" class="size-5 text-gray-600" @click.prevent="modelValue = ''" />
         </ListboxButton>
 
         <Transition leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">

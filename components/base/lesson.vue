@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TrashIcon } from '@heroicons/vue/20/solid'
+import { IconTrash } from '@tabler/icons-vue'
 import type { Subject } from '~/types'
 
 const props = defineProps<Subject & {
@@ -113,7 +113,7 @@ async function handleDelete() {
     </small>
   </div>
 
-  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć zajęcia?
     </p>

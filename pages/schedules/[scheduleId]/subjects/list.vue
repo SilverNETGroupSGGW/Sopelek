@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarDaysIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
+import { IconCalendarEvent, IconTrash, IconZoom } from '@tabler/icons-vue'
 import type { Subject } from '~/types'
 
 // Nuxt hooks
@@ -49,8 +49,8 @@ function handleLessonEdit(id: string) {
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-64" :icon="MagnifyingGlassIcon" />
-      <base-select v-model="days" :options="daysOfWeek.map(x => ({ value: x.label }))" placeholder="Dzień tygodnia" class="w-64" :icon="CalendarDaysIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-64" :icon="IconZoom" />
+      <base-select v-model="days" :options="daysOfWeek.map(x => ({ value: x.label }))" placeholder="Dzień tygodnia" class="w-64" :icon="IconCalendarEvent" />
 
       <base-button variant="primary" @click="handleLessonEdit('create')">
         Dodaj przedmiot
@@ -107,7 +107,7 @@ function handleLessonEdit(id: string) {
     </template>
   </base-table>
 
-  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć zajęcia?
     </p>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { CalendarDaysIcon, MagnifyingGlassIcon, PencilIcon } from '@heroicons/vue/20/solid'
+import { IconCalendarEvent, IconEdit, IconZoom } from '@tabler/icons-vue'
 import { type BaseResponse, type Classroom, DayOfWeek, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
 
 // Props
@@ -191,7 +191,7 @@ async function saveChanges() {
 </script>
 
 <template>
-  <base-dialog v-model="model" :icon="PencilIcon" title="Edytuj zajęcia" full-size right>
+  <base-dialog v-model="model" :icon="IconEdit" title="Edytuj zajęcia" full-size right>
     <form @submit.prevent="saveChanges">
       <div class="flex w-full items-start justify-between">
         <div class="flex flex-col">
@@ -232,7 +232,7 @@ async function saveChanges() {
 
       <div class="mb-6 flex flex-col gap-y-2 rounded-lg border border-gray-200 p-4">
         <div v-for="(date, index) in data!.lessons" :key="index" class="flex gap-2">
-          <base-input v-model="data!.lessons![index].startTime" type="datetime-local" :icon="CalendarDaysIcon" />
+          <base-input v-model="data!.lessons![index].startTime" type="datetime-local" :icon="IconCalendarEvent" />
           <base-button type="button" variant="danger" @click="data!.lessons!.splice(index, 1)">
             Usuń zajęcia
           </base-button>
@@ -248,7 +248,7 @@ async function saveChanges() {
           <p class="mb-1 text-xl font-semibold text-gray-900">
             Prowadzący
           </p>
-          <base-input v-model="search.lecturers" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+          <base-input v-model="search.lecturers" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
         </div>
 
         <base-table :search="search.lecturers" :data="lecturers.data" :columns="lecturers.columns" :paddingless="true">
@@ -276,7 +276,7 @@ async function saveChanges() {
             <br>
             <small class="text-sm text-gray-700">W przypadku, gdy grupy zajęć nie są po kolei, należy utworzyć zajęcia dla każdej z nich oddzielnie.</small>
           </p>
-          <base-input v-model="search.groups" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+          <base-input v-model="search.groups" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
         </div>
 
         <base-table :search="search.groups" :data="groups.data" :columns="groups.columns" :paddingless="true">
@@ -306,7 +306,7 @@ async function saveChanges() {
             <br>
             <small class="text-sm text-gray-700">Zajęcia mogą odbywać się tylko w jednej sali jednocześnie.</small>
           </p>
-          <base-input v-model="search.classrooms" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+          <base-input v-model="search.classrooms" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
         </div>
 
         <base-table :search="search.classrooms" :data="classrooms.data" :columns="classrooms.columns" :paddingless="true">

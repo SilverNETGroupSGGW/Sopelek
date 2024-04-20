@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight } from '@tabler/icons-vue'
 
 defineProps<{
   filteredData: T[]
@@ -15,10 +15,10 @@ const modelValue = defineModel<number>({ default: 0 })
 <template>
   <div class="flex items-center gap-2">
     <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue === 1" @click="$emit('update:modelValue', 1)">
-      <ChevronDoubleLeftIcon class="size-5" />
+      <IconChevronsLeft class="size-5" />
     </button>
     <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue === 1" @click="$emit('update:modelValue', modelValue - 1)">
-      <ChevronLeftIcon class="size-5" />
+      <IconChevronLeft class="size-5" />
     </button>
 
     <span class="whitespace-nowrap text-gray-700">
@@ -29,11 +29,11 @@ const modelValue = defineModel<number>({ default: 0 })
     </span>
 
     <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue * 10 >= filteredData.length" @click="$emit('update:modelValue', modelValue + 1)">
-      <ChevronRightIcon class="size-5" />
+      <IconChevronRight class="size-5" />
     </button>
 
     <button type="button" class="text-indigo-600 disabled:text-indigo-400" :disabled="modelValue * 10 >= filteredData.length" @click="$emit('update:modelValue', Math.ceil(filteredData.length / 10))">
-      <ChevronDoubleRightIcon class="size-5" />
+      <IconChevronsRight class="size-5" />
     </button>
   </div>
 </template>

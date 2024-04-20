@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends {}">
-import { MagnifyingGlassMinusIcon } from '@heroicons/vue/20/solid'
+import { IconSearchOff } from '@tabler/icons-vue'
 
 const props = defineProps<{
   columns: { key: string, header: string }[]
@@ -68,7 +68,7 @@ const paginatedData = computed(() => filteredData.value.slice((page.value - 1) *
         <tr v-if="paginatedData.length === 0">
           <td :colspan="columns.length + 1" class="whitespace-nowrap px-12 py-4">
             <div class="flex items-center justify-center gap-2">
-              <MagnifyingGlassMinusIcon class="size-5 text-gray-400" />
+              <IconSearchOff class="size-5 text-gray-400" />
               <span class="text-gray-400">Brak wyników</span>
             </div>
           </td>

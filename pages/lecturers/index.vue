@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InboxIcon, KeyIcon, MagnifyingGlassIcon, TrashIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { IconTrash, IconZoom, InboxIcon, KeyIcon, TrophyIcon, UserIcon } from '@tabler/icons-vue'
 import { DayOfWeek } from '~/types'
 
 // Data
@@ -30,7 +30,7 @@ watchEffect(() => {
     </div>
 
     <div class="flex gap-4">
-      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="MagnifyingGlassIcon" />
+      <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
       <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
         Dodaj wykładowcę
       </base-button>
@@ -94,7 +94,7 @@ watchEffect(() => {
     </form>
   </base-dialog>
 
-  <base-dialog v-model="deleteDialog" title="Usuń wykładowcę" :icon="TrashIcon">
+  <base-dialog v-model="deleteDialog" title="Usuń wykładowcę" :icon="IconTrash">
     <p class="text-base text-gray-700">
       Czy na pewno chcesz usunąć wykładowcę?
     </p>
