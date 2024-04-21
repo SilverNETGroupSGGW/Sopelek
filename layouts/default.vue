@@ -3,6 +3,8 @@ const toasts = useToasts()
 </script>
 
 <template>
+  <NuxtLoadingIndicator color="#4f46e5" />
+  
   <div class="flex">
     <layout-sidebar />
 
