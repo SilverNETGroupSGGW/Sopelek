@@ -1,3 +1,6 @@
+# Visual Studio files
+.vs/
+
 # Nuxt dev/build outputs
 .output
 .data
