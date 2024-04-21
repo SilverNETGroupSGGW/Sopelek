@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { IconTrash, IconZoom, InboxIcon, KeyIcon, TrophyIcon, UserIcon } from '@tabler/icons-vue'
-import { DayOfWeek } from '~/types'
+import { IconTrash, IconZoom, IconInbox, IconKey, IconTrophy, IconUser } from '@tabler/icons-vue'
 
 // Data
 const { degrees } = useData()
@@ -56,13 +55,13 @@ watchEffect(() => {
     </template>
   </base-table>
 
-  <base-dialog v-model="createDialog" title="Dodaj wykładowcę" :icon="UserIcon">
+  <base-dialog v-model="createDialog" title="Dodaj wykładowcę" :icon="IconUser">
     <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async() => await lecturers.create(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-select v-model="currentItem.academicDegree" :options="degrees" :icon="TrophyIcon" label="Stopień naukowy" />
-      <base-input v-model="currentItem.firstName" :icon="UserIcon" label="Imię" />
-      <base-input v-model="currentItem.surname" :icon="UserIcon" label="Nazwisko" />
-      <base-input v-model="currentItem.email" :icon="InboxIcon" label="E-mail" />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-select v-model="currentItem.academicDegree" :options="degrees" :icon="IconTrophy" label="Stopień naukowy" />
+      <base-input v-model="currentItem.firstName" :icon="IconUser" label="Imię" />
+      <base-input v-model="currentItem.surname" :icon="IconUser" label="Nazwisko" />
+      <base-input v-model="currentItem.email" :icon="IconInbox" label="E-mail" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -75,13 +74,13 @@ watchEffect(() => {
     </form>
   </base-dialog>
 
-  <base-dialog v-model="updateDialog" title="Edytuj wykładowcę" :icon="UserIcon">
+  <base-dialog v-model="updateDialog" title="Edytuj wykładowcę" :icon="IconUser">
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async() => await lecturers.update(currentItem))">
-      <base-input v-model="currentItem.id" :icon="KeyIcon" label="ID" disabled />
-      <base-select v-model="currentItem.academicDegree" :options="degrees" :icon="TrophyIcon" label="Stopień naukowy" />
-      <base-input v-model="currentItem.firstName" :icon="UserIcon" label="Imię" />
-      <base-input v-model="currentItem.surname" :icon="UserIcon" label="Nazwisko" />
-      <base-input v-model="currentItem.email" :icon="InboxIcon" label="E-mail" />
+      <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
+      <base-select v-model="currentItem.academicDegree" :options="degrees" :icon="IconTrophy" label="Stopień naukowy" />
+      <base-input v-model="currentItem.firstName" :icon="IconUser" label="Imię" />
+      <base-input v-model="currentItem.surname" :icon="IconUser" label="Nazwisko" />
+      <base-input v-model="currentItem.email" :icon="IconInbox" label="E-mail" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">
