@@ -4,7 +4,7 @@ const toasts = useToasts()
 
 <template>
   <NuxtLoadingIndicator color="#4f46e5" />
-  
+
   <div class="flex">
     <layout-sidebar />
 
