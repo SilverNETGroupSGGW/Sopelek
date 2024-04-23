@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import { IconCalendarEvent, IconEdit, IconZoom } from '@tabler/icons-vue'
-import { type BaseResponse, type Classroom, DayOfWeek, type Group, type Lecturer, type Lesson, type Schedule, type Subject, SubjectType } from '~/types'
+import { type BaseResponse, type Classroom, DayOfWeek, type Group, type Lecturer, type Subject, SubjectType } from '~/types'
 
 // Props
 const props = defineProps<{
