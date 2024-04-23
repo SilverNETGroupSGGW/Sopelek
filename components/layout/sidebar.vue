@@ -39,6 +39,11 @@ const tabs = reactive([
     label: 'Użytkownicy',
     to: '/user',
     active: computed(() => route.path === '/user'),
+    onClick: async () => {
+      useCookie('accessToken').value = null
+      useCookie('refreshToken').value = null
+      await navigateTo({ path: '/signin' })
+    },
   },
 ])
 </script>
