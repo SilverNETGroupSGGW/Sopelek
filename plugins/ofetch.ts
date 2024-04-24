@@ -1,4 +1,5 @@
 import { ofetch } from 'ofetch'
+import { } from '#build/components'
 
 export function useOfetchStatus() {
   return useState('error', () => ({
@@ -13,7 +14,7 @@ export default defineNuxtPlugin((_nuxtApp) => {
 
   globalThis.$fetch = ofetch.create({
     onResponse({ response, request, options }) {
-      if (response.ok && (request as string).startsWith('https://boleroapi.azurewebsites.net/api') && options.method !== 'GET') {
+      if (response.ok && (request as string).startsWith(import.meta.env.API_URL) && options.method !== 'GET') {
         ofetchStatus.value = {
           status: 200,
           request: request as string,
