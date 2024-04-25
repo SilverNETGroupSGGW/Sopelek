@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconChalkboard, IconChartArrows, IconHome, IconTableColumn, IconUser, IconUsersGroup } from '@tabler/icons-vue'
+import { IconChalkboard, IconChartArrows, IconHome, IconLogout, IconTableColumn, IconUser, IconUsersGroup } from '@tabler/icons-vue'
 
 const route = useRoute()
 
@@ -39,6 +39,10 @@ const tabs = reactive([
     label: 'Użytkownicy',
     to: '/user',
     active: computed(() => route.path === '/user'),
+  },
+  {
+    icon: IconLogout,
+    label: 'Wyloguj',
     onClick: async () => {
       useCookie('accessToken').value = null
       useCookie('refreshToken').value = null
