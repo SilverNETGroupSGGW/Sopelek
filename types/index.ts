@@ -11,6 +11,8 @@ import type { Lesson } from './Lesson'
 import type { StudyProgram } from './StudyProgram'
 import type { Account } from './Account'
 import type { Organization } from './Organization'
+import type { Tenant } from './Tenant'
+import type { CreateUser, User } from './User'
 
 export type {
   Account,
@@ -25,6 +27,9 @@ export type {
   BaseResponse,
   StudyProgram,
   Organization,
+  Tenant,
+  User,
+  CreateUser,
 }
 
 export { AcademicDegree, DayOfWeek, SubjectType, StudyMode, DegreeOfStudy }

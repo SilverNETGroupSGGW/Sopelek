@@ -36,12 +36,12 @@ if (!account.data?.roles.includes('SystemAdministrator'))
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/lecturers" class="group w-full">
+          <NuxtLink to="/administration/tenants" class="group w-full">
             <div
               class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600"
             >
               <h2
-                to="/lecturers"
+                to="/administration/tenants"
                 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white"
               >
                 Tenanty
@@ -52,12 +52,13 @@ if (!account.data?.roles.includes('SystemAdministrator'))
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/" class="group w-full">
+          <NuxtLink to="/administration/users" class="group w-full">
             <div
               class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600"
             >
               <h2
                 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white"
+                to="/administration/users"
               >
                 Użytkownicy
               </h2>
