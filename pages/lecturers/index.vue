@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconTrash, IconZoom, IconInbox, IconKey, IconTrophy, IconUser } from '@tabler/icons-vue'
+import { IconInbox, IconKey, IconTrash, IconTrophy, IconUser, IconZoom } from '@tabler/icons-vue'
 
 // Data
 const { degrees } = useData()

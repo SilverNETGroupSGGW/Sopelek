@@ -26,7 +26,7 @@ export const useClassrooms = defineStore('classrooms', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
-      
+
       this.data = data.value!.data.sort((a, b) => {
         const aNumber = Number(a.name)
         const bNumber = Number(b.name)
