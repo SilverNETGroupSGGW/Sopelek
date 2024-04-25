@@ -4,7 +4,7 @@ import { NuxtLink } from '#components'
 defineProps<{
   active?: boolean
   icon: any
-  to: string
+  to?: string
   onClick?: () => Promise<void>
 }>()
 </script>
