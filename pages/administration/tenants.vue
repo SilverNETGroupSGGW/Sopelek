@@ -22,6 +22,17 @@ const {
   search,
   updateDialog,
 } = useCrud(tenants.data)
+
+const isCreateExampleTenantDialogVisible = ref(false)
+const exampleTenantName = ref<string>('')
+
+async function onExampleTenantCreated() {
+  isSubmitting.value = true
+  await tenants.createExampleTenant(exampleTenantName.value)
+  exampleTenantName.value = ''
+  isCreateExampleTenantDialogVisible.value = false
+  isSubmitting.value = false
+}
 </script>
 
 <template>
@@ -36,6 +47,9 @@ const {
       <base-input v-model="search" placeholder="Szukaj" class="w-96" :icon="IconZoom" />
       <base-button class="h-12" variant="primary" @click="handleDialogOpen('create')">
         Dodaj tenant
+      </base-button>
+      <base-button class="h-12" variant="primary" @click="isCreateExampleTenantDialogVisible = true">
+        Dodaj tenant przykładowy
       </base-button>
     </div>
   </div>
@@ -80,6 +94,21 @@ const {
           Zamknij
         </base-button>
         <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
+          Zapisz zmiany
+        </base-button>
+      </div>
+    </form>
+  </base-dialog>
+
+  <base-dialog v-model="isCreateExampleTenantDialogVisible" title="Dodaj przykładowy tenant" :icon="IconUser">
+    <form class="flex flex-col gap-4" @submit.prevent="onExampleTenantCreated()">
+      <base-input v-model="exampleTenantName" :icon="IconUser" label="Nazwa" />
+
+      <div class="mt-6 flex justify-end gap-4">
+        <base-button variant="secondary" @click="isCreateExampleTenantDialogVisible = false">
+          Zamknij
+        </base-button>
+        <base-button variant="primary" :disabled="isSubmitting" :loading="isSubmitting">
           Zapisz zmiany
         </base-button>
       </div>

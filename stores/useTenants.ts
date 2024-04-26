@@ -38,6 +38,19 @@ export const useTenants = defineStore('tenants', {
 
       this.data.push(data.data!)
     },
+    async createExampleTenant(tenantName: string) {
+      const runtimeConfig = useRuntimeConfig()
+      await $fetch<BaseResponse<Tenant>>('ExampleTenantFactory', {
+        baseURL: runtimeConfig.public.baseURL,
+        method: 'POST',
+        body: JSON.stringify({ tenantName }),
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
+      })
+
+      await this.getAll()
+    },
     async update(tenant: Tenant) {
       const runtimeConfig = useRuntimeConfig()
       const data = await $fetch<BaseResponse<Tenant>>('tenants', {
