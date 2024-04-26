@@ -23,7 +23,7 @@ const {
 } = useCrud(users.data)
 
 const isUserCreateDialogVisible = ref(false)
-const createUserModel = { email: '', password: '' } as CreateUser
+const createUserModel = reactive<CreateUser>({ email: '', password: '' })
 
 function onUserCreated() {
   isSubmitting.value = true
