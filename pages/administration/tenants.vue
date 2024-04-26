@@ -26,9 +26,9 @@ const {
 const isCreateExampleTenantDialogVisible = ref(false)
 const exampleTenantName = ref<string>('')
 
-function onExampleTenantCreated() {
+async function onExampleTenantCreated() {
   isSubmitting.value = true
-  tenants.createExampleTenant(exampleTenantName.value)
+  await tenants.createExampleTenant(exampleTenantName.value)
   exampleTenantName.value = ''
   isCreateExampleTenantDialogVisible.value = false
   isSubmitting.value = false
