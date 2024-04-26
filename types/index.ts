@@ -10,7 +10,26 @@ import type { Lecturer } from './Lecturer'
 import type { Lesson } from './Lesson'
 import type { StudyProgram } from './StudyProgram'
 import type { Account } from './Account'
+import type { Organization } from './Organization'
+import type { Tenant } from './Tenant'
+import type { CreateUser, User } from './User'
 
-export type { Account, Subject, Lecturer, Classroom, Schedule, Lesson, Group, SubjectConflict, SubjectConflictItem, BaseResponse, StudyProgram }
+export type {
+  Account,
+  Subject,
+  Lecturer,
+  Classroom,
+  Schedule,
+  Lesson,
+  Group,
+  SubjectConflict,
+  SubjectConflictItem,
+  BaseResponse,
+  StudyProgram,
+  Organization,
+  Tenant,
+  User,
+  CreateUser,
+}
 
 export { AcademicDegree, DayOfWeek, SubjectType, StudyMode, DegreeOfStudy }
