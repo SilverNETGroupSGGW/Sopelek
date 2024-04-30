@@ -33,6 +33,8 @@ function onUserCreated() {
   isUserCreateDialogVisible.value = false
   isSubmitting.value = false
 }
+
+const userRolesDialog = useUserRolesDialog()
 </script>
 
 <template>
@@ -72,6 +74,9 @@ function onUserCreated() {
         </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
           Usuń
+        </base-button>
+        <base-button variant="primary" @click="userRolesDialog.showDialog(cell.id)">
+          Role
         </base-button>
       </div>
     </template>
@@ -130,6 +135,31 @@ function onUserCreated() {
         @click="handleDelete(currentItem, async () => await users.delete(currentItem))"
       >
         Usuń
+      </base-button>
+    </div>
+  </base-dialog>
+
+  <base-dialog v-model="userRolesDialog.isDialogVisible" title="Edytuj role" :icon="IconUser">
+    <ul v-if="userRolesDialog.roles && userRolesDialog.roles.length !== 0">
+      <li v-for="role in userRolesDialog.roles" :key="role.name">
+        <div class="mt-6 flex justify-end gap-4">
+          {{ role.name }}
+
+          <base-button variant="primary" :disabled="role.isAssigned" :loading="isSubmitting" @click="userRolesDialog.assignRole(role.name)">
+            Przypisz
+          </base-button>
+          <base-button variant="danger" :disabled="!role.isAssigned" :loading="isSubmitting" @click="userRolesDialog.unassignRole(role.name)">
+            Usuń
+          </base-button>
+        </div>
+      </li>
+    </ul>
+
+    <base-spinner v-else />
+
+    <div class="mt-6 flex justify-end gap-4">
+      <base-button variant="secondary" @click="userRolesDialog.clearState()">
+        Zamknij
       </base-button>
     </div>
   </base-dialog>
