@@ -33,6 +33,8 @@ async function onExampleTenantCreated() {
   isCreateExampleTenantDialogVisible.value = false
   isSubmitting.value = false
 }
+
+const toasts = useToasts()
 </script>
 
 <template>
@@ -70,6 +72,12 @@ async function onExampleTenantCreated() {
 
     <template #actions="{ cell }">
       <div class="flex flex-wrap gap-4">
+        <base-button
+          variant="primary"
+          @click="tenants.switchTenant(cell.id!); toasts.addToast({ type: 'success', message: `Aktywowano tenant: ${cell.name}` })"
+        >
+          Aktywuj
+        </base-button>
         <base-button variant="secondary" @click="handleDialogOpen('update', cell.id!)">
           Edytuj
         </base-button>
