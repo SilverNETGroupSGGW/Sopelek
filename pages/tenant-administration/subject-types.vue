@@ -10,18 +10,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
 const subjectTypes = useSubjectTypes()
 await subjectTypes.get()
 
-const {
-  currentItem,
-  createDialog,
-  deleteDialog,
-  handleCreate,
-  handleDelete,
-  handleDialogOpen,
-  handleUpdate,
-  isSubmitting,
-  search,
-  updateDialog,
-} = useCrud(subjectTypes.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(subjectTypes.data)
 </script>
 
 <template>
