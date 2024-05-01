@@ -12,7 +12,7 @@ const tabs = reactive([
   },
   {
     icon: IconTerminal2,
-    label: 'Globalny Panel Administracyjny',
+    label: 'Globalny panel administracyjny',
     to: '/administration',
     active: computed(() => route.path.startsWith('/administration')),
     requiredRole: 'SystemAdministrator',
