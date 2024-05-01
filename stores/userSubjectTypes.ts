@@ -11,7 +11,7 @@ export const useSubjectTypes = defineStore('subjectTypes', {
       },
       {
         key: 'isPrimitiveType',
-        header: 'Czy typ primitywny?',
+        header: 'Czy typ prymitywny?',
       },
       {
         key: 'actions',
