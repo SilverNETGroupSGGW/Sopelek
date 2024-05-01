@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { IconEdit, IconKey, IconTrash, IconUser, IconZoom } from '@tabler/icons-vue'
+import type { Tenant } from '~/types'
 
 const account = useAccount()
 await account.get()
@@ -32,6 +33,13 @@ async function onExampleTenantCreated() {
   exampleTenantName.value = ''
   isCreateExampleTenantDialogVisible.value = false
   isSubmitting.value = false
+}
+
+const toasts = useToasts()
+
+function onTenantSwitchClicked(tenant: Tenant) {
+  tenants.switchTenant(tenant.id!)
+  toasts.addToast({ type: 'success', message: `Aktywowano tenant: ${tenant.name}` })
 }
 </script>
 
@@ -70,6 +78,12 @@ async function onExampleTenantCreated() {
 
     <template #actions="{ cell }">
       <div class="flex flex-wrap gap-4">
+        <base-button
+          variant="primary"
+          @click="onTenantSwitchClicked(cell)"
+        >
+          Aktywuj
+        </base-button>
         <base-button variant="secondary" @click="handleDialogOpen('update', cell.id!)">
           Edytuj
         </base-button>
