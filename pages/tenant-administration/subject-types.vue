@@ -7,8 +7,8 @@ await account.get()
 if (!account.data?.roles.includes('SystemAdministrator'))
   navigateTo('/')
 
-const stubjectTypes = useSubjectTypes()
-await stubjectTypes.get()
+const subjectTypes = useSubjectTypes()
+await subjectTypes.get()
 
 const {
   currentItem,
@@ -21,7 +21,7 @@ const {
   isSubmitting,
   search,
   updateDialog,
-} = useCrud(stubjectTypes.data)
+} = useCrud(subjectTypes.data)
 </script>
 
 <template>
@@ -40,7 +40,7 @@ const {
     </div>
   </div>
 
-  <base-table :data="stubjectTypes.data" :columns="stubjectTypes.columns" :search="search">
+  <base-table :data="subjectTypes.data" :columns="subjectTypes.columns" :search="search">
     <div class="mb-4 flex items-center">
       <input
         id="default-checkbox" type="checkbox" value=""
@@ -73,7 +73,7 @@ const {
   <base-dialog v-model="createDialog" title="Dodaj typ przedmiotu" :icon="IconUser">
     <form
       class="flex flex-col gap-4"
-      @submit.prevent="handleCreate(currentItem, async () => await stubjectTypes.create(currentItem))"
+      @submit.prevent="handleCreate(currentItem, async () => await subjectTypes.create(currentItem))"
     >
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
 
@@ -91,7 +91,7 @@ const {
   <base-dialog v-model="updateDialog" title="Edytuj typ przedmiotu" :icon="IconEdit">
     <form
       class="flex flex-col gap-4"
-      @submit.prevent="handleUpdate(currentItem, async () => await stubjectTypes.update(currentItem))"
+      @submit.prevent="handleUpdate(currentItem, async () => await subjectTypes.update(currentItem))"
     >
       <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
@@ -120,7 +120,7 @@ const {
       </base-button>
       <base-button
         variant="danger" :disabled="isSubmitting" :loading="isSubmitting"
-        @click="handleDelete(currentItem, async () => await stubjectTypes.delete(currentItem))"
+        @click="handleDelete(currentItem, async () => await subjectTypes.delete(currentItem))"
       >
         Usuń
       </base-button>
