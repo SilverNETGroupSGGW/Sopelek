@@ -1,4 +1,4 @@
-import { type DayOfWeek, type Subject, SubjectType } from '~/types'
+import type { DayOfWeek, Subject } from '~/types'
 
 export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) {
   const mouse = useMouse()
@@ -36,7 +36,7 @@ export default function useCreate(container: HTMLElement, dayOfWeek: DayOfWeek) 
       name: 'Zajęcia',
       scheduleId: scheduler.schedule!.id,
       startTime: baseTime.value.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-      type: SubjectType.Unknown,
+      typeId: '',
       width: runtimeConfig.public.intervalWidth,
     }
 

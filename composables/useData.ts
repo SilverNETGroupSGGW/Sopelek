@@ -1,4 +1,4 @@
-import { AcademicDegree, DayOfWeek, DegreeOfStudy, StudyMode, SubjectType } from '~/types'
+import { AcademicDegree, DayOfWeek, DegreeOfStudy, StudyMode } from '~/types'
 
 export default function useData() {
   const fieldOfStudies = [
@@ -79,20 +79,11 @@ export default function useData() {
     { value: DayOfWeek.Sunday, label: 'Niedziela', shortLabel: 'Ndz' },
   ]
 
-  const lessonTypes = [
-    { value: SubjectType.Faculty, label: 'Fakultet' },
-    { value: SubjectType.Laboratories, label: 'Laboratoria' },
-    { value: SubjectType.Lecture, label: 'Wykład' },
-    { value: SubjectType.PracticalClasses, label: 'Ćwiczenia' },
-    { value: SubjectType.Unknown, label: 'Inne' },
-  ]
-
   return {
     fieldOfStudies,
     degrees,
     studiesModes,
     studiesDegrees,
     daysOfWeek,
-    lessonTypes,
   }
 }
