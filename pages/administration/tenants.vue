@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { IconEdit, IconKey, IconTrash, IconUser, IconZoom } from '@tabler/icons-vue'
+import type { Tenant } from '~/types'
 
 const account = useAccount()
 await account.get()
@@ -35,6 +36,11 @@ async function onExampleTenantCreated() {
 }
 
 const toasts = useToasts()
+
+function onTenantSwitchClicked(tenant: Tenant) {
+  tenants.switchTenant(tenant.id!)
+  toasts.addToast({ type: 'success', message: `Aktywowano tenant: ${tenant.name}` })
+}
 </script>
 
 <template>
@@ -74,7 +80,7 @@ const toasts = useToasts()
       <div class="flex flex-wrap gap-4">
         <base-button
           variant="primary"
-          @click="tenants.switchTenant(cell.id!); toasts.addToast({ type: 'success', message: `Aktywowano tenant: ${cell.name}` })"
+          @click="onTenantSwitchClicked(cell)"
         >
           Aktywuj
         </base-button>
