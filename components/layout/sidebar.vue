@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconChalkboard, IconChartArrows, IconHome, IconLogout, IconTableColumn, IconTerminal2, IconUser, IconUsersGroup } from '@tabler/icons-vue'
+import { IconChalkboard, IconChartArrows, IconHome, IconLogout, IconSquareKey, IconTableColumn, IconTerminal2, IconUser, IconUsersGroup } from '@tabler/icons-vue'
 
 const route = useRoute()
 
@@ -12,10 +12,17 @@ const tabs = reactive([
   },
   {
     icon: IconTerminal2,
-    label: 'Panel Administracyjny',
+    label: 'Globalny Panel Administracyjny',
     to: '/administration',
     active: computed(() => route.path.startsWith('/administration')),
     requiredRole: 'SystemAdministrator',
+  },
+  {
+    icon: IconSquareKey,
+    label: 'Panel Administracyjny',
+    to: '/tenant-administration',
+    active: computed(() => route.path.startsWith('/tenant-administration')),
+    requiredRole: 'TenantAdministrator',
   },
   {
     icon: IconChartArrows,
