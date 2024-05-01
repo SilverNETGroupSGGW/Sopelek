@@ -55,7 +55,7 @@ const {
     </template>
 
     <template #isPrimitiveType="{ cell }">
-      <base-checkbox v-model="cell.isPrimitiveType" label="" :is-disabled="true" />
+      <base-checkbox v-model="cell.isPrimitiveType" label="" :disabled="true" />
     </template>
 
     <template #actions="{ cell }">
