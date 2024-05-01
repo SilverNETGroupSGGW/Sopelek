@@ -143,7 +143,7 @@ const userRolesDialog = useUserRolesDialog()
     <ul v-if="userRolesDialog.roles && userRolesDialog.roles.length !== 0">
       <li v-for="role in userRolesDialog.roles" :key="role.name">
         <div class="mt-6 flex justify-end gap-4">
-          {{ role.name }}
+          <span>{{ role.name }}</span>
 
           <base-button variant="primary" :disabled="role.isAssigned" :loading="isSubmitting" @click="userRolesDialog.assignRole(role.name)">
             Przypisz
