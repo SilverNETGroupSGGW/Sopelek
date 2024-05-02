@@ -11,18 +11,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
 const tenants = useTenants()
 await tenants.getAll()
 
-const {
-  currentItem,
-  createDialog,
-  deleteDialog,
-  handleCreate,
-  handleDelete,
-  handleDialogOpen,
-  handleUpdate,
-  isSubmitting,
-  search,
-  updateDialog,
-} = useCrud(tenants.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(tenants.data)
 
 const isCreateExampleTenantDialogVisible = ref(false)
 const exampleTenantName = ref<string>('')
@@ -64,12 +53,10 @@ function onTenantSwitchClicked(tenant: Tenant) {
 
   <base-table :data="tenants.data" :columns="tenants.columns" :search="search">
     <div class="mb-4 flex items-center">
-      <input
-        id="default-checkbox" type="checkbox" value=""
-        class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-      >
-      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default
-        checkbox</label>
+      <input id="default-checkbox" type="checkbox" value="" class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600">
+      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        Default checkbox
+      </label>
     </div>
 
     <template #name="{ cell }">
@@ -130,10 +117,7 @@ function onTenantSwitchClicked(tenant: Tenant) {
   </base-dialog>
 
   <base-dialog v-model="updateDialog" title="Edytuj tenant" :icon="IconEdit">
-    <form
-      class="flex flex-col gap-4"
-      @submit.prevent="handleUpdate(currentItem, async () => await tenants.update(currentItem))"
-    >
+    <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async () => await tenants.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
       <base-input v-model="currentItem.ownerId" :icon="IconUser" label="Id Właściciela Tenanta" />
@@ -159,10 +143,7 @@ function onTenantSwitchClicked(tenant: Tenant) {
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button
-        variant="danger" :disabled="isSubmitting" :loading="isSubmitting"
-        @click="handleDelete(currentItem, async () => await tenants.delete(currentItem))"
-      >
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async () => await tenants.delete(currentItem))">
         Usuń
       </base-button>
     </div>
