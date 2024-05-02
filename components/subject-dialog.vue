@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IconCalendarEvent, IconEdit, IconZoom } from '@tabler/icons-vue'
-import { type BaseResponse, type Classroom, DayOfWeek, type Group, type Lecturer, type Subject, SubjectType } from '~/types'
+import { type BaseResponse, type Classroom, DayOfWeek, type Group, type Lecturer, type Subject } from '~/types'
 
 // Props
 const props = defineProps<{
@@ -19,7 +19,7 @@ const runtimeConfig = useRuntimeConfig()
 // const route = useRoute()
 
 // Data
-const { daysOfWeek, lessonTypes } = useData()
+const { daysOfWeek } = useData()
 
 const scheduler = useScheduler()
 
@@ -57,7 +57,7 @@ const data = ref<Subject>({
   name: 'Zajęcia',
   scheduleId: props.scheduleId,
   startTime: '08:00:00',
-  type: SubjectType.Unknown,
+  typeId: '',
   lessons: [],
   groupsIds: [],
   isRemote: false,
@@ -197,9 +197,11 @@ async function saveChanges() {
           <base-input v-model="data!.name" placeholder="Nazwa przedmiotu" class="mb-2" />
 
           <div class="mb-8 flex">
+            <!--
             <base-button v-for="(type, index) in lessonTypes" :key="index" type="button" :variant="data!.type === type.value ? 'primary' : 'secondary'" :class="index === 0 ? 'rounded-r-none' : index === lessonTypes.length - 1 ? 'rounded-l-none' : 'rounded-none'" @click="data!.type = type.value">
               {{ type.label }}
             </base-button>
+          -->
           </div>
         </div>
 

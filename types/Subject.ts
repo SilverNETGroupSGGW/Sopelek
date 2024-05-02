@@ -3,14 +3,6 @@ import type { Group } from './Group'
 import type { Lecturer } from './Lecturer'
 import type { Lesson } from './Lesson'
 
-export enum SubjectType {
-  Lecture = 'Lecture',
-  PracticalClasses = 'PracticalClasses',
-  Laboratories = 'Laboratories',
-  Unknown = 'Unknown',
-  Faculty = 'Faculty',
-}
-
 export enum DayOfWeek {
   Monday = 'Monday',
   Tuesday = 'Tuesday',
@@ -51,7 +43,7 @@ export interface Subject {
   name?: string
   scheduleId?: string
   startTime: string
-  type?: SubjectType
+  typeId?: string
   updated?: string
 
   /* internal */
