@@ -7,10 +7,10 @@ await account.get()
 if (!account.data?.roles.includes('TenantAdministrator'))
   navigateTo('/')
 
-const subjectTypes = useSubjectTypes()
-await subjectTypes.get()
+const classroomTypes = useClassroomTypes()
+await classroomTypes.get()
 
-const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(subjectTypes.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(classroomTypes.data)
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </div>
   </div>
 
-  <base-table :data="subjectTypes.data" :columns="subjectTypes.columns" :search="search">
+  <base-table :data="classroomTypes.data" :columns="classroomTypes.columns" :search="search">
     <div class="mb-4 flex items-center">
       <input
         id="default-checkbox" type="checkbox" value=""
@@ -62,7 +62,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
   <base-dialog v-model="createDialog" title="Dodaj typ przedmiotu" :icon="IconUser">
     <form
       class="flex flex-col gap-4"
-      @submit.prevent="handleCreate(currentItem, async () => await subjectTypes.create(currentItem))"
+      @submit.prevent="handleCreate(currentItem, async () => await classroomTypes.create(currentItem))"
     >
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
 
@@ -80,7 +80,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
   <base-dialog v-model="updateDialog" title="Edytuj typ przedmiotu" :icon="IconEdit">
     <form
       class="flex flex-col gap-4"
-      @submit.prevent="handleUpdate(currentItem, async () => await subjectTypes.update(currentItem))"
+      @submit.prevent="handleUpdate(currentItem, async () => await classroomTypes.update(currentItem))"
     >
       <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
@@ -109,7 +109,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       </base-button>
       <base-button
         variant="danger" :disabled="isSubmitting" :loading="isSubmitting"
-        @click="handleDelete(currentItem, async () => await subjectTypes.delete(currentItem))"
+        @click="handleDelete(currentItem, async () => await classroomTypes.delete(currentItem))"
       >
         Usuń
       </base-button>
