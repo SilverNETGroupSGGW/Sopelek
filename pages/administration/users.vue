@@ -11,16 +11,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
 const users = useAppUsers()
 await users.getAll()
 
-const {
-  currentItem,
-  deleteDialog,
-  handleDelete,
-  handleDialogOpen,
-  handleUpdate,
-  isSubmitting,
-  search,
-  updateDialog,
-} = useCrud(users.data)
+const { currentItem, deleteDialog, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(users.data)
 
 const isUserCreateDialogVisible = ref(false)
 const createUserModel = reactive<CreateUser>({ email: '', password: '' })
@@ -33,6 +24,8 @@ function onUserCreated() {
   isUserCreateDialogVisible.value = false
   isSubmitting.value = false
 }
+
+const userRolesDialog = useUserRolesDialog()
 </script>
 
 <template>
@@ -53,12 +46,8 @@ function onUserCreated() {
 
   <base-table :data="users.data" :columns="users.columns" :search="search">
     <div id="test" class="mb-4 flex items-center">
-      <input
-        id="default-checkbox" type="checkbox" value=""
-        class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-      >
-      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default
-        checkbox</label>
+      <input id="default-checkbox" type="checkbox" value="" class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600">
+      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
     </div>
 
     <template #email="{ cell }">
@@ -72,6 +61,9 @@ function onUserCreated() {
         </base-button>
         <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
           Usuń
+        </base-button>
+        <base-button variant="primary" @click="userRolesDialog.showDialog(cell.id)">
+          Role
         </base-button>
       </div>
     </template>
@@ -94,10 +86,7 @@ function onUserCreated() {
   </base-dialog>
 
   <base-dialog v-model="updateDialog" title="Edytuj użytkownika" :icon="IconEdit">
-    <form
-      class="flex flex-col gap-4"
-      @submit.prevent="handleUpdate(currentItem, async () => await users.update(currentItem))"
-    >
+    <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async () => await users.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
       <base-input v-model="currentItem.email" :icon="IconUser" label="Email" />
       <base-input v-model="currentItem.createdAt" :icon="IconCalendar" label="Utworzono" disabled />
@@ -130,6 +119,31 @@ function onUserCreated() {
         @click="handleDelete(currentItem, async () => await users.delete(currentItem))"
       >
         Usuń
+      </base-button>
+    </div>
+  </base-dialog>
+
+  <base-dialog v-model="userRolesDialog.isDialogVisible" title="Edytuj role" :icon="IconUser">
+    <ul v-if="userRolesDialog.roles && userRolesDialog.roles.length !== 0">
+      <li v-for="role in userRolesDialog.roles" :key="role.name">
+        <div class="mt-6 flex justify-end gap-4">
+          <span>{{ role.name }}</span>
+
+          <base-button variant="primary" :disabled="role.isAssigned" :loading="isSubmitting" @click="userRolesDialog.assignRole(role.name)">
+            Przypisz
+          </base-button>
+          <base-button variant="danger" :disabled="!role.isAssigned" :loading="isSubmitting" @click="userRolesDialog.unassignRole(role.name)">
+            Usuń
+          </base-button>
+        </div>
+      </li>
+    </ul>
+
+    <base-spinner v-else />
+
+    <div class="mt-6 flex justify-end gap-4">
+      <base-button variant="secondary" @click="userRolesDialog.clearState()">
+        Zamknij
       </base-button>
     </div>
   </base-dialog>

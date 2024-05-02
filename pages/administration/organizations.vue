@@ -10,18 +10,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
 const organizations = useOrganizations()
 await organizations.getAll()
 
-const {
-  currentItem,
-  createDialog,
-  deleteDialog,
-  handleCreate,
-  handleDelete,
-  handleDialogOpen,
-  handleUpdate,
-  isSubmitting,
-  search,
-  updateDialog,
-} = useCrud(organizations.data)
+const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(organizations.data)
 </script>
 
 <template>
@@ -42,12 +31,10 @@ const {
 
   <base-table :data="organizations.data" :columns="organizations.columns" :search="search">
     <div class="mb-4 flex items-center">
-      <input
-        id="default-checkbox" type="checkbox" value=""
-        class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-      >
-      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default
-        checkbox</label>
+      <input id="default-checkbox" type="checkbox" value="" class="size-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600">
+      <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        Default checkbox
+      </label>
     </div>
 
     <template #name="{ cell }">
@@ -67,10 +54,7 @@ const {
   </base-table>
 
   <base-dialog v-model="createDialog" title="Dodaj organizację" :icon="IconUser">
-    <form
-      class="flex flex-col gap-4"
-      @submit.prevent="handleCreate(currentItem, async () => await organizations.create(currentItem))"
-    >
+    <form class="flex flex-col gap-4" @submit.prevent="handleCreate(currentItem, async () => await organizations.create(currentItem))">
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
 
       <div class="mt-6 flex justify-end gap-4">
@@ -85,10 +69,7 @@ const {
   </base-dialog>
 
   <base-dialog v-model="updateDialog" title="Edytuj organizację" :icon="IconEdit">
-    <form
-      class="flex flex-col gap-4"
-      @submit.prevent="handleUpdate(currentItem, async () => await organizations.update(currentItem))"
-    >
+    <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async () => await organizations.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
 
@@ -112,10 +93,7 @@ const {
       <base-button variant="secondary" @click="deleteDialog = false">
         Zamknij
       </base-button>
-      <base-button
-        variant="danger" :disabled="isSubmitting" :loading="isSubmitting"
-        @click="handleDelete(currentItem, async () => await organizations.delete(currentItem))"
-      >
+      <base-button variant="danger" :disabled="isSubmitting" :loading="isSubmitting" @click="handleDelete(currentItem, async () => await organizations.delete(currentItem))">
         Usuń
       </base-button>
     </div>

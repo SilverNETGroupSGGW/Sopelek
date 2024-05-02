@@ -14,6 +14,7 @@ import type { Organization } from './Organization'
 import type { Tenant } from './Tenant'
 import type { CreateUser, User } from './User'
 import type { SubjectType } from './SubjectType'
+import type { Role } from './Role'
 
 export type {
   Account,
@@ -32,6 +33,7 @@ export type {
   User,
   CreateUser,
   SubjectType,
+  Role,
 }
 
 export { AcademicDegree, DayOfWeek, StudyMode, DegreeOfStudy }

@@ -77,5 +77,15 @@ export const useTenants = defineStore('tenants', {
 
       this.data = this.data.filter(o => o.id !== tenant.id)
     },
+    async switchTenant(tenantId: string) {
+      const runtimeConfig = useRuntimeConfig()
+      await $fetch<Tenant>(`Account/change-tenant/${tenantId}`, {
+        baseURL: runtimeConfig.public.baseURL,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
+      })
+    },
   },
 })
