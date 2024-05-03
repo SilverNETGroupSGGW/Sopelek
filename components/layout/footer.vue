@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
   <small class="block w-full text-right text-gray-700">
     Projekt realizowany przez
