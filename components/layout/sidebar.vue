@@ -3,6 +3,9 @@ import { IconChalkboard, IconChartArrows, IconHome, IconLogout, IconSquareKey, I
 
 const route = useRoute()
 
+const account = useAccount()
+await account.get()
+
 const tabs = reactive([
   {
     icon: IconHome,
@@ -63,7 +66,7 @@ const tabs = reactive([
       await navigateTo({ path: '/signin' })
     },
   },
-])
+]).filter(tab => !tab.requiredRole || account.data?.roles.includes(tab.requiredRole))
 </script>
 
 <template>
