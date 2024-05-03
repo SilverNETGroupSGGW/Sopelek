@@ -87,5 +87,15 @@ export const useTenants = defineStore('tenants', {
         },
       })
     },
+    async removeFromTenant(userId: string) {
+      const runtimeConfig = useRuntimeConfig()
+      await $fetch<Tenant>(`Account/${userId}/remove-from-tenant`, {
+        baseURL: runtimeConfig.public.baseURL,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
+      })
+    },
   },
 })

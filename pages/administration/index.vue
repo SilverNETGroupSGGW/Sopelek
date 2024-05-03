@@ -10,7 +10,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
   <div class="px-12 py-9">
     <div class="mb-8">
       <h1 class="mb-4 text-4xl font-bold text-gray-900">
-        Panel Administratora
+        Panel System Administratora
       </h1>
 
       <p class="mb-6 text-gray-700">

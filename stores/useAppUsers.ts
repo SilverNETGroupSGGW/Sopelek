@@ -67,5 +67,8 @@ export const useAppUsers = defineStore('appUsers', {
 
       this.data = this.data.filter(o => o.id !== user.id)
     },
+    fitlerUsersByTenant(tenantId: string) {
+      this.data = this.data.filter(o => o.tenantId === tenantId)
+    },
   },
 })
