@@ -44,7 +44,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </template>
 
     <template #isPrimitiveType="{ cell }">
-      <base-checkbox v-model="cell.isPrimitiveType" label="" :disabled="true" />
+      <base-checkbox v-model="cell.isPrimitiveType" :disabled="true" />
     </template>
 
     <template #actions="{ cell }">
