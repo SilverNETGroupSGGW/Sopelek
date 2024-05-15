@@ -66,7 +66,7 @@ const tabs = reactive([
       await navigateTo({ path: '/signin' })
     },
   },
-].filter(tab => !tab.requiredRole || account.data?.roles.includes(tab.requiredRole)))
+const filteredTabs = computed(() => tabs.filter(tab => !tab.requiredRole || account.data?.roles.includes(tab.requiredRole))))
 </script>
 
 <template>
