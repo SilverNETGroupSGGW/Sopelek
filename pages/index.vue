@@ -93,6 +93,6 @@ if (router.options.history.state?.back === '/signin') {
       </div>
     </div>
 
-    <layout-default-footer />
+    <layout-footer />
   </div>
 </template>

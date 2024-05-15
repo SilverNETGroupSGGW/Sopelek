@@ -3,6 +3,9 @@ import { IconCalendar, IconChalkboard, IconChartArrows, IconHome, IconLogout, Ic
 
 const route = useRoute()
 
+const account = useAccount()
+await account.get()
+
 const tabs = reactive([
   {
     icon: IconHome,
@@ -70,13 +73,15 @@ const tabs = reactive([
     },
   },
 ])
+
+const filteredTabs = computed(() => tabs.filter(tab => !tab.requiredRole || account.data?.roles.includes(tab.requiredRole)))
 </script>
 
 <template>
   <aside class="h-screen border-r bg-indigo-600 p-9">
     <logo class="mb-9" />
     <ul>
-      <li v-for="tab in tabs" :key="tab.label" class="group mb-2 group-hover:mb-4">
+      <li v-for="tab in filteredTabs" :key="tab.label" class="group mb-2 group-hover:mb-4">
         <base-tab v-bind="tab" />
       </li>
     </ul>

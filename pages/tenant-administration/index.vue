@@ -31,6 +31,19 @@ if (!account.data?.roles.includes('SystemAdministrator'))
                 Typy zajęć
               </h2>
               <p class="text-gray-600 group-hover:text-white">
+                W tym miejscu możesz definiować lub zmieniać typy zajęć dostępne w tenancie.
+              </p>
+            </div>
+          </NuxtLink>
+
+          <NuxtLink to="/tenant-administration/classroom-types" class="group w-full">
+            <div
+              class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600"
+            >
+              <h2 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
+                Typy sal wykładowych
+              </h2>
+              <p class="text-gray-600 group-hover:text-white">
                 W tym miejscu możesz definiować lub zmieniać typy zajęć dostępne w organizacji.
               </p>
             </div>
@@ -39,6 +52,6 @@ if (!account.data?.roles.includes('SystemAdministrator'))
       </div>
     </div>
 
-    <layout-default-footer />
+    <layout-footer />
   </div>
 </template>
