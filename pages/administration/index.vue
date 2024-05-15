@@ -56,6 +56,6 @@ if (!account.data?.roles.includes('SystemAdministrator'))
       </div>
     </div>
 
-    <layout-default-footer />
+    <layout-footer />
   </div>
 </template>
