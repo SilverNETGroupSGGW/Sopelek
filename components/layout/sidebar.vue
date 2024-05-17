@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconCalendar, IconChalkboard, IconChartArrows, IconHome, IconLogout, IconTableColumn, IconTerminal2, IconUser, IconUsersGroup } from '@tabler/icons-vue'
+import { IconCalendar, IconChalkboard, IconChartArrows, IconHome, IconLogout, IconSquareKey, IconTableColumn, IconTerminal2, IconUser, IconUsersGroup } from '@tabler/icons-vue'
 
 const route = useRoute()
 
@@ -28,16 +28,16 @@ const tabs = reactive([
     requiredRole: 'TenantAdministrator',
   },
   {
-    icon: IconChartArrows,
-    label: 'Kierunki studiów',
-    to: '/study-programs',
-    active: computed(() => route.path === '/study-programs'),
-  },
-  {
     icon: IconCalendar,
     label: 'Kalendarz dni wolnych od zajęć',
     to: '/free-days-calendar',
     active: computed(() => route.path === '/free-days-calendar'),
+  },
+  {
+    icon: IconChartArrows,
+    label: 'Kierunki studiów',
+    to: '/study-programs',
+    active: computed(() => route.path === '/study-programs'),
   },
   {
     icon: IconTableColumn,

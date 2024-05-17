@@ -16,6 +16,7 @@ import type { CreateUser, User } from './User'
 import type { SubjectType } from './SubjectType'
 import type { Role } from './Role'
 import type { ClassroomType } from './ClassroomType'
+import type { OffDay } from './OffDay'
 
 export type {
   Account,
@@ -36,6 +37,7 @@ export type {
   SubjectType,
   Role,
   ClassroomType,
+  OffDay,
 }
 
 export { AcademicDegree, DayOfWeek, StudyMode, DegreeOfStudy }
