@@ -63,27 +63,29 @@ const units = computed(() => {
 </script>
 
 <template>
-  <div class="flex gap-1">
-    <base-button variant="primary" @click="reset">
-      Dziś
-    </base-button>
-    <base-button variant="primary" @click="shiftMonth(-1)">
-      Poprzedni
-    </base-button>
-    <base-button variant="primary" @click="shiftMonth(1)">
-      Następny
-    </base-button>
-    <span class="text-3xl">{{ format(viewDate, 'LLLL yyyy', { locale: pl }) }}</span>
-  </div>
-  <div class="grid grid-cols-7 gap-1 mt-5 mb-5">
-    <div v-for="d in daysOfWeek" :key="d" class="text-center">
-      <div>{{ d }}</div>
+  <div>
+    <div class="flex gap-1">
+      <base-button variant="primary" @click="reset">
+        Dziś
+      </base-button>
+      <base-button variant="primary" @click="shiftMonth(-1)">
+        Poprzedni
+      </base-button>
+      <base-button variant="primary" @click="shiftMonth(1)">
+        Następny
+      </base-button>
+      <span class="text-3xl">{{ format(viewDate, 'LLLL yyyy', { locale: pl }) }}</span>
     </div>
-  </div>
-  <div class="grid grid-cols-7">
-    <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-midnight" />
-    <div v-for="d in units" :key="d.toString()" class="border border-slate-200 flex flex-col h-32">
-      <slot :date="d" />
+    <div class="grid grid-cols-7 gap-1 mt-5 mb-5">
+      <div v-for="d in daysOfWeek" :key="d" class="text-center">
+        <div>{{ d }}</div>
+      </div>
+    </div>
+    <div class="grid grid-cols-7">
+      <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-midnight" />
+      <div v-for="d in units" :key="d.toString()" class="border border-slate-200 flex flex-col h-32">
+        <slot :date="d" />
+      </div>
     </div>
   </div>
 </template>
