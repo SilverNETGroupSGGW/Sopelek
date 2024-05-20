@@ -14,7 +14,7 @@ const reset = function () {
   viewDate.value = format(new Date(), 'yyyy-MM-dd')
 }
 
-const shiftMonth = function (amount: number) {
+function shiftMonth(amount: number) {
   viewDate.value = format(addMonths(viewDate.value, amount), 'yyyy-MM-dd')
 }
 
