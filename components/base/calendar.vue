@@ -82,7 +82,7 @@ const units = computed(() => {
       </div>
     </div>
     <div class="grid grid-cols-7">
-      <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-midnight" />
+      <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-gray-900" />
       <div v-for="d in units" :key="d.toString()" class="border border-slate-200 flex flex-col h-32">
         <slot :date="d" />
       </div>
