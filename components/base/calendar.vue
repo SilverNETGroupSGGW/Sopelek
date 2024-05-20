@@ -30,7 +30,7 @@ const daysOfWeek = computed(
   },
 )
 
-const daysToPrepend = computed(() => {
+function daysToPrepend() {
   const viewDateValue = new Date(viewDate.value)
   const startOfMonthValue = addDays(startOfMonth(viewDateValue), -1)
   const startOfFirstWeekValue = startOfWeek(startOfMonthValue)
