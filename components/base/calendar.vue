@@ -10,7 +10,7 @@ const props = defineProps<{
 // const displayMode = ref(props.display || 'month')
 const viewDate = ref<string>(props.startDate || format(new Date(), 'yyyy-MM-dd'))
 
-const reset = function () {
+function reset() {
   viewDate.value = format(new Date(), 'yyyy-MM-dd')
 }
 
