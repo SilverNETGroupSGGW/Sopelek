@@ -83,9 +83,9 @@ const offDayTypes = [
       <base-input v-model="currentItem.date" type="date" :icon="IconCalendarEvent" label="Data rozpoczęcia semestru" />
 
       <base-input v-if="currentItem.scope === 'Organization'" v-model="currentItem.organizationId" :icon="IconUser" label="Id Organizacji" />
-      <base-input v-if="currentItem.scope === 'Tenant'" v-model="currentItem.tenantId" :icon="IconUser" label="Id Tenantu" />
-      <base-input v-if="currentItem.scope === 'Schedule'" v-model="currentItem.scheduleId" :icon="IconUser" label="Id Planu Zajęć" />
-      <base-input v-if="currentItem.scope === 'Group'" v-model="currentItem.groupId" :icon="IconUser" label="Id Grupy" />
+      <base-input v-else-if="currentItem.scope === 'Tenant'" v-model="currentItem.tenantId" :icon="IconUser" label="Id Tenantu" />
+      <base-input v-else-if="currentItem.scope === 'Schedule'" v-model="currentItem.scheduleId" :icon="IconUser" label="Id Planu Zajęć" />
+      <base-input v-else-if="currentItem.scope === 'Group'" v-model="currentItem.groupId" :icon="IconUser" label="Id Grupy" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="createDialog = false">
@@ -106,9 +106,9 @@ const offDayTypes = [
       <base-input v-model="currentItem.date" type="date" :icon="IconCalendarEvent" label="Data rozpoczęcia semestru" />
 
       <base-input v-if="currentItem.scope === 'Organization'" v-model="currentItem.organizationId" :icon="IconUser" label="Id Organizacji" />
-      <base-input v-if="currentItem.scope === 'Tenant'" v-model="currentItem.tenantId" :icon="IconUser" label="Id Tenantu" />
-      <base-input v-if="currentItem.scope === 'Schedule'" v-model="currentItem.scheduleId" :icon="IconUser" label="Id Planu Zajęć" />
-      <base-input v-if="currentItem.scope === 'Group'" v-model="currentItem.groupId" :icon="IconUser" label="Id Grupy" />
+      <base-input v-else-if="currentItem.scope === 'Tenant'" v-model="currentItem.tenantId" :icon="IconUser" label="Id Tenantu" />
+      <base-input v-else-if="currentItem.scope === 'Schedule'" v-model="currentItem.scheduleId" :icon="IconUser" label="Id Planu Zajęć" />
+      <base-input v-else-if="currentItem.scope === 'Group'" v-model="currentItem.groupId" :icon="IconUser" label="Id Grupy" />
 
       <div class="mt-6 flex justify-end gap-4">
         <base-button variant="secondary" @click="updateDialog = false">

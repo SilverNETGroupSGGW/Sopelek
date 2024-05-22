@@ -1,13 +1,11 @@
 <script  setup lang="ts">
-import { addDays, addMonths, differenceInDays, eachDayOfInterval, endOfDay, endOfMonth, format, getMonth, isToday, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns'
+import { addDays, addMonths, differenceInDays, endOfDay, endOfMonth, format, startOfDay, startOfMonth, startOfWeek } from 'date-fns'
 import { pl } from 'date-fns/locale'
 
 const props = defineProps<{
-  display?: 'month' | 'year' | 'week' | 'day'
-  startDate?: '2022-12-05'
+  startDate?: string
 }>()
 
-// const displayMode = ref(props.display || 'month')
 const viewDate = ref<string>(props.startDate || format(new Date(), 'yyyy-MM-dd'))
 
 const reset = function () {
