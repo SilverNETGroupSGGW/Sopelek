@@ -8,11 +8,11 @@ const props = defineProps<{
 
 const viewDate = ref<string>(props.startDate || format(new Date(), 'yyyy-MM-dd'))
 
-const reset = function () {
+function reset() {
   viewDate.value = format(new Date(), 'yyyy-MM-dd')
 }
 
-const shiftMonth = function (amount: number) {
+function shiftMonth(amount: number) {
   viewDate.value = format(addMonths(viewDate.value, amount), 'yyyy-MM-dd')
 }
 
@@ -28,7 +28,7 @@ const daysOfWeek = computed(
   },
 )
 
-const daysToPrepend = computed(() => {
+function daysToPrepend() {
   const viewDateValue = new Date(viewDate.value)
   const startOfMonthValue = addDays(startOfMonth(viewDateValue), -1)
   const startOfFirstWeekValue = startOfWeek(startOfMonthValue)
@@ -80,7 +80,7 @@ const units = computed(() => {
       </div>
     </div>
     <div class="grid grid-cols-7">
-      <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-midnight" />
+      <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-gray-900" />
       <div v-for="d in units" :key="d.toString()" class="border border-slate-200 flex flex-col h-32">
         <slot :date="d" />
       </div>
