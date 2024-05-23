@@ -42,7 +42,7 @@ function daysToPrepend() {
   }
 
   return days
-})
+}
 
 const units = computed(() => {
   const ranges = []

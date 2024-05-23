@@ -24,6 +24,8 @@ const offDayTypes = [
   { value: 'Schedule', type: 'Schedule' },
   { value: 'Group', type: 'Group' },
 ]
+
+
 </script>
 
 <template>
