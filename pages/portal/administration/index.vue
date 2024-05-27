@@ -20,7 +20,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
 
       <div class="flex flex-col gap-2">
         <div class="grid auto-rows-[1fr] grid-cols-3 gap-6">
-          <NuxtLink to="/administration/organizations" class="group w-full">
+          <NuxtLink to="/portal/administration/organizations" class="group w-full">
             <div class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600">
               <h2 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
                 Organizacje
@@ -31,7 +31,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/administration/tenants" class="group w-full">
+          <NuxtLink to="/portal/administration/tenants" class="group w-full">
             <div class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600">
               <h2 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
                 Tenanty
@@ -42,7 +42,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/administration/users" class="group w-full">
+          <NuxtLink to="/portal/administration/users" class="group w-full">
             <div class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600">
               <h2 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
                 Użytkownicy

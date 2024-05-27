@@ -1,6 +1,6 @@
 <script  setup lang="ts">
 import { addDays, addMonths, differenceInDays, endOfDay, endOfMonth, format, startOfDay, startOfMonth, startOfWeek } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { enGB, pl } from 'date-fns/locale'
 
 const props = defineProps<{
   startDate?: string
@@ -21,7 +21,7 @@ const daysOfWeek = computed(
     const daysOfWeek = []
     for (let i = 1; i <= 7; i++) {
       const day = new Date(2024, 3, i)
-      const dayName = format(day, 'EEEE', { locale: pl, weekStartsOn: 1 })
+      const dayName = format(day, 'EEEE', { locale: enGB, weekStartsOn: 1 })
       daysOfWeek.push(dayName)
     }
     return daysOfWeek

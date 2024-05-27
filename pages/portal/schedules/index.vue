@@ -42,14 +42,14 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
         <base-button variant="primary" :disabled="cell.isDownloading" :loading="cell.isDownloading" @click="schedules.download(cell)">
           Pobierz plan
         </base-button>
-        <base-button variant="primary" :to="`/schedules/${cell.id}?day=${DayOfWeek.Monday}`">
+        <base-button variant="primary" :to="`/portal/schedules/${cell.id}?day=${DayOfWeek.Monday}`">
           Kreator
         </base-button>
 
-        <base-button variant="secondary" :to="`/schedules/${cell.id}/subjects/list`">
+        <base-button variant="secondary" :to="`/portal/schedules/${cell.id}/subjects/list`">
           Przedmioty
         </base-button>
-        <base-button variant="secondary" :to="`/schedules/${cell.id}/groups`">
+        <base-button variant="secondary" :to="`/portal/schedules/${cell.id}/groups`">
           Grupy
         </base-button>
 
