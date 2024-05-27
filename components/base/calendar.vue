@@ -21,7 +21,7 @@ const daysOfWeek = computed(
     const daysOfWeek = []
     for (let i = 1; i <= 7; i++) {
       const day = new Date(2024, 3, i)
-      const dayName = format(day, 'EEEE', { locale: enGB, weekStartsOn: 1 })
+      const dayName = format(day, 'EEEE', { locale: pl, weekStartsOn: 1 })
       daysOfWeek.push(dayName)
     }
     return daysOfWeek
@@ -74,14 +74,14 @@ const units = computed(() => {
       </base-button>
       <span class="text-3xl">{{ format(viewDate, 'LLLL yyyy', { locale: pl }) }}</span>
     </div>
-    <div class="grid grid-cols-7 gap-1 mt-5 mb-5">
+    <div class="my-5 grid grid-cols-7 gap-1">
       <div v-for="d in daysOfWeek" :key="d" class="text-center">
         <div>{{ d }}</div>
       </div>
     </div>
     <div class="grid grid-cols-7">
       <div v-for="p in daysToPrepend" :key="p.toString()" class="bg-gray-900" />
-      <div v-for="d in units" :key="d.toString()" class="border border-slate-200 flex flex-col h-32">
+      <div v-for="d in units" :key="d.toString()" class="flex h-32 flex-col border border-slate-200">
         <slot :date="d" />
       </div>
     </div>
