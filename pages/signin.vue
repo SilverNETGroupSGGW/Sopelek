@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { IconAt, IconKey } from '@tabler/icons-vue'
+import type { UserTokens } from '~/types'
 
 interface User {
   email: string
   password: string
   deviceToken: string
-}
-
-interface UserResponse {
-  refreshToken: string
-  accessToken: string
 }
 
 const runtimeConfig = useRuntimeConfig()
@@ -29,7 +25,7 @@ const isSubmitting = ref(false)
 async function handleFormSubmit() {
   isSubmitting.value = true
   try {
-    const { refreshToken, accessToken } = await $fetch<UserResponse>('tokens/login', {
+    const { refreshToken, accessToken } = await $fetch<UserTokens>('tokens/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +38,7 @@ async function handleFormSubmit() {
     useCookie('accessToken').value = accessToken
     useCookie('refreshToken').value = refreshToken
 
-    await navigateTo('/')
+    await navigateTo('/portal/')
   }
   catch (error) {
     isSubmitting.value = false

@@ -20,12 +20,12 @@ if (!account.data?.roles.includes('SystemAdministrator'))
 
       <div class="flex flex-col gap-2">
         <div class="grid auto-rows-[1fr] grid-cols-3 gap-6">
-          <NuxtLink to="/tenant-administration/subject-types" class="group w-full">
+          <NuxtLink to="/portal/tenant-administration/subject-types" class="group w-full">
             <div
               class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600"
             >
               <h2
-                to="/tenant-administration/subject-types"
+                to="/portal/tenant-administration/subject-types"
                 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white"
               >
                 Typy zajęć
@@ -36,7 +36,7 @@ if (!account.data?.roles.includes('SystemAdministrator'))
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/tenant-administration/classroom-types" class="group w-full">
+          <NuxtLink to="/portal/tenant-administration/classroom-types" class="group w-full">
             <div
               class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600"
             >
