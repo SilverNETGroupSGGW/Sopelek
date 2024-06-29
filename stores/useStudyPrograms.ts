@@ -18,16 +18,25 @@ export const useStudyPrograms = defineStore('studyPrograms', {
   actions: {
     async get() {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<StudyProgram[]>>(`studyprogram`, {
+      const { data } = await useFetch<BaseResponse<StudyProgram[]>>(`studyprogram/all`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${useCookie('accessToken').value}`,
+        },
       })
 
       this.data = data.value!.data.sort((a, b) => a.name.localeCompare(b.name))
     },
     async create(studyProgram: StudyProgram) {
       const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram/all', {
+      const { studiesDegrees, studiesModes, fieldOfStudies } = useData()
+
+      studyProgram.degreeOfStudy = studiesDegrees.find(d => d.value === studyProgram.degreeOfStudy)!.type
+      studyProgram.faculty = fieldOfStudies.find(f => f.value === studyProgram.fieldOfStudy)!.department
+      studyProgram.studyMode = studiesModes.find(m => m.value === studyProgram.studyMode)!.type
+
+      const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',
         body: JSON.stringify(studyProgram),
@@ -40,9 +49,10 @@ export const useStudyPrograms = defineStore('studyPrograms', {
     },
     async update(studyProgram: StudyProgram) {
       const runtimeConfig = useRuntimeConfig()
-      const { studiesDegrees, studiesModes } = useData()
+      const { studiesDegrees, studiesModes, fieldOfStudies } = useData()
 
       studyProgram.degreeOfStudy = studiesDegrees.find(d => d.value === studyProgram.degreeOfStudy)!.type
+      studyProgram.fieldOfStudy = fieldOfStudies.find(f => f.value === studyProgram.fieldOfStudy)!.department
       studyProgram.studyMode = studiesModes.find(m => m.value === studyProgram.studyMode)!.type
 
       const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram', {

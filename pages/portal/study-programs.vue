@@ -7,6 +7,11 @@ const studyPrograms = useStudyPrograms()
 await studyPrograms.get()
 
 const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, handleDialogOpen, handleUpdate, isSubmitting, search, updateDialog } = useCrud(studyPrograms.data)
+
+watchEffect(() => {
+  if (currentItem.value.semester)
+    currentItem.value.year = Math.floor(currentItem.value.semester / 2) + 1
+})
 </script>
 
 <template>
@@ -36,11 +41,9 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
       <span class="text-sm text-gray-700">
-        od {{ new Date(cell.startDate).toLocaleDateString('en-EN') }}
+        od {{ new Date(cell.startDate).toLocaleDateString('pl-PL') }}
         <br>
         {{ cell.faculty }}, {{ studiesDegrees.find((degree) => degree.type === cell.degreeOfStudy)?.value }}, {{ studiesModes.find((mode) => mode.type === cell.studyMode)?.value }}
-        <br>
-        rok {{ cell.year }}, semestr {{ cell.semester }}
       </span>
     </template>
 
