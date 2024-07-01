@@ -1,7 +1,4 @@
-import type { Classroom } from './Classroom'
-import type { Group } from './Group'
-import type { Lecturer } from './Lecturer'
-import type { Lesson } from './Lesson'
+import type { Group, Lecturer, Lesson } from '.'
 
 export enum DayOfWeek {
   Monday = 'Monday',
@@ -13,46 +10,59 @@ export enum DayOfWeek {
   Sunday = 'Sunday',
 }
 
-export interface SubjectConflict {
-  message: string
-  conflicts: SubjectConflictItem[]
-}
-
-export interface SubjectConflictItem {
-  mainSubject: Subject
-  otherSubject: Subject
-  conflictStartTime: string
-  conflictDuration: string
-}
-
 export interface Subject {
-  classroom?: Classroom | null
-  classroomId?: string | null
-  comment?: string
-  created?: string
-  dayOfWeek?: DayOfWeek
-  duration?: string
-  groups?: Group[]
-  groupsIds?: string[]
   id: string
-  isRemote?: boolean
-  isConditional?: boolean
-  lecturers?: Lecturer[]
-  lecturersIds?: string[]
-  lessons?: Lesson[]
-  name?: string
-  scheduleId?: string
+  created: string
+  updated: string
+  name: string
+  isDraft: boolean
+  studySemesterId: string
+  tenantId: string
+  groups: Group[]
+  subjects: SubjectDetail[]
+}
+
+export interface SubjectDetail {
+  id: string
+  created: string
+  updated: string
+  scheduleId: string
+  name: string
+  type: SubjectType
   startTime: string
-  typeId?: string
-  updated?: string
+  dayOfWeek: DayOfWeek
+  duration: string
+  isRemote: boolean
+  comment: string
+  lecturers: Lecturer[]
+  groups: Group[]
+  lessons: Lesson[]
+  classroom: Classroom
 
   /* internal */
-  conflict?: boolean
-  conflictMessage?: string
   ghost?: boolean
   height?: number
   width?: number
   x?: number
   y?: number
-  zIndex?: number
+}
+
+export interface SubjectType {
+  id: string
+  created: string
+  updated: string
+  name: string
+  isPrimitiveType: boolean
+  tenantId: string
+  // tenant: Tenant
+}
+
+export interface Classroom {
+  id: string
+  created: string
+  updated: string
+  name: string
+  building: string
+  floor: string
+  capacity: number
 }
