@@ -23,18 +23,12 @@ export const useSubjects = defineStore('subjects', {
   actions: {
     async get(scheduleId: string) {
       const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Subject[]>>(`subjects/schedule/${scheduleId}/extended`, {
+      const { data } = await useFetch<Subject[]>(`subjects/schedule/${scheduleId}/extended`, {
         baseURL: runtimeConfig.public.baseURL,
         method: 'GET',
       })
 
-      this.data = data.value!.data.sort((a, b) => {
-        if (a.dayOfWeek === b.dayOfWeek)
-          return a.startTime!.localeCompare(b.startTime!)
-
-        else
-          return a.dayOfWeek!.localeCompare(b.dayOfWeek!)
-      })
+      this.data = data.value!
     },
     async create(subject: Subject) {
       try {

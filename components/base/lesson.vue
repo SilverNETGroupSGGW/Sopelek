@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { IconTrash } from '@tabler/icons-vue'
-import type { Subject } from '~/types'
+import type { SubjectDetail } from '~/types/Subject'
 
-const props = defineProps<Subject & {
+const props = defineProps<SubjectDetail & {
   container: HTMLElement | null
 }>()
 
@@ -16,7 +16,6 @@ const mouse = useMouse()
 // Data
 const scheduler = useScheduler()
 const subjects = useSubjects()
-const { lessonTypes } = useData()
 
 // Utils
 function calculateEndTime() {
@@ -87,7 +86,7 @@ async function handleDelete() {
       {{ name }}
     </p>
     <small class="mb-2 text-xs text-gray-700">
-      {{ lessonTypes.find(x => x.value === type)?.label }}
+      {{ type.name }}
     </small>
 
     <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
@@ -102,14 +101,8 @@ async function handleDelete() {
     <small v-if="isRemote" class="text-xs text-gray-700">
       <b>Zajęcia zdalne</b>
     </small>
-    <small v-if="isConditional" class="text-xs text-gray-700">
-      <b>Zajęcia warunkowe</b>
-    </small>
     <small v-if="comment" class="text-xs text-gray-700">
       <b>Komentarz: </b> {{ comment }}
-    </small>
-    <small v-if="conflict" class="text-xs text-red-600">
-      <b>Konflikt: </b> {{ conflictMessage }}
     </small>
   </div>
 
