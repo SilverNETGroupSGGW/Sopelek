@@ -17,5 +17,5 @@ definePageMeta({
 
   <landing-customers-opinions-section />
 
-  <landing-footter-section />
+  <landing-footer-section />
 </template>
