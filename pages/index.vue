@@ -7,15 +7,15 @@ definePageMeta({
 <template>
   <landing-navbar />
 
-  <landing-title-section />
+  <landing-title />
 
-  <landing-description1-section />
+  <landing-description1 />
 
-  <landing-description2-section />
+  <landing-description2 />
 
-  <landing-features-section />
+  <landing-features />
 
-  <landing-customers-opinions-section />
+  <landing-customers-opinions />
 
-  <landing-footer-section />
+  <landing-footer />
 </template>
