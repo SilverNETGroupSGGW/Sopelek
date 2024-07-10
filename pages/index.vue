@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <landing-top-bar />
+  <landing-navbar />
 
   <landing-title-section />
 
