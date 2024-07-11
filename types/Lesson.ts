@@ -1,6 +1,6 @@
 export interface Lesson {
-  duration: string
-  id?: string
-  startTime: string
-  subjectId?: string
+  id: string
+  created: string
+  updated: string
+  iCalendarEvent: string
 }
