@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
-    "@heroicons/vue": "^2.1.4",
-    "@pinia/nuxt": "^0.5.1",
-    "@tabler/icons-vue": "^3.9.0",
+    "@heroicons/vue": "^2.1.5",
+    "@pinia/nuxt": "^0.5.3",
+    "@tabler/icons-vue": "^3.12.0",
     "date-fns": "^3.6.0",
     "jwt-decode": "^4.0.0",
-    "pinia": "^2.1.7"
+    "pinia": "^2.2.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.3",
