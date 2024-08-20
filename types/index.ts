@@ -18,6 +18,7 @@ import type { Role } from './Role'
 import type { ClassroomType } from './ClassroomType'
 import type { OffDay } from './OffDay'
 import type { UserTokens } from './UserTokens'
+import { RequestTypes } from './RequestType'
 
 export type {
   Account,
@@ -42,4 +43,4 @@ export type {
   UserTokens,
 }
 
-export { AcademicDegree, DayOfWeek, StudyMode, DegreeOfStudy }
+export { AcademicDegree, DayOfWeek, StudyMode, DegreeOfStudy, RequestTypes }
