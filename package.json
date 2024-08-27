@@ -13,6 +13,7 @@
     "@heroicons/vue": "^2.1.4",
     "@pinia/nuxt": "^0.5.1",
     "@tabler/icons-vue": "^3.9.0",
+    "@vueuse/integrations": "^11.0.3",
     "axios": "^1.7.4",
     "date-fns": "^3.6.0",
     "jwt-decode": "^4.0.0",
