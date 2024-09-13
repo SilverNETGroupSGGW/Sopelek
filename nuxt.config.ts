@@ -1,4 +1,11 @@
 export default defineNuxtConfig({
+  nitro: {
+    output: {
+      dir: 'dist',
+      serverDir: 'dist/server',
+      publicDir: 'dist/client',
+    },
+  },
   app: {
     head: {
       bodyAttrs: {
