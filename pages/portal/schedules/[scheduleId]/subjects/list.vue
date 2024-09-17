@@ -6,7 +6,7 @@ import type { Subject } from '~/types'
 const route = useRoute()
 
 // Composables
-const { lessonTypes, daysOfWeek } = useData()
+const { daysOfWeek } = useData()
 
 // Subjects
 const subjects = useSubjects()
@@ -66,8 +66,7 @@ function handleLessonEdit(id: string) {
       <span class="text-base font-semibold text-gray-900">{{ cell.name }}</span>
 
       <div class="text-sm text-indigo-600">
-        <span>{{ lessonTypes.find(x => x.value === cell.type)?.label }}</span>,
-        <span v-if="cell.isConditional">zajęcia warunkowe</span>,
+        <span v-if="cell.isConditional">zajęcia warunkowe,</span>
         <span>{{ cell.isRemote ? 'zdalnie' : 'stacjonarnie' }}</span>
       </div>
 
