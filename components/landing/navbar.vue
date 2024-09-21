@@ -16,7 +16,7 @@ const topBarLinks = [
           class="flex shrink-0 items-end gap-1.5 text-xl font-bold text-gray-900 dark:text-white"
           aria-label="Nuxt UI Pro"
         >
-          <logo color-class="bg-indigo-500" class="mr-2" />
+          <logo color="gray" class="mr-2" />
 
           Plan Creator
         </a>
