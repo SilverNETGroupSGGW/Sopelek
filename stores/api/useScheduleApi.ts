@@ -1,7 +1,7 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
 import type { ScheduleResult } from '~/types/apiResults'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 export const useScheduleApi = defineStore('scheduleApi', {
   state: () => ({
@@ -19,17 +19,22 @@ export const useScheduleApi = defineStore('scheduleApi', {
     },
     async createSchedule(schedule: ScheduleResult): Promise<ApiResponse<ScheduleResult> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<ScheduleResult>(Method.POST, 'Schedules', schedule)
+      const result = await makeRequest<ScheduleResult>(Method.POST, 'Schedules', schedule, null, true)
       return result
     },
     async updateSchedule(schedule: ScheduleResult): Promise<ApiResponse<ScheduleResult> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<ScheduleResult>(Method.PUT, 'Schedules', schedule)
+      const result = await makeRequest<ScheduleResult>(Method.PUT, 'Schedules', schedule, null, true)
       return result
     },
-    async deleteSchedule(scheduleId: string): Promise<void> {
+    async deleteSchedule(scheduleId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `Schedules/${scheduleId}`)
+      return await makeRequest(Method.DELETE, `Schedules/${scheduleId}`, null, null, true)
+    },
+    async getScheduleExtended(scheduleId: string): Promise<ApiResponse<ScheduleResult> | null> {
+      const { makeRequest } = useApiRequest()
+      const result = await makeRequest<ScheduleResult>(Method.GET, `Schedules/${scheduleId}/extended`)
+      return result
     },
   },
 })
