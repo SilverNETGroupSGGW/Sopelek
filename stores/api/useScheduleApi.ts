@@ -4,7 +4,7 @@ import type { ScheduleResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 import type { DegreesOfStudies } from '~/types/apiResults/DegreesOfStudies'
 import type { ScheduleExtendedResult } from '~/types/apiResults/ScheduleExtendedResult'
-import type { StudyMode } from '~/types/StudyMode'
+import type { StudyMode } from '~/types/apiResults/StudyMode'
 
 export const useScheduleApi = defineStore('scheduleApi', {
   state: () => ({
