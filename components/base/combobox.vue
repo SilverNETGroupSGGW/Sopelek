@@ -4,11 +4,12 @@ import Multiselect from 'vue-multiselect'
 
 const props = defineProps<{
   placeholder?: string
+  value?: string | null
   options: string[]
   onChange?: (value: string) => void
 }>()
 
-const value = ref(null)
+const value = ref(props.value)
 </script>
 
 <template>
@@ -18,6 +19,8 @@ const value = ref(null)
       :options="props.options"
       :placeholder="props.placeholder"
       :show-labels="false"
+      :preselect-first="true"
+      :hide-selected="true"
       @select="props.onChange"
     />
   </div>

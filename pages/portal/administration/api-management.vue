@@ -1,17 +1,47 @@
 <script setup lang="ts">
-const controllers = ref<string[]>([
-  '[POST] api/login',
-  '[GET] api/schedules',
-  '[GET] api/schedules/:id',
-  '[POST] api/schedules',
-  '[PUT] api/schedules/:id',
-  '[DELETE] api/schedules/:id',
-])
+interface Endpoint {
+  controller: string
+  endpoint: string
+}
 
-const selectedEndpoint = ref<string>('')
+const endpointsData: Endpoint[] = [
+  // Tokens
+  { controller: 'TokenController', endpoint: '[POST] api/login' },
 
-function handleComboboxChange(value: string) {
+  // Schedules
+  { controller: 'ScheduleController', endpoint: '[GET] api/schedules' },
+  { controller: 'ScheduleController', endpoint: '[GET] api/schedules/:id' },
+  { controller: 'ScheduleController', endpoint: '[POST] api/schedules' },
+  { controller: 'ScheduleController', endpoint: '[PUT] api/schedules/:id' },
+  { controller: 'ScheduleController', endpoint: '[DELETE] api/schedules/:id' },
+  { controller: 'ScheduleController', endpoint: '[GET] api/schedules/:id/extended' },
+  { controller: 'ScheduleController', endpoint: '[GET] api/schedules/study-modes' },
+  { controller: 'ScheduleController', endpoint: '[GET] api/schedules/degrees-of-studies' },
+]
+
+const selectedController = ref<string | null>('')
+const selectedEndpoint = ref<string | null>('')
+
+const controllers = computed(() => {
+  return endpointsData.map(endpoint => endpoint.controller).reduce((array, controller) => {
+    if (!array.includes(controller)) {
+      array.push(controller)
+    }
+    return array
+  }, [] as string[])
+})
+
+const endpoints = computed(() => {
+  return endpointsData.filter(e => e.controller === selectedController.value).map(e => e.endpoint)
+})
+
+function handleEndpointComboboxChange(value: string) {
   selectedEndpoint.value = value
+}
+
+function handleControllerComboboxChange(value: string) {
+  selectedController.value = value
+  selectedEndpoint.value = null
 }
 </script>
 
@@ -21,25 +51,47 @@ function handleComboboxChange(value: string) {
   </div>
 
   <div class="my-9 h-screen px-12">
-    <div class="my-3">
-      <h1 class="mb-4 text-xl font-bold text-gray-900">
-        Endpoint:
-      </h1>
+    <div class="inline-flex columns-2 gap-10">
+      <div>
+        <h1 class="mb-4 text-xl font-bold text-gray-900">
+          Controller:
+        </h1>
+
+        <div class="my-1 w-72">
+          <base-combobox
+            :options="controllers"
+            :value="selectedController"
+            @change="handleControllerComboboxChange"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h1 class="mb-4 text-xl font-bold text-gray-900">
+          Endpoint:
+        </h1>
+
+        <div class="my-1 w-72">
+          <base-combobox
+            :options="endpoints"
+            :value="selectedEndpoint"
+            @change="handleEndpointComboboxChange"
+          />
+        </div>
+      </div>
     </div>
 
-    <div class="my-1 w-72">
-      <base-combobox
-        :options="controllers"
-        @change="handleComboboxChange"
-      />
-    </div>
-
+    <!-- Tokens -->
     <api-view-tokens-login v-if="selectedEndpoint === '[POST] api/login'" class="my-9" />
 
+    <!-- Schedules -->
     <api-view-schedules-get-all v-if="selectedEndpoint === '[GET] api/schedules'" class="my-9" />
     <api-view-schedules-get v-if="selectedEndpoint === '[GET] api/schedules/:id'" class="my-9" />
+    <api-view-schedules-get-extended v-if="selectedEndpoint === '[GET] api/schedules/:id/extended'" class="my-9" />
     <api-view-schedules-post v-if="selectedEndpoint === '[POST] api/schedules'" class="my-9" />
     <api-view-schedules-put v-if="selectedEndpoint === '[PUT] api/schedules/:id'" class="my-9" />
     <api-view-schedules-delete v-if="selectedEndpoint === '[DELETE] api/schedules/:id'" class="my-9" />
+    <api-view-schedules-get-study-modes v-if="selectedEndpoint === '[GET] api/schedules/study-modes'" class="my-9" />
+    <api-view-schedules-get-degrees-of-studies v-if="selectedEndpoint === '[GET] api/schedules/degrees-of-studies'" class="my-9" />
   </div>
 </template>

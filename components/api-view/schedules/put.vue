@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useScheduleApi } from '~/stores/api/useScheduleApi'
 import type { ScheduleResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
@@ -11,12 +12,30 @@ const bodyTemplate = {
 }
 
 const scheduleApi = useScheduleApi()
+const apiViewParameters = useApiViewRequestParameters()
+const endpoint = 'api/schedules'
+
+interface RequestParameters {
+  body: string
+}
+
+const paramsDefault = {
+  body: JSON.stringify(bodyTemplate, null, 2),
+}
+
+const requestParams = ref<RequestParameters>(
+  apiViewParameters.getIfExistsOrDefault(endpoint, paramsDefault),
+)
+
+watch(requestParams.value, () => {
+  apiViewParameters.storeParam(endpoint, requestParams.value)
+})
+
 const response = ref<ApiResponse<ScheduleResult> | null>(null)
-const scheduleJson = ref<string>(JSON.stringify(bodyTemplate, null, 2))
 
 async function handleExecute() {
   try {
-    const schedule = JSON.parse(scheduleJson.value)
+    const schedule = JSON.parse(requestParams.value.body)
     response.value = await scheduleApi.updateSchedule(schedule)
   }
   catch (error) {
@@ -38,11 +57,11 @@ async function handleClear() {
     @clear="handleClear"
   >
     <base-input
-      v-model="scheduleJson"
-      class="my-4 w-96"
+      v-model="requestParams.body"
+      class="my-4 w-full"
       label="body"
       :multiline="true"
-      :multiline-rows-height="6"
+      :multiline-rows-height="8"
     />
   </api-view-common-template>
 </template>

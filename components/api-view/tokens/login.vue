@@ -1,21 +1,40 @@
 <script setup lang="ts">
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useAuthApi } from '~/stores/api/useAuthApi'
 import type { LoginResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const authApi = useAuthApi()
-const response = ref<ApiResponse<LoginResult> | null>(null)
+const apiViewParameters = useApiViewRequestParameters()
+const endpoint = 'api/tokens/login'
 
-const username = ref<string>('')
-const password = ref<string>('')
-const deviceToken = ref<string>('')
+interface RequestParameters {
+  username: string
+  password: string
+  deviceToken: string
+}
+
+const paramsDefault = {
+  username: '',
+  password: '',
+  deviceToken: '',
+}
+
+const response = ref<ApiResponse<LoginResult> | null>(null)
+const requestParams = ref<RequestParameters>(
+  apiViewParameters.getIfExistsOrDefault(endpoint, paramsDefault),
+)
+
+watch(requestParams.value, () => {
+  apiViewParameters.storeParam(endpoint, requestParams.value)
+})
 
 async function handleExecute() {
   try {
     response.value = await authApi.getTokensAsync(
-      username.value,
-      password.value,
-      deviceToken.value,
+      requestParams.value.username,
+      requestParams.value.password,
+      requestParams.value.deviceToken,
     )
   }
   catch (error) {
@@ -31,25 +50,25 @@ async function handleClear() {
 <template>
   <api-view-common-template
     method="POST"
-    endpoint="api/tokens/login"
+    :endpoint="endpoint"
     :response="response"
     @execute="handleExecute"
     @clear="handleClear"
   >
     <base-input
-      v-model="username"
+      v-model="requestParams.username"
       class="my-4 w-96"
       label="Username"
     />
 
     <base-input
-      v-model="password"
+      v-model="requestParams.password"
       class="my-4 w-96"
       label="Password"
     />
 
     <base-input
-      v-model="deviceToken"
+      v-model="requestParams.deviceToken"
       class="my-4 w-96"
       label="DeviceToken (Optional)"
     />

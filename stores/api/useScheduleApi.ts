@@ -2,6 +2,9 @@ import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
 import type { ScheduleResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
+import type { DegreesOfStudies } from '~/types/apiResults/DegreesOfStudies'
+import type { ScheduleExtendedResult } from '~/types/apiResults/ScheduleExtendedResult'
+import type { StudyMode } from '~/types/StudyMode'
 
 export const useScheduleApi = defineStore('scheduleApi', {
   state: () => ({
@@ -31,9 +34,19 @@ export const useScheduleApi = defineStore('scheduleApi', {
       const { makeRequest } = useApiRequest()
       return await makeRequest(Method.DELETE, `Schedules/${scheduleId}`, null, null, true)
     },
-    async getScheduleExtended(scheduleId: string): Promise<ApiResponse<ScheduleResult> | null> {
+    async getScheduleExtended(scheduleId: string): Promise<ApiResponse<ScheduleExtendedResult> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<ScheduleResult>(Method.GET, `Schedules/${scheduleId}/extended`)
+      const result = await makeRequest<ScheduleExtendedResult>(Method.GET, `Schedules/${scheduleId}/extended`)
+      return result
+    },
+    async getStudyModes(): Promise<ApiResponse<StudyMode> | null> {
+      const { makeRequest } = useApiRequest()
+      const result = await makeRequest<StudyMode>(Method.GET, 'Schedules/study-mode', null, null, false, false)
+      return result
+    },
+    async getDegreesOfStudies(): Promise<ApiResponse<DegreesOfStudies> | null> {
+      const { makeRequest } = useApiRequest()
+      const result = await makeRequest<DegreesOfStudies>(Method.GET, 'Schedules/degrees-of-Studies', null, null, false, false)
       return result
     },
   },

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useApiViewRequestData } from '~/stores/api-view/useApiViewRequestData'
 import { useApiViewSettings } from '~/stores/api-view/useApiViewSettings'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
@@ -12,15 +13,27 @@ const params = defineProps<{
 }>()
 
 const apiViewSettings = useApiViewSettings()
+const apiViewRequestData = useApiViewRequestData()
 
 const isLoading = ref<boolean>(false)
 const unwrapRequest = ref<boolean>(apiViewSettings.unwrapRequest)
 const formatResponseData = ref<boolean>(apiViewSettings.formatResponseData)
 
+const response = computed<ApiResponse<any> | null | undefined>(() => {
+  if (apiViewRequestData.hasKey(params.endpoint)) {
+    return apiViewRequestData.getRequest(params.endpoint)
+  }
+  else {
+    return params.response
+  }
+})
+
 async function handleExecute() {
   isLoading.value = true
   await params.onExecute()
   isLoading.value = false
+
+  apiViewRequestData.storeRequest(params.endpoint, params.response!)
 }
 
 async function handleClear() {
@@ -91,35 +104,35 @@ function handleFormatResponseDataChange() {
       <div class="inline-flex">
         Status code: &nbsp;
       </div>
-      <div :class="`inline-flex p-1 rounded-lg ${getStatusBgColor(params.response?.status)}`">
-        {{ params.response?.status }}
+      <div :class="`inline-flex p-1 rounded-lg ${getStatusBgColor(response?.status)}`">
+        {{ response?.status }}
       </div>
     </div>
 
-    <div v-if="params.response?.hasError">
+    <div v-if="response?.hasError">
       <div class="inline-flex">
         Has error: &nbsp;
       </div>
       <div class="inline-flex rounded-lg p-1">
-        {{ params.response?.hasError }}
+        {{ response?.hasError }}
       </div>
     </div>
 
-    <div v-if="params.response?.hasError">
+    <div v-if="response?.hasError">
       <div class="inline-flex">
         Error message: &nbsp;
       </div>
       <div class="inline-flex rounded-lg p-1">
-        {{ params.response?.errorMessage }}
+        {{ response?.errorMessage }}
       </div>
     </div>
 
-    <div v-if="params.response?.timestamp">
+    <div v-if="response?.timestamp">
       <div class="inline-flex">
         Timestamp: &nbsp;
       </div>
       <div class="inline-flex rounded-lg p-1">
-        {{ params.response?.timestamp }}
+        {{ response?.timestamp }}
       </div>
     </div>
 
@@ -128,21 +141,21 @@ function handleFormatResponseDataChange() {
     </h2>
 
     <div class="my-3 w-full justify-center bg-gray-100 p-3">
-      <div v-if="params.response">
+      <div v-if="response">
         <div v-if="unwrapRequest">
           <div v-if="formatResponseData">
-            <pre class="text-balance break-words">{{ JSON.stringify(params.response.data, null, 2) }}</pre>
+            <pre class="text-balance break-words">{{ JSON.stringify(response.data, null, 2) }}</pre>
           </div>
           <div v-else>
-            {{ JSON.stringify(params.response.data, null, 2) }}
+            {{ JSON.stringify(response.data, null, 2) }}
           </div>
         </div>
         <div v-else>
           <div v-if="formatResponseData">
-            <pre class="text-balance break-words">{{ JSON.stringify(params.response, null, 2) }}</pre>
+            <pre class="text-balance break-words">{{ JSON.stringify(response, null, 2) }}</pre>
           </div>
           <div v-else>
-            {{ JSON.stringify(params.response, null, 2) }}
+            {{ JSON.stringify(response, null, 2) }}
           </div>
         </div>
       </div>

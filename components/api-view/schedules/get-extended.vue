@@ -1,27 +1,23 @@
 <script setup lang="ts">
+import { IconKey } from '@tabler/icons-vue'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useScheduleApi } from '~/stores/api/useScheduleApi'
-import type { ScheduleResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
-
-const bodyTemplate = {
-  name: '',
-  isDraft: false,
-  studySemesterId: '',
-}
+import type { ScheduleExtendedResult } from '~/types/apiResults/ScheduleExtendedResult'
 
 const scheduleApi = useScheduleApi()
 const apiViewParameters = useApiViewRequestParameters()
-const endpoint = 'api/schedules'
+const endpoint = '/api/schedules/:id/extended'
 
 interface RequestParameters {
-  body: string
+  scheduleId: string
 }
 
 const paramsDefault = {
-  body: JSON.stringify(bodyTemplate, null, 2),
+  scheduleId: '',
 }
 
+const response = ref<ApiResponse<ScheduleExtendedResult> | null>(null)
 const requestParams = ref<RequestParameters>(
   apiViewParameters.getIfExistsOrDefault(endpoint, paramsDefault),
 )
@@ -30,16 +26,8 @@ watch(requestParams.value, () => {
   apiViewParameters.storeParam(endpoint, requestParams.value)
 })
 
-const response = ref<ApiResponse<ScheduleResult> | null>(null)
-
 async function handleExecute() {
-  try {
-    const schedule = JSON.parse(requestParams.value.body)
-    response.value = await scheduleApi.createSchedule(schedule)
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await scheduleApi.getScheduleExtended(requestParams.value.scheduleId)
 }
 
 async function handleClear() {
@@ -49,18 +37,17 @@ async function handleClear() {
 
 <template>
   <api-view-common-template
-    method="POST"
+    method="GET"
     :endpoint="endpoint"
     :response="response"
     @execute="handleExecute"
     @clear="handleClear"
   >
     <base-input
-      v-model="requestParams.body"
-      class="my-4 w-full"
-      label="body"
-      :multiline="true"
-      :multiline-rows-height="8"
+      v-model="requestParams.scheduleId"
+      class="my-4 w-72"
+      label="Id"
+      :icon="IconKey"
     />
   </api-view-common-template>
 </template>
