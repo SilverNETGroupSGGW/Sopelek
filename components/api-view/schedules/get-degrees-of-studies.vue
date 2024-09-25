@@ -4,15 +4,15 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 import type { DegreesOfStudies } from '~/types/apiResults/DegreesOfStudies'
 
 const scheduleApi = useScheduleApi()
-const degreesOfStudiesResponse = ref<ApiResponse<DegreesOfStudies> | null>(null)
 const endpoint = 'schedules/degrees-of-studies'
+const response = ref<ApiResponse<DegreesOfStudies> | null>(null)
 
 async function handleExecute() {
-  degreesOfStudiesResponse.value = await scheduleApi.getDegreesOfStudies()
+  response.value = await scheduleApi.getDegreesOfStudies()
 }
 
 async function handleClear() {
-  degreesOfStudiesResponse.value = null
+  response.value = null
 }
 </script>
 
@@ -20,7 +20,7 @@ async function handleClear() {
   <api-view-common-template
     method="GET"
     :endpoint="endpoint"
-    :response="degreesOfStudiesResponse"
+    :response="response"
     @execute="handleExecute"
     @clear="handleClear"
   />

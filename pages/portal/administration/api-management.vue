@@ -7,6 +7,8 @@ interface Endpoint {
 const endpointsData: Endpoint[] = [
   // Tokens
   { controller: 'TokenController', endpoint: '[POST] api/login' },
+  { controller: 'TokenController', endpoint: '[POST] api/tokens/refresh' },
+  { controller: 'TokenController', endpoint: '[POST] api/tokens/revoke' },
 
   // Schedules
   { controller: 'ScheduleController', endpoint: '[GET] api/schedules' },
@@ -17,6 +19,13 @@ const endpointsData: Endpoint[] = [
   { controller: 'ScheduleController', endpoint: '[GET] api/schedules/:id/extended' },
   { controller: 'ScheduleController', endpoint: '[GET] api/schedules/study-modes' },
   { controller: 'ScheduleController', endpoint: '[GET] api/schedules/degrees-of-studies' },
+
+  // Users
+  { controller: 'UserController', endpoint: '[GET] api/users' },
+  { controller: 'UserController', endpoint: '[GET] api/users/:userId' },
+  { controller: 'UserController', endpoint: '[POST] api/users' },
+  { controller: 'UserController', endpoint: '[PUT] api/users' },
+  { controller: 'UserController', endpoint: '[DELETE] api/users/:userId' },
 ]
 
 const selectedController = ref<string | null>('')
@@ -83,6 +92,8 @@ function handleControllerComboboxChange(value: string) {
 
     <!-- Tokens -->
     <api-view-tokens-login v-if="selectedEndpoint === '[POST] api/login'" class="my-9" />
+    <api-view-tokens-refresh v-if="selectedEndpoint === '[POST] api/tokens/refresh'" class="my-9" />
+    <api-view-tokens-revoke v-if="selectedEndpoint === '[POST] api/tokens/revoke'" class="my-9" />
 
     <!-- Schedules -->
     <api-view-schedules-get-all v-if="selectedEndpoint === '[GET] api/schedules'" class="my-9" />
@@ -93,5 +104,12 @@ function handleControllerComboboxChange(value: string) {
     <api-view-schedules-delete v-if="selectedEndpoint === '[DELETE] api/schedules/:id'" class="my-9" />
     <api-view-schedules-get-study-modes v-if="selectedEndpoint === '[GET] api/schedules/study-modes'" class="my-9" />
     <api-view-schedules-get-degrees-of-studies v-if="selectedEndpoint === '[GET] api/schedules/degrees-of-studies'" class="my-9" />
+
+    <!-- Users -->
+    <api-view-users-get-all v-if="selectedEndpoint === '[GET] api/users'" class="my-9" />
+    <api-view-users-get v-if="selectedEndpoint === '[GET] api/users/:userId'" class="my-9" />
+    <api-view-users-post v-if="selectedEndpoint === '[POST] api/users'" class="my-9" />
+    <api-view-users-put v-if="selectedEndpoint === '[PUT] api/users'" class="my-9" />
+    <api-view-users-delete v-if="selectedEndpoint === '[DELETE] api/users/:userId'" class="my-9" />
   </div>
 </template>

@@ -1,28 +1,21 @@
 <script setup lang="ts">
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
-import { useScheduleApi } from '~/stores/api/useScheduleApi'
-import type { ScheduleResult } from '~/types/apiResults'
+import { useAuthApi } from '~/stores/api/useAuthApi'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
-const bodyTemplate = {
-  id: '',
-  name: '',
-  isDraft: false,
-  studySemesterId: '',
-}
-
-const scheduleApi = useScheduleApi()
+const authApi = useAuthApi()
 const apiViewParameters = useApiViewRequestParameters()
-const endpoint = 'api/schedules'
+const endpoint = 'api/tokens/revoke'
 
 interface RequestParameters {
-  body: string
+  refreshToken: string
 }
 
 const paramsDefault = {
-  body: JSON.stringify(bodyTemplate, null, 2),
+  refreshToken: '',
 }
 
+const response = ref<ApiResponse<void> | null>(null)
 const requestParams = ref<RequestParameters>(
   apiViewParameters.getIfExistsOrDefault(endpoint, paramsDefault),
 )
@@ -31,12 +24,9 @@ watch(requestParams.value, () => {
   apiViewParameters.storeParam(endpoint, requestParams.value)
 })
 
-const response = ref<ApiResponse<ScheduleResult> | null>(null)
-
 async function handleExecute() {
   try {
-    const schedule = JSON.parse(requestParams.value.body)
-    response.value = await scheduleApi.updateSchedule(schedule)
+    response.value = await authApi.revokeTokenAsync(requestParams.value.refreshToken)
   }
   catch (error) {
     // Notification todo
@@ -50,16 +40,16 @@ async function handleClear() {
 
 <template>
   <api-view-common-template
-    method="POST"
+    method="DELETE"
     :endpoint="endpoint"
     :response="response"
     @execute="handleExecute"
     @clear="handleClear"
   >
     <base-input
-      v-model="requestParams.body"
+      v-model="requestParams.refreshToken"
       class="my-4 w-full"
-      label="body"
+      label="Refresh Token"
       :multiline="true"
       :multiline-rows-height="8"
     />

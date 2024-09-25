@@ -1,28 +1,23 @@
 <script setup lang="ts">
+import { IconKey } from '@tabler/icons-vue'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
-import { useScheduleApi } from '~/stores/api/useScheduleApi'
-import type { ScheduleResult } from '~/types/apiResults'
+import { useUserApi } from '~/stores/api/useUserApi'
+import type { UserResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
-const bodyTemplate = {
-  id: '',
-  name: '',
-  isDraft: false,
-  studySemesterId: '',
-}
-
-const scheduleApi = useScheduleApi()
+const userApi = useUserApi()
 const apiViewParameters = useApiViewRequestParameters()
-const endpoint = 'api/schedules'
+const endpoint = '/api/users/:userId'
 
 interface RequestParameters {
-  body: string
+  userId: string
 }
 
 const paramsDefault = {
-  body: JSON.stringify(bodyTemplate, null, 2),
+  userId: '',
 }
 
+const response = ref<ApiResponse<UserResult> | null>(null)
 const requestParams = ref<RequestParameters>(
   apiViewParameters.getIfExistsOrDefault(endpoint, paramsDefault),
 )
@@ -31,16 +26,8 @@ watch(requestParams.value, () => {
   apiViewParameters.storeParam(endpoint, requestParams.value)
 })
 
-const response = ref<ApiResponse<ScheduleResult> | null>(null)
-
 async function handleExecute() {
-  try {
-    const schedule = JSON.parse(requestParams.value.body)
-    response.value = await scheduleApi.updateSchedule(schedule)
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await userApi.getUser(requestParams.value.userId)
 }
 
 async function handleClear() {
@@ -50,18 +37,17 @@ async function handleClear() {
 
 <template>
   <api-view-common-template
-    method="POST"
+    method="GET"
     :endpoint="endpoint"
     :response="response"
     @execute="handleExecute"
     @clear="handleClear"
   >
     <base-input
-      v-model="requestParams.body"
-      class="my-4 w-full"
-      label="body"
-      :multiline="true"
-      :multiline-rows-height="8"
+      v-model="requestParams.userId"
+      class="my-4 w-72"
+      label="Id"
+      :icon="IconKey"
     />
   </api-view-common-template>
 </template>

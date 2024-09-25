@@ -1,26 +1,21 @@
 <script setup lang="ts">
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
-import { useScheduleApi } from '~/stores/api/useScheduleApi'
-import type { ScheduleResult } from '~/types/apiResults'
+import { useUserApi } from '~/stores/api/useUserApi'
+import type { UserResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
-const bodyTemplate = {
-  id: '',
-  name: '',
-  isDraft: false,
-  studySemesterId: '',
-}
-
-const scheduleApi = useScheduleApi()
+const userApi = useUserApi()
 const apiViewParameters = useApiViewRequestParameters()
 const endpoint = 'api/schedules'
 
 interface RequestParameters {
-  body: string
+  email: string
+  password: string
 }
 
 const paramsDefault = {
-  body: JSON.stringify(bodyTemplate, null, 2),
+  email: '',
+  password: '',
 }
 
 const requestParams = ref<RequestParameters>(
@@ -31,12 +26,14 @@ watch(requestParams.value, () => {
   apiViewParameters.storeParam(endpoint, requestParams.value)
 })
 
-const response = ref<ApiResponse<ScheduleResult> | null>(null)
+const response = ref<ApiResponse<UserResult> | null>(null)
 
 async function handleExecute() {
   try {
-    const schedule = JSON.parse(requestParams.value.body)
-    response.value = await scheduleApi.updateSchedule(schedule)
+    response.value = await userApi.createUser(
+      requestParams.value.email,
+      requestParams.value.password,
+    )
   }
   catch (error) {
     // Notification todo
@@ -57,11 +54,15 @@ async function handleClear() {
     @clear="handleClear"
   >
     <base-input
-      v-model="requestParams.body"
+      v-model="requestParams.email"
       class="my-4 w-full"
-      label="body"
-      :multiline="true"
-      :multiline-rows-height="8"
+      label="Email"
+    />
+
+    <base-input
+      v-model="requestParams.password"
+      class="my-4 w-full"
+      label="Password"
     />
   </api-view-common-template>
 </template>

@@ -1,6 +1,6 @@
 import type { RoleResult } from './RoleResult'
-import type { LoginResult } from './LoginResult'
-import type { UserResult } from './UserResult'
+import type { LoginResult } from './tokens/LoginResult'
+import type { UserResult } from './users/UserResult'
 import type { TenantResult } from './TenantResult'
 import type { SubjectTypeResult } from './SubjectTypeResult'
 import type { StudyProgramResult } from './StudyProgramResponse'

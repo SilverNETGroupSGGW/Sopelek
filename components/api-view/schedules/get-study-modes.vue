@@ -4,15 +4,15 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 import type { StudyMode } from '~/types/apiResults/StudyMode'
 
 const scheduleApi = useScheduleApi()
-const studyModeResponse = ref<ApiResponse<StudyMode> | null>(null)
 const endpoint = 'schedules/study-mode'
+const response = ref<ApiResponse<StudyMode> | null>(null)
 
 async function handleExecute() {
-  studyModeResponse.value = await scheduleApi.getStudyModes()
+  response.value = await scheduleApi.getStudyModes()
 }
 
 async function handleClear() {
-  studyModeResponse.value = null
+  response.value = null
 }
 </script>
 
@@ -20,7 +20,7 @@ async function handleClear() {
   <api-view-common-template
     method="GET"
     :endpoint="endpoint"
-    :response="studyModeResponse"
+    :response="response"
     @execute="handleExecute"
     @clear="handleClear"
   />

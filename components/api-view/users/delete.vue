@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { IconKey } from '@tabler/icons-vue'
-import { useScheduleApi } from '~/stores/api/useScheduleApi'
+import { useUserApi } from '~/stores/api/useUserApi'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
-const scheduleApi = useScheduleApi()
-const endpoint = 'api/schedules'
+const userApi = useUserApi()
+const endpoint = 'api/users/:userId'
 const response = ref<ApiResponse<void> | null>(null)
-const scheduleId = ref<string>('')
+const userId = ref<string>('')
 
 async function handleExecute() {
-  response.value = await scheduleApi.deleteSchedule(scheduleId.value)
+  response.value = await userApi.deleteUser(userId.value)
 }
 
 async function handleClear() {
@@ -26,7 +26,7 @@ async function handleClear() {
     @clear="handleClear"
   >
     <base-input
-      v-model="scheduleId"
+      v-model="userId"
       class="my-4 w-72"
       label="Id"
       :icon="IconKey"

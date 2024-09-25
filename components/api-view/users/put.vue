@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
-import { useScheduleApi } from '~/stores/api/useScheduleApi'
-import type { ScheduleResult } from '~/types/apiResults'
+import { useUserApi } from '~/stores/api/useUserApi'
+import type { UserResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const bodyTemplate = {
   id: '',
-  name: '',
-  isDraft: false,
-  studySemesterId: '',
+  userName: '',
+  email: '',
+  language: '',
 }
 
-const scheduleApi = useScheduleApi()
+const userApi = useUserApi()
 const apiViewParameters = useApiViewRequestParameters()
-const endpoint = 'api/schedules'
+const endpoint = 'api/users'
 
 interface RequestParameters {
   body: string
@@ -31,12 +31,12 @@ watch(requestParams.value, () => {
   apiViewParameters.storeParam(endpoint, requestParams.value)
 })
 
-const response = ref<ApiResponse<ScheduleResult> | null>(null)
+const response = ref<ApiResponse<UserResult> | null>(null)
 
 async function handleExecute() {
   try {
-    const schedule = JSON.parse(requestParams.value.body)
-    response.value = await scheduleApi.updateSchedule(schedule)
+    const user = JSON.parse(requestParams.value.body)
+    response.value = await userApi.updateUser(user)
   }
   catch (error) {
     // Notification todo
@@ -50,7 +50,7 @@ async function handleClear() {
 
 <template>
   <api-view-common-template
-    method="POST"
+    method="PUT"
     :endpoint="endpoint"
     :response="response"
     @execute="handleExecute"

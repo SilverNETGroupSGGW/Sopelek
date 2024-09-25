@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useScheduleApi } from '~/stores/api/useScheduleApi'
-import type { ScheduleResult } from '~/types/apiResults'
+import { useUserApi } from '~/stores/api/useUserApi'
+import type { UserResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
-const scheduleApi = useScheduleApi()
-const endpoint = 'api/schedules'
-const response = ref<ApiResponse<ScheduleResult[]> | null>(null)
+const userApi = useUserApi()
+const endpoint = 'api/Users'
+const response = ref<ApiResponse<UserResult[]> | null>(null)
 
 async function handleExecute() {
-  response.value = await scheduleApi.getSchedules()
+  response.value = await userApi.getUsers()
 }
 
 async function handleClear() {
