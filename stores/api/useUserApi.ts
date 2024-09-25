@@ -34,7 +34,7 @@ export const useUserApi = defineStore('userApi', {
     },
     async changeTenant(userId: string, tenantId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      return await makeRequest(Method.POST, `users/${userId}/change-tenant`, { tenantId }, null, true)
+      return await makeRequest(Method.POST, `users/${userId}/change-tenant/${tenantId}`, null, null, true)
     },
   },
 })

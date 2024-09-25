@@ -26,6 +26,7 @@ const endpointsData: Endpoint[] = [
   { controller: 'UserController', endpoint: '[POST] api/users' },
   { controller: 'UserController', endpoint: '[PUT] api/users' },
   { controller: 'UserController', endpoint: '[DELETE] api/users/:userId' },
+  { controller: 'UserController', endpoint: '[POST] api/Users/:userId/change-tenant/:tenantId' },
 ]
 
 const selectedController = ref<string | null>('')
@@ -111,5 +112,6 @@ function handleControllerComboboxChange(value: string) {
     <api-view-users-post v-if="selectedEndpoint === '[POST] api/users'" class="my-9" />
     <api-view-users-put v-if="selectedEndpoint === '[PUT] api/users'" class="my-9" />
     <api-view-users-delete v-if="selectedEndpoint === '[DELETE] api/users/:userId'" class="my-9" />
+    <api-view-users-post-change-tenant v-if="selectedEndpoint === '[POST] api/Users/:userId/change-tenant/:tenantId'" class="my-9" />
   </div>
 </template>
