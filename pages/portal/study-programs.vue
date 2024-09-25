@@ -20,12 +20,10 @@ watchEffect(() => {
       <h1 class="text-2xl font-bold leading-9 text-gray-900">
         Plany studiów
       </h1>
-      <p class="text-base text-gray-700">
-        <ul class="list-inside list-disc">
-          <li>Plan studiów zawiera informacje o kierunku, trybie i stopniu studiów, roku i semestrze, w którym jest realizowany, oraz o dacie rozpoczęcia obowiązywania planu.</li>
-          <li>Pod plany studiów należy podpinać plany zajęć.</li>
-        </ul>
-      </p>
+      <ul class="list-inside list-disc text-base text-gray-700">
+        <li>Plan studiów zawiera informacje o kierunku, trybie i stopniu studiów, roku i semestrze, w którym jest realizowany, oraz o dacie rozpoczęcia obowiązywania planu.</li>
+        <li>Pod plany studiów należy podpinać plany zajęć.</li>
+      </ul>
     </div>
 
     <div class="flex gap-4">
