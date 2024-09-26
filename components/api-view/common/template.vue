@@ -15,13 +15,15 @@ const params = defineProps<{
 const apiViewSettings = useApiViewSettings()
 const apiViewRequestData = useApiViewRequestData()
 
+const storeKey = `${params.method} ${params.endpoint}`
+
 const isLoading = ref<boolean>(false)
 const unwrapRequest = ref<boolean>(apiViewSettings.unwrapRequest)
 const formatResponseData = ref<boolean>(apiViewSettings.formatResponseData)
 
 const response = computed<ApiResponse<any> | null | undefined>(() => {
-  if (apiViewRequestData.hasKey(params.endpoint)) {
-    return apiViewRequestData.getRequest(params.endpoint)
+  if (apiViewRequestData.hasKey(storeKey)) {
+    return apiViewRequestData.getRequest(storeKey)
   }
   else {
     return params.response
@@ -33,7 +35,7 @@ async function handleExecute() {
   await params.onExecute()
   isLoading.value = false
 
-  apiViewRequestData.storeRequest(params.endpoint, params.response!)
+  apiViewRequestData.storeRequest(storeKey, params.response!)
 }
 
 async function handleClear() {

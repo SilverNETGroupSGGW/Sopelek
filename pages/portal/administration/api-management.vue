@@ -5,6 +5,13 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Tenants
+  { controller: 'TenantController', endpoint: '[GET] api/tenants' },
+  { controller: 'TenantController', endpoint: '[GET] api/tenants/:tenantId' },
+  { controller: 'TenantController', endpoint: '[POST] api/tenants' },
+  { controller: 'TenantController', endpoint: '[PUT] api/tenants' },
+  { controller: 'TenantController', endpoint: '[DELETE] api/tenants/:tenantId' },
+
   // Tokens
   { controller: 'TokenController', endpoint: '[POST] api/login' },
   { controller: 'TokenController', endpoint: '[POST] api/tokens/refresh' },
@@ -97,6 +104,13 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Tenants -->
+    <api-view-tenants-get-all v-if="selectedEndpoint === '[GET] api/tenants'" class="my-9" />
+    <api-view-tenants-get v-if="selectedEndpoint === '[GET] api/tenants/:tenantId'" class="my-9" />
+    <api-view-tenants-post v-if="selectedEndpoint === '[POST] api/tenants'" class="my-9" />
+    <api-view-tenants-put v-if="selectedEndpoint === '[PUT] api/tenants'" class="my-9" />
+    <api-view-tenants-delete v-if="selectedEndpoint === '[DELETE] api/tenants/:tenantId'" class="my-9" />
 
     <!-- Tokens -->
     <api-view-tokens-login v-if="selectedEndpoint === '[POST] api/login'" class="my-9" />
