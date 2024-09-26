@@ -43,7 +43,6 @@ async function handleExecute() {
   }
   catch (error) {
     // Notification todo
-    console.log(error)
   }
 }
 
