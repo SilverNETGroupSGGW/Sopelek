@@ -5,6 +5,14 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // SubjectTypes
+  { controller: 'SubjectTypeController', endpoint: '[GET] api/subjectTypes' },
+  { controller: 'SubjectTypeController', endpoint: '[GET] api/subjectTypes/:subjectTypeId' },
+  { controller: 'SubjectTypeController', endpoint: '[GET] api/subjectTypes/byTenantId/:tenantId' },
+  { controller: 'SubjectTypeController', endpoint: '[POST] api/subjectTypes' },
+  { controller: 'SubjectTypeController', endpoint: '[PUT] api/subjectTypes' },
+  { controller: 'SubjectTypeController', endpoint: '[DELETE] api/subjectTypes/:subjectTypeId' },
+
   // Tenants
   { controller: 'TenantController', endpoint: '[GET] api/tenants' },
   { controller: 'TenantController', endpoint: '[GET] api/tenants/:tenantId' },
@@ -33,7 +41,7 @@ const endpointsData: Endpoint[] = [
   { controller: 'UserController', endpoint: '[POST] api/users' },
   { controller: 'UserController', endpoint: '[PUT] api/users' },
   { controller: 'UserController', endpoint: '[DELETE] api/users/:userId' },
-  { controller: 'UserController', endpoint: '[POST] api/Users/:userId/change-tenant/:tenantId' },
+  { controller: 'UserController', endpoint: '[POST] api/users/:userId/change-tenant/:tenantId' },
 
   // UserRoles
   { controller: 'UserRolesController', endpoint: '[GET] api/UsersRoles/:userId' },
@@ -104,6 +112,14 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- SubjectTypes -->
+    <api-view-subject-types-get-all v-if="selectedEndpoint === '[GET] api/subjectTypes'" class="my-9" />
+    <api-view-subject-types-get v-if="selectedEndpoint === '[GET] api/subjectTypes/:subjectTypeId'" class="my-9" />
+    <api-view-subject-types-get-all-by-tenant-id v-if="selectedEndpoint === '[GET] api/subjectTypes/byTenantId/:tenantId'" class="my-9" />
+    <api-view-subject-types-post v-if="selectedEndpoint === '[POST] api/subjectTypes'" class="my-9" />
+    <api-view-subject-types-put v-if="selectedEndpoint === '[PUT] api/subjectTypes'" class="my-9" />
+    <api-view-subject-types-delete v-if="selectedEndpoint === '[DELETE] api/subjectTypes/:subjectTypeId'" class="my-9" />
 
     <!-- Tenants -->
     <api-view-tenants-get-all v-if="selectedEndpoint === '[GET] api/tenants'" class="my-9" />

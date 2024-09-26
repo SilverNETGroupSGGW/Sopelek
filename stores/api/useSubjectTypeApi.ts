@@ -1,35 +1,34 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
 import type { SubjectTypeResult } from '~/types/apiResults'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 export const useSubjectTypeApi = defineStore('subjectTypeApi', {
-  state: () => ({
-  }),
+  state: () => ({}),
   actions: {
     async getSubjectTypes(): Promise<ApiResponse<SubjectTypeResult[]> | null> {
       const { makeRequest } = useApiRequest()
-      const subjectTypesResult = await makeRequest<SubjectTypeResult[]>(Method.GET, 'SubjectTypes')
-      return subjectTypesResult
+      return await makeRequest<SubjectTypeResult[]>(Method.GET, 'SubjectTypes', null, null, true)
     },
     async getSubjectType(subjectTypeId: string): Promise<ApiResponse<SubjectTypeResult> | null> {
       const { makeRequest } = useApiRequest()
-      const subjectTypeResult = await makeRequest<SubjectTypeResult>(Method.GET, `SubjectTypes/${subjectTypeId}`)
-      return subjectTypeResult
+      return await makeRequest<SubjectTypeResult>(Method.GET, `SubjectTypes/${subjectTypeId}`, null, null, true)
+    },
+    async getSubjectTypeByTenantId(tenantId: string): Promise<ApiResponse<SubjectTypeResult[]> | null> {
+      const { makeRequest } = useApiRequest()
+      return await makeRequest<SubjectTypeResult[]>(Method.GET, `SubjectTypes/byTenantId/${tenantId}`, null, null, true)
     },
     async createSubjectType(subjectType: SubjectTypeResult): Promise<ApiResponse<SubjectTypeResult> | null> {
       const { makeRequest } = useApiRequest()
-      const subjectTypeResult = await makeRequest<SubjectTypeResult>(Method.POST, 'SubjectTypes', subjectType)
-      return subjectTypeResult
+      return await makeRequest<SubjectTypeResult>(Method.POST, 'SubjectTypes', subjectType, null, true)
     },
     async updateSubjectType(subjectType: SubjectTypeResult): Promise<ApiResponse<SubjectTypeResult> | null> {
       const { makeRequest } = useApiRequest()
-      const subjectTypeResult = await makeRequest<SubjectTypeResult>(Method.PUT, 'SubjectTypes', subjectType)
-      return subjectTypeResult
+      return await makeRequest<SubjectTypeResult>(Method.PUT, 'SubjectTypes', subjectType, null, true)
     },
-    async deleteSubjectType(subjectTypeId: string): Promise<void> {
+    async deleteSubjectType(subjectTypeId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `SubjectTypes/${subjectTypeId}`)
+      return await makeRequest(Method.DELETE, `SubjectTypes/${subjectTypeId}`, null, null, true)
     },
   },
 })
