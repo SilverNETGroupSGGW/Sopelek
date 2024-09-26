@@ -5,6 +5,17 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Subjects
+  { controller: 'SubjectController', endpoint: '[GET] api/subjects' },
+  { controller: 'SubjectController', endpoint: '[GET] api/subjects/:subjectId' },
+  { controller: 'SubjectController', endpoint: '[GET] api/subjects/schedule/:scheduleId' },
+  { controller: 'SubjectController', endpoint: '[GET] api/subjects/:subjectId/extended' },
+  { controller: 'SubjectController', endpoint: '[GET] api/subjects/schedule/:scheduleId/extended' },
+  { controller: 'SubjectController', endpoint: '[POST] api/subjects' },
+  { controller: 'SubjectController', endpoint: '[PUT] api/subjects' },
+  { controller: 'SubjectController', endpoint: '[DELETE] api/subjects/:subjectId' },
+  { controller: 'SubjectController', endpoint: '[POST] api/subjects/check-conflict' },
+
   // SubjectTypes
   { controller: 'SubjectTypeController', endpoint: '[GET] api/subjectTypes' },
   { controller: 'SubjectTypeController', endpoint: '[GET] api/subjectTypes/:subjectTypeId' },
@@ -89,7 +100,7 @@ function handleControllerComboboxChange(value: string) {
           Controller:
         </h1>
 
-        <div class="my-1 w-72">
+        <div class="my-1 w-96">
           <base-combobox
             :options="controllers"
             :value="selectedController"
@@ -103,7 +114,7 @@ function handleControllerComboboxChange(value: string) {
           Endpoint:
         </h1>
 
-        <div class="my-1 w-72">
+        <div class="my-1 w-96">
           <base-combobox
             :options="endpoints"
             :value="selectedEndpoint"
@@ -112,6 +123,17 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Subjects -->
+    <api-view-subjects-get-all v-if="selectedEndpoint === '[GET] api/subjects'" class="my-9" />
+    <api-view-subjects-get v-if="selectedEndpoint === '[GET] api/subjects/:subjectId'" class="my-9" />
+    <api-view-subjects-get-by-schedule v-if="selectedEndpoint === '[GET] api/subjects/schedule/:scheduleId'" class="my-9" />
+    <api-view-subjects-get-extended v-if="selectedEndpoint === '[GET] api/subjects/:subjectId/extended'" class="my-9" />
+    <api-view-subjects-get-extended-by-schedule v-if="selectedEndpoint === '[GET] api/subjects/schedule/:scheduleId/extended'" class="my-9" />
+    <api-view-subjects-post v-if="selectedEndpoint === '[POST] api/subjects'" class="my-9" />
+    <api-view-subjects-put v-if="selectedEndpoint === '[PUT] api/subjects'" class="my-9" />
+    <api-view-subjects-delete v-if="selectedEndpoint === '[DELETE] api/subjects/:subjectId'" class="my-9" />
+    <api-view-subjects-post-check-conflict v-if="selectedEndpoint === '[POST] api/subjects/check-conflict'" class="my-9" />
 
     <!-- SubjectTypes -->
     <api-view-subject-types-get-all v-if="selectedEndpoint === '[GET] api/subjectTypes'" class="my-9" />
