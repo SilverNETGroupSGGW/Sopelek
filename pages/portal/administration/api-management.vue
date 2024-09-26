@@ -27,6 +27,13 @@ const endpointsData: Endpoint[] = [
   { controller: 'UserController', endpoint: '[PUT] api/users' },
   { controller: 'UserController', endpoint: '[DELETE] api/users/:userId' },
   { controller: 'UserController', endpoint: '[POST] api/Users/:userId/change-tenant/:tenantId' },
+
+  // UserRoles
+  { controller: 'UserRolesController', endpoint: '[GET] api/UsersRoles/:userId' },
+  { controller: 'UserRolesController', endpoint: '[POST] api/UsersRoles/assign' },
+  { controller: 'UserRolesController', endpoint: '[POST] api/UsersRoles/assign-multiple' },
+  { controller: 'UserRolesController', endpoint: '[DELETE] api/UsersRoles/remove' },
+  { controller: 'UserRolesController', endpoint: '[DELETE] api/UsersRoles/remove-multiple' },
 ]
 
 const selectedController = ref<string | null>('')
@@ -112,6 +119,13 @@ function handleControllerComboboxChange(value: string) {
     <api-view-users-post v-if="selectedEndpoint === '[POST] api/users'" class="my-9" />
     <api-view-users-put v-if="selectedEndpoint === '[PUT] api/users'" class="my-9" />
     <api-view-users-delete v-if="selectedEndpoint === '[DELETE] api/users/:userId'" class="my-9" />
-    <api-view-users-post-change-tenant v-if="selectedEndpoint === '[POST] api/Users/:userId/change-tenant/:tenantId'" class="my-9" />
+    <api-view-users-post-change-tenant v-if="selectedEndpoint === '[POST] api/users/:userId/change-tenant/:tenantId'" class="my-9" />
+
+    <!-- UserRoles -->
+    <api-view-user-roles-get-user-roles v-if="selectedEndpoint === '[GET] api/UsersRoles/:userId'" class="my-9" />
+    <api-view-user-roles-post-assign v-if="selectedEndpoint === '[POST] api/UsersRoles/assign'" class="my-9" />
+    <api-view-user-roles-post-assign-multiple v-if="selectedEndpoint === '[POST] api/UsersRoles/assign-multiple'" class="my-9" />
+    <api-view-user-roles-delete-remove v-if="selectedEndpoint === '[DELETE] api/UsersRoles/remove'" class="my-9" />
+    <api-view-user-roles-delete-remove-multiple v-if="selectedEndpoint === '[DELETE] api/UsersRoles/remove-multiple'" class="my-9" />
   </div>
 </template>

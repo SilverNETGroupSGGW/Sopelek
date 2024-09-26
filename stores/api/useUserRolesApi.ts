@@ -1,35 +1,30 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
 import type { RoleResult } from '~/types/apiResults'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 export const useUserRolesApi = defineStore('userRolesApi', {
-  state: () => ({
-    getUserRolesResult: null as ApiResponse<RoleResult[]> | null,
-    roleResult: null as RoleResult | null,
-  }),
+  state: () => ({ }),
   actions: {
-    async getUserRolesAsync(userId: string): Promise<RoleResult | null> {
+    async getUserRolesAsync(userId: string): Promise<ApiResponse<RoleResult[]>> {
       const { makeRequest } = useApiRequest()
-      const roleResult = await makeRequest<RoleResult[]>(Method.GET, `UsersRoles/${userId}`)
-      this.getUserRolesResult = roleResult
-      return this.roleResult
+      return await makeRequest<RoleResult[]>(Method.GET, `UsersRoles/${userId}`, null, null, true)
     },
-    async assignRoleToUserAsync(role: string, userId: string): Promise<void> {
+    async assignRoleToUserAsync(role: string, userId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.POST, `UsersRoles/assign`, { role, userId })
+      return await makeRequest(Method.POST, `UsersRoles/assign`, { role, userId }, null, true)
     },
-    async assignRolesToUserAsync(roles: string[], userId: string): Promise<void> {
+    async assignRolesToUserAsync(roles: string[], userId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.POST, `UsersRoles/assign-multiple`, { roles, userId })
+      return await makeRequest(Method.POST, `UsersRoles/assign-multiple`, { roles, userId }, null, true)
     },
-    async removeRoleFromUserAsync(role: string, userId: string): Promise<void> {
+    async removeRoleFromUserAsync(role: string, userId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `UsersRoles/remove`, { role, userId })
+      return await makeRequest(Method.DELETE, `UsersRoles/remove`, { role, userId }, null, true)
     },
-    async removeRolesFromUserAsync(roles: string[], userId: string): Promise<void> {
+    async removeRolesFromUserAsync(roles: string[], userId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `UsersRoles/remove-multiple`, { roles, userId })
+      return await makeRequest(Method.DELETE, `UsersRoles/remove-multiple`, { roles, userId }, null, true)
     },
   },
 })
