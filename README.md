@@ -23,7 +23,3 @@ A college project that allows planners to create lesson plans for students in an
 
 Props to need to be configured:
 - API_URL - url to api, for example 'https://boleroapi.azurewebsites.net/api'
-
-## License
-
-GNU GPLv3
