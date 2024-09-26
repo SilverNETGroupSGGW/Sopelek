@@ -1,35 +1,34 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
 import type { StudyProgramResult } from '~/types/apiResults'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 export const useStudyProgramApi = defineStore('studyProgramApi', {
-  state: () => ({
-  }),
+  state: () => ({ }),
   actions: {
-    async getStudyPrograms(): Promise<ApiResponse<StudyProgramResult[]> | null> {
+    async getStudyPrograms(): Promise<ApiResponse<StudyProgramResult[]>> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<StudyProgramResult[]>(Method.GET, 'StudyProgram/all')
-      return result
+      return await makeRequest<StudyProgramResult[]>(Method.GET, 'StudyProgram/all', null, null, true)
     },
-    async getStudyProgram(studyProgramId: string): Promise<ApiResponse<StudyProgramResult> | null> {
+    async getStudyProgram(studyProgramId: string): Promise<ApiResponse<StudyProgramResult>> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<StudyProgramResult>(Method.GET, `StudyProgram/${studyProgramId}`)
-      return result
+      return await makeRequest<StudyProgramResult>(Method.GET, `StudyProgram/${studyProgramId}`, null, null, true)
     },
-    async createStudyProgram(studyProgram: StudyProgramResult): Promise<ApiResponse<StudyProgramResult> | null> {
+    async getStudyProgramsForTenant(tenantId: string): Promise<ApiResponse<StudyProgramResult[]>> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<StudyProgramResult>(Method.POST, 'StudyProgram', studyProgram)
-      return result
+      return await makeRequest<StudyProgramResult[]>(Method.GET, `/api/StudyProgram/${tenantId}/all`, null, null, true)
     },
-    async updateStudyProgram(studyProgram: StudyProgramResult): Promise<ApiResponse<StudyProgramResult> | null> {
+    async createStudyProgram(studyProgram: StudyProgramResult): Promise<ApiResponse<StudyProgramResult>> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<StudyProgramResult>(Method.PUT, 'StudyProgram', studyProgram)
-      return result
+      return await makeRequest<StudyProgramResult>(Method.POST, 'StudyProgram', studyProgram, null, true)
     },
-    async deleteStudyProgram(studyProgramId: string): Promise<void> {
+    async updateStudyProgram(studyProgram: StudyProgramResult): Promise<ApiResponse<StudyProgramResult>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `StudyProgram/${studyProgramId}`)
+      return await makeRequest<StudyProgramResult>(Method.PUT, 'StudyProgram', studyProgram, null, true)
+    },
+    async deleteStudyProgram(studyProgramId: string): Promise<ApiResponse<void>> {
+      const { makeRequest } = useApiRequest()
+      return await makeRequest(Method.DELETE, `StudyProgram/${studyProgramId}`, null, null, true)
     },
   },
 })
