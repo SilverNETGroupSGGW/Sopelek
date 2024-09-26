@@ -1,35 +1,30 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
-import type { SubjectTypeResult } from '~/types/apiResults'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
+import type { StudySemesterResult } from '~/types/apiResults/studySemester/StudySemesterResult'
 
 export const useStudySemesterApi = defineStore('studySemesterApi', {
-  state: () => ({
-  }),
+  state: () => ({}),
   actions: {
-    async getStudySemesters(studyProgramId: string): Promise<ApiResponse<SubjectTypeResult[]> | null> {
+    async getStudySemesters(studyProgramId: string): Promise<ApiResponse<StudySemesterResult[]>> {
       const { makeRequest } = useApiRequest()
-      const studySemestersResult = await makeRequest<SubjectTypeResult[]>(Method.GET, `StudySemesters/${studyProgramId}/all`)
-      return studySemestersResult
+      return await makeRequest<StudySemesterResult[]>(Method.GET, `StudySemesters/${studyProgramId}/all`, null, null, true)
     },
-    async getStudySemester(studySemesterId: string): Promise<ApiResponse<SubjectTypeResult> | null> {
+    async getStudySemester(studySemesterId: string): Promise<ApiResponse<StudySemesterResult>> {
       const { makeRequest } = useApiRequest()
-      const studySemesterResult = await makeRequest<SubjectTypeResult>(Method.GET, `StudySemesters/${studySemesterId}`)
-      return studySemesterResult
+      return await makeRequest<StudySemesterResult>(Method.GET, `StudySemesters/${studySemesterId}`, null, null, true)
     },
-    async createStudySemester(studySemester: SubjectTypeResult): Promise<ApiResponse<SubjectTypeResult> | null> {
+    async createStudySemester(studySemester: StudySemesterResult): Promise<ApiResponse<StudySemesterResult>> {
       const { makeRequest } = useApiRequest()
-      const studySemesterResult = await makeRequest<SubjectTypeResult>(Method.POST, 'StudySemesters', studySemester)
-      return studySemesterResult
+      return await makeRequest<StudySemesterResult>(Method.POST, 'StudySemesters', studySemester, null, true)
     },
-    async updateStudySemester(studySemester: SubjectTypeResult): Promise<ApiResponse<SubjectTypeResult> | null> {
+    async updateStudySemester(studySemester: StudySemesterResult): Promise<ApiResponse<StudySemesterResult>> {
       const { makeRequest } = useApiRequest()
-      const studySemesterResult = await makeRequest<SubjectTypeResult>(Method.PUT, 'StudySemesters', studySemester)
-      return studySemesterResult
+      return await makeRequest<StudySemesterResult>(Method.PUT, 'StudySemesters', studySemester, null, true)
     },
-    async deleteStudySemester(studySemesterId: string): Promise<void> {
+    async deleteStudySemester(studySemesterId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `StudySemesters/${studySemesterId}`)
+      return await makeRequest(Method.DELETE, `StudySemesters/${studySemesterId}`, null, null, true)
     },
   },
 })

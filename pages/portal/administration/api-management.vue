@@ -5,6 +5,13 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // StudySemesters
+  { controller: 'StudySemesterController', endpoint: '[GET] api/StudySemesters/:studyProramId/all' },
+  { controller: 'StudySemesterController', endpoint: '[GET] api/studySemesters/:id' },
+  { controller: 'StudySemesterController', endpoint: '[POST] api/studySemesters' },
+  { controller: 'StudySemesterController', endpoint: '[PUT] api/studySemesters' },
+  { controller: 'StudySemesterController', endpoint: '[DELETE] api/studySemesters/:id' },
+
   // Subjects
   { controller: 'SubjectController', endpoint: '[GET] api/subjects' },
   { controller: 'SubjectController', endpoint: '[GET] api/subjects/:subjectId' },
@@ -123,6 +130,13 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- StudySemester -->
+    <api-view-study-semesters-get-all v-if="selectedEndpoint === '[GET] api/StudySemesters/:studyProramId/all'" class="my-9" />
+    <api-view-study-semesters-get v-if="selectedEndpoint === '[GET] api/studySemesters/:id'" class="my-9" />
+    <api-view-study-semesters-post v-if="selectedEndpoint === '[POST] api/studySemesters'" class="my-9" />
+    <api-view-study-semesters-put v-if="selectedEndpoint === '[PUT] api/studySemesters'" class="my-9" />
+    <api-view-study-semesters-delete v-if="selectedEndpoint === '[DELETE] api/studySemesters/:id'" class="my-9" />
 
     <!-- Subjects -->
     <api-view-subjects-get-all v-if="selectedEndpoint === '[GET] api/subjects'" class="my-9" />
