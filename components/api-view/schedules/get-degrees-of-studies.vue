@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScheduleApi } from '~/stores/api/useScheduleApi'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
-import type { DegreesOfStudies } from '~/types/apiResults/DegreesOfStudies'
+import type { DegreesOfStudies } from '~/types/apiResults/schedule/DegreesOfStudies'
 
 const scheduleApi = useScheduleApi()
 const endpoint = 'schedules/degrees-of-studies'
