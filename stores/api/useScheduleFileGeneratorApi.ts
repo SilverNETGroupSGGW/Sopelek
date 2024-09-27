@@ -1,15 +1,13 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 export const useScheduleFileGeneratorApi = defineStore('scheduleFileGeneratorApi', {
-  state: () => ({
-  }),
+  state: () => ({ }),
   actions: {
     async generateScheduleFile(scheduleId: string): Promise<ApiResponse<Blob> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<Blob>(Method.GET, `ScheduleGenerator/generate/${scheduleId}`)
-      return result
+      return await makeRequest<Blob>(Method.POST, `ScheduleGenerator/generate/${scheduleId}`, null, null, true, false)
     },
   },
 })

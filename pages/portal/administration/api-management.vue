@@ -5,6 +5,9 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // ScheduleGenerator
+  { controller: 'ScheduleGeneratorController', endpoint: '[POST] api/ScheduleGenerator/generate/:scheduleId' },
+
   // StudyPrograms
   { controller: 'StudyProgramController', endpoint: '[GET] api/StudyProgram/all' },
   { controller: 'StudyProgramController', endpoint: '[GET] api/StudyProgram/:studyProramId' },
@@ -138,6 +141,9 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- ScheduleGenerator -->
+    <api-view-schedule-generator-post v-if="selectedEndpoint === '[POST] api/ScheduleGenerator/generate/:scheduleId'" class="my-9" />
 
     <!-- StudyPrograms -->
     <api-view-study-programs-get-all v-if="selectedEndpoint === '[GET] api/StudyProgram/all'" class="my-9" />
