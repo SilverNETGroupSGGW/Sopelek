@@ -5,6 +5,9 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Roles
+  { controller: 'RolesController', endpoint: '[GET] api/Roles/:userId' },
+
   // ScheduleGenerator
   { controller: 'ScheduleGeneratorController', endpoint: '[POST] api/ScheduleGenerator/generate/:scheduleId' },
 
@@ -141,6 +144,9 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Roles -->
+    <api-view-roles-get v-if="selectedEndpoint === '[GET] api/Roles/:userId'" class="my-9" />
 
     <!-- ScheduleGenerator -->
     <api-view-schedule-generator-post v-if="selectedEndpoint === '[POST] api/ScheduleGenerator/generate/:scheduleId'" class="my-9" />
