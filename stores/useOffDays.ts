@@ -30,8 +30,6 @@ export const useOffDays = defineStore('offDays', {
     async create(offDay: OffDay) {
       const runtimeConfig = useRuntimeConfig()
 
-      console.log(offDay)
-
       const data = await $fetch<BaseResponse<OffDay>>('offDay', {
         baseURL: runtimeConfig.public.baseURL,
         method: 'POST',

@@ -5,6 +5,13 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // OffDays
+  { controller: 'OffDaysController', endpoint: '[GET] api/OffDay' },
+  { controller: 'OffDaysController', endpoint: '[GET] api/OffDay/:offDayId' },
+  { controller: 'OffDaysController', endpoint: '[POST] api/OffDay' },
+  { controller: 'OffDaysController', endpoint: '[PUT] api/OffDay' },
+  { controller: 'OffDaysController', endpoint: '[DELETE] api/OffDay/:offDayId' },
+
   // Organizations
   { controller: 'OrganizationsController', endpoint: '[GET] api/Organizations' },
   { controller: 'OrganizationsController', endpoint: '[GET] api/Organizations/:organizationId' },
@@ -151,6 +158,13 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- OffDays -->
+    <api-view-off-days-get-all v-if="selectedEndpoint === '[GET] api/OffDay'" class="my-9" />
+    <api-view-off-days-get v-if="selectedEndpoint === '[GET] api/OffDay/:offDayId'" class="my-9" />
+    <api-view-off-days-post v-if="selectedEndpoint === '[POST] api/OffDay'" class="my-9" />
+    <api-view-off-days-put v-if="selectedEndpoint === '[PUT] api/OffDay'" class="my-9" />
+    <api-view-off-days-delete v-if="selectedEndpoint === '[DELETE] api/OffDay/:offDayId'" class="my-9" />
 
     <!-- Organizations -->
     <api-view-organizations-get-all v-if="selectedEndpoint === '[GET] api/Organizations'" class="my-9" />

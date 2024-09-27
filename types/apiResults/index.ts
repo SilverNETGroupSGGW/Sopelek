@@ -3,6 +3,7 @@ import type { ClassroomTypeResult } from './ClassroomTypeResult'
 import type { GroupResult } from './GroupResult'
 import type { LecturerResult } from './LecturerResult'
 import type { LessonResult } from './LessonResult'
+import type { OffDayResult } from './OffDayResult'
 import type { OrganizationResult } from './OrganizationResult'
 import type { RoleResult } from './RoleResult'
 import type { ScheduleResult } from './schedule/ScheduleResult'
@@ -21,6 +22,7 @@ export type {
   LecturerResult,
   LessonResult,
   LoginResult,
+  OffDayResult,
   OrganizationResult,
   RoleResult,
   ScheduleResult,
