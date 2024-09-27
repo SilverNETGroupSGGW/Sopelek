@@ -5,6 +5,13 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Organizations
+  { controller: 'OrganizationsController', endpoint: '[GET] api/Organizations' },
+  { controller: 'OrganizationsController', endpoint: '[GET] api/Organizations/:organizationId' },
+  { controller: 'OrganizationsController', endpoint: '[POST] api/Organizations' },
+  { controller: 'OrganizationsController', endpoint: '[PUT] api/Organizations' },
+  { controller: 'OrganizationsController', endpoint: '[DELETE] api/Organizations/:organizationId' },
+
   // Roles
   { controller: 'RolesController', endpoint: '[GET] api/Roles/:userId' },
 
@@ -144,6 +151,13 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Organizations -->
+    <api-view-organizations-get-all v-if="selectedEndpoint === '[GET] api/Organizations'" class="my-9" />
+    <api-view-organizations-get v-if="selectedEndpoint === '[GET] api/Organizations/:organizationId'" class="my-9" />
+    <api-view-organizations-post v-if="selectedEndpoint === '[POST] api/Organizations'" class="my-9" />
+    <api-view-organizations-put v-if="selectedEndpoint === '[PUT] api/Organizations'" class="my-9" />
+    <api-view-organizations-delete v-if="selectedEndpoint === '[DELETE] api/Organizations/:organizationId'" class="my-9" />
 
     <!-- Roles -->
     <api-view-roles-get v-if="selectedEndpoint === '[GET] api/Roles/:userId'" class="my-9" />
