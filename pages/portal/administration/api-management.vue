@@ -5,6 +5,9 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // LessonSequence
+  { controller: 'LessonDateTimeSequenceGenerationController', endpoint: '[GET] api/LessonsDateTimeSequenceGeneration/:startDateTime/:numberOfDates' },
+
   // OffDays
   { controller: 'OffDaysController', endpoint: '[GET] api/OffDay' },
   { controller: 'OffDaysController', endpoint: '[GET] api/OffDay/:offDayId' },
@@ -158,6 +161,9 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- LessonSequence -->
+    <api-view-lesson-sequence-get v-if="selectedEndpoint === '[GET] api/LessonsDateTimeSequenceGeneration/:startDateTime/:numberOfDates'" class="my-9" />
 
     <!-- OffDays -->
     <api-view-off-days-get-all v-if="selectedEndpoint === '[GET] api/OffDay'" class="my-9" />
