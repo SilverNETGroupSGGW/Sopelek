@@ -5,6 +5,17 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Lessons
+  { controller: 'LessonController', endpoint: '[GET] api/Lessons/:lessonId' },
+  { controller: 'LessonController', endpoint: '[GET] api/Lessons/subject/:subjectId' },
+  { controller: 'LessonController', endpoint: '[GET] api/Lessons/schedule/:scheduleId' },
+  { controller: 'LessonController', endpoint: '[GET] api/Lessons/:lessonId/Occurrences' },
+  { controller: 'LessonController', endpoint: '[POST] api/Lessons' },
+  { controller: 'LessonController', endpoint: '[PUT] api/Lessons' },
+  { controller: 'LessonController', endpoint: '[DELETE] api/Lessons/:lessonId' },
+  { controller: 'LessonController', endpoint: '[POST] api/Lessons/iCalendar' },
+  { controller: 'LessonController', endpoint: '[PUT] api/Lessons/iCalendar' },
+
   // LessonSequence
   { controller: 'LessonDateTimeSequenceGenerationController', endpoint: '[GET] api/LessonsDateTimeSequenceGeneration/:startDateTime/:numberOfDates' },
 
@@ -161,6 +172,17 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Lessons -->
+    <api-view-lessons-get v-if="selectedEndpoint === '[GET] api/Lessons/:lessonId'" class="my-9" />
+    <api-view-lessons-get-all-by-subject v-if="selectedEndpoint === '[GET] api/Lessons/subject/:subjectId'" class="my-9" />
+    <api-view-lessons-get-all-by-schedule v-if="selectedEndpoint === '[GET] api/Lessons/schedule/:scheduleId'" class="my-9" />
+    <api-view-lessons-get-occurences v-if="selectedEndpoint === '[GET] api/Lessons/:lessonId/Occurrences'" class="my-9" />
+    <api-view-lessons-post v-if="selectedEndpoint === '[POST] api/Lessons'" class="my-9" />
+    <api-view-lessons-put v-if="selectedEndpoint === '[PUT] api/Lessons'" class="my-9" />
+    <api-view-lessons-delete v-if="selectedEndpoint === '[DELETE] api/Lessons/:lessonId'" class="my-9" />
+    <api-view-lessons-post-icalendar v-if="selectedEndpoint === '[POST] api/Lessons/iCalendar'" class="my-9" />
+    <api-view-lessons-put-icalendar v-if="selectedEndpoint === '[PUT] api/Lessons/iCalendar'" class="my-9" />
 
     <!-- LessonSequence -->
     <api-view-lesson-sequence-get v-if="selectedEndpoint === '[GET] api/LessonsDateTimeSequenceGeneration/:startDateTime/:numberOfDates'" class="my-9" />

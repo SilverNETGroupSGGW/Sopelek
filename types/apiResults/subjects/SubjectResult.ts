@@ -1,4 +1,4 @@
-import type { LessonResult } from '../LessonResult'
+import type { LessonResult } from '../lesson/LessonResult'
 
 export interface SubjectResult {
   id: string
