@@ -5,6 +5,9 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // ExampleTenantResult
+  { controller: 'ExampleTenantFactoryController', endpoint: '[POST] api/ExampleTenantFactory' },
+
   // Groups
   { controller: 'GroupController', endpoint: '[GET] api/Groups/:groupId' },
   { controller: 'GroupController', endpoint: '[GET] api/Groups' },
@@ -191,6 +194,9 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- ExampleTenantResult -->
+    <api-view-example-tenant-factory-post v-if="selectedEndpoint === '[POST] api/ExampleTenantFactory'" class="my-9" />
 
     <!-- Groups -->
     <api-view-groups-get v-if="selectedEndpoint === '[GET] api/Groups/:groupId'" class="my-9" />
