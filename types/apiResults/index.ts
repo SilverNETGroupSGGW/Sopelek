@@ -1,4 +1,4 @@
-import type { ClassroomResult } from './ClassroomResult'
+import type { ClassroomResult } from './classrooms/ClassroomResult'
 import type { ClassroomTypeResult } from './ClassroomTypeResult'
 import type { GroupResult } from './groups/GroupResult'
 import type { LecturerResult } from './lecturers/LecturerResult'

@@ -1,24 +1,32 @@
 <script setup lang="ts">
-import { IconKey } from '@tabler/icons-vue'
-import { useGroupApi } from '~/stores/api/useGroupApi'
+import { useClassroomApi } from '~/stores/api/useClassroomApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
+import type { ClassroomResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
-import type { GroupConflictResult } from '~/types/apiResults/groups/GroupConflictResult'
 
-const groupApi = useGroupApi()
+const classroomApi = useClassroomApi()
 const apiViewParameters = useApiViewRequestParameters()
-const endpoint = 'api/Groups/:groupId/dependencies'
-const method = 'GET'
+const endpoint = 'api/Classrooms'
+const method = 'PUT'
+
+const bodyTemplate = {
+  id: '',
+  name: '',
+  floor: '',
+  building: '',
+  capacity: 0,
+  classroomTypeId: '',
+}
 
 interface RequestParameters {
-  groupId: string
+  body: string
 }
 
 const paramsDefault = {
-  groupId: '',
+  body: JSON.stringify(bodyTemplate, null, 2),
 }
 
-const response = ref<ApiResponse<GroupConflictResult> | null>(null)
+const response = ref<ApiResponse<ClassroomResult> | null>(null)
 const requestParams = ref<RequestParameters>(
   apiViewParameters.getIfExistsOrDefault(`${method} ${endpoint}`, paramsDefault),
 )
@@ -28,7 +36,13 @@ watch(requestParams.value, () => {
 })
 
 async function handleExecute() {
-  response.value = await groupApi.getGroupDependencies(requestParams.value.groupId)
+  try {
+    const classroom: ClassroomResult = JSON.parse(requestParams.value.body)
+    response.value = await classroomApi.updateClassroom(classroom)
+  }
+  catch (error) {
+    // Notification todo
+  }
 }
 
 async function handleClear() {
@@ -45,10 +59,11 @@ async function handleClear() {
     @clear="handleClear"
   >
     <base-input
-      v-model="requestParams.groupId"
-      class="my-4 w-72"
-      label="Id"
-      :icon="IconKey"
+      v-model="requestParams.body"
+      class="my-4 w-full"
+      label="Body"
+      :multiline="true"
+      :multiline-rows-height="10"
     />
   </api-view-common-template>
 </template>

@@ -5,6 +5,14 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Classrooms
+  { controller: 'ClassroomsController', endpoint: '[GET] api/Classrooms' },
+  { controller: 'ClassroomsController', endpoint: '[GET] api/Classrooms/:classroomId' },
+  { controller: 'ClassroomsController', endpoint: '[GET] api/Classrooms/:classroomId/dependencies' },
+  { controller: 'ClassroomsController', endpoint: '[POST] api/Classrooms' },
+  { controller: 'ClassroomsController', endpoint: '[PUT] api/Classrooms' },
+  { controller: 'ClassroomsController', endpoint: '[DELETE] api/Classrooms/:classroomId' },
+
   // ClassroomTypes
   { controller: 'ClassroomTypesController', endpoint: '[GET] api/ClassroomTypes' },
   { controller: 'ClassroomTypesController', endpoint: '[GET] api/ClassroomTypes/:id' },
@@ -201,6 +209,14 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Classrooms -->
+    <api-view-classrooms-get-all v-if="selectedEndpoint === '[GET] api/Classrooms'" class="my-9" />
+    <api-view-classrooms-get v-if="selectedEndpoint === '[GET] api/Classrooms/:classroomId'" class="my-9" />
+    <api-view-classrooms-get-dependencies v-if="selectedEndpoint === '[GET] api/Classrooms/:classroomId/dependencies'" class="my-9" />
+    <api-view-classrooms-post v-if="selectedEndpoint === '[POST] api/Classrooms'" class="my-9" />
+    <api-view-classrooms-put v-if="selectedEndpoint === '[PUT] api/Classrooms'" class="my-9" />
+    <api-view-classrooms-delete v-if="selectedEndpoint === '[DELETE] api/Classrooms/:classroomId'" class="my-9" />
 
     <!-- ClassroomTypes -->
     <api-view-classroom-types-get-all v-if="selectedEndpoint === '[GET] api/ClassroomTypes'" class="my-9" />
