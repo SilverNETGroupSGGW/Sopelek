@@ -7,11 +7,11 @@ import type { LessonOccurenceResult } from '~/types/apiResults/lesson/LessonOccu
 export const useLessonApi = defineStore('lessonApi', {
   state: () => ({ }),
   actions: {
-    getLessonsForSchedule(scheduleId: string): Promise<ApiResponse<LessonResult[]>> {
+    async getLessonsForSchedule(scheduleId: string): Promise<ApiResponse<LessonResult[]>> {
       const { makeRequest } = useApiRequest()
       return makeRequest<LessonResult[]>(Method.GET, `Lessons/schedule/${scheduleId}`, null, null, true)
     },
-    getLessonsForSubject(subjectId: string): Promise<ApiResponse<LessonResult[]>> {
+    async getLessonsForSubject(subjectId: string): Promise<ApiResponse<LessonResult[]>> {
       const { makeRequest } = useApiRequest()
       return makeRequest<LessonResult[]>(Method.GET, `Lessons/subject/${subjectId}`, null, null, true)
     },

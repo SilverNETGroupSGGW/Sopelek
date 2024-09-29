@@ -5,6 +5,16 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Lecturers
+  { controller: 'LecturerController', endpoint: '[GET] api/Lecturers/:lecturerId' },
+  { controller: 'LecturerController', endpoint: '[GET] api/Lecturers' },
+  { controller: 'LecturerController', endpoint: '[GET] api/Lecturers/academic-degrees' },
+  { controller: 'LecturerController', endpoint: '[GET] api/Lecturers/:lecturerId/schedule/full' },
+  { controller: 'LecturerController', endpoint: '[GET] api/Lecturers/:lecturerId/dependencies' },
+  { controller: 'LecturerController', endpoint: '[POST] api/Lecturers' },
+  { controller: 'LecturerController', endpoint: '[PUT] api/Lecturers' },
+  { controller: 'LecturerController', endpoint: '[DELETE] api/Lecturers/:lecturerId' },
+
   // Lessons
   { controller: 'LessonController', endpoint: '[GET] api/Lessons/:lessonId' },
   { controller: 'LessonController', endpoint: '[GET] api/Lessons/subject/:subjectId' },
@@ -172,6 +182,16 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Lecturers -->
+    <api-view-lecturers-get v-if="selectedEndpoint === '[GET] api/Lecturers/:lecturerId'" class="my-9" />
+    <api-view-lecturers-get-all v-if="selectedEndpoint === '[GET] api/Lecturers'" class="my-9" />
+    <api-view-lecturers-get-academic-degrees v-if="selectedEndpoint === '[GET] api/Lecturers/academic-degrees'" class="my-9" />
+    <api-view-lecturers-get-schedule-full v-if="selectedEndpoint === '[GET] api/Lecturers/:lecturerId/schedule/full'" class="my-9" />
+    <api-view-lecturers-get-dependencies v-if="selectedEndpoint === '[GET] api/Lecturers/:lecturerId/dependencies'" class="my-9" />
+    <api-view-lecturers-post v-if="selectedEndpoint === '[POST] api/Lecturers'" class="my-9" />
+    <api-view-lecturers-put v-if="selectedEndpoint === '[PUT] api/Lecturers'" class="my-9" />
+    <api-view-lecturers-delete v-if="selectedEndpoint === '[DELETE] api/Lecturers/:lecturerId'" class="my-9" />
 
     <!-- Lessons -->
     <api-view-lessons-get v-if="selectedEndpoint === '[GET] api/Lessons/:lessonId'" class="my-9" />
