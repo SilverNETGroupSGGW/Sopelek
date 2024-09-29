@@ -5,6 +5,13 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // ClassroomTypes
+  { controller: 'ClassroomTypesController', endpoint: '[GET] api/ClassroomTypes' },
+  { controller: 'ClassroomTypesController', endpoint: '[GET] api/ClassroomTypes/:id' },
+  { controller: 'ClassroomTypesController', endpoint: '[POST] api/ClassroomTypes' },
+  { controller: 'ClassroomTypesController', endpoint: '[PUT] api/ClassroomTypes/:id' },
+  { controller: 'ClassroomTypesController', endpoint: '[DELETE] api/ClassroomTypes/:id' },
+
   // ExampleTenantResult
   { controller: 'ExampleTenantFactoryController', endpoint: '[POST] api/ExampleTenantFactory' },
 
@@ -194,6 +201,13 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- ClassroomTypes -->
+    <api-view-classroom-types-get-all v-if="selectedEndpoint === '[GET] api/ClassroomTypes'" class="my-9" />
+    <api-view-classroom-types-get v-if="selectedEndpoint === '[GET] api/ClassroomTypes/:id'" class="my-9" />
+    <api-view-classroom-types-post v-if="selectedEndpoint === '[POST] api/ClassroomTypes'" class="my-9" />
+    <api-view-classroom-types-put v-if="selectedEndpoint === '[PUT] api/ClassroomTypes/:id'" class="my-9" />
+    <api-view-classroom-types-delete v-if="selectedEndpoint === '[DELETE] api/ClassroomTypes/:id'" class="my-9" />
 
     <!-- ExampleTenantResult -->
     <api-view-example-tenant-factory-post v-if="selectedEndpoint === '[POST] api/ExampleTenantFactory'" class="my-9" />
