@@ -5,6 +5,15 @@ interface Endpoint {
 }
 
 const endpointsData: Endpoint[] = [
+  // Groups
+  { controller: 'GroupController', endpoint: '[GET] api/Groups/:groupId' },
+  { controller: 'GroupController', endpoint: '[GET] api/Groups' },
+  { controller: 'GroupController', endpoint: '[GET] api/Groups/:groupId/dependencies' },
+  { controller: 'GroupController', endpoint: '[GET] api/Groups/schedule/:scheduleId' },
+  { controller: 'GroupController', endpoint: '[POST] api/Groups' },
+  { controller: 'GroupController', endpoint: '[PUT] api/Groups' },
+  { controller: 'GroupController', endpoint: '[DELETE] api/Groups/:groupId' },
+
   // Lecturers
   { controller: 'LecturerController', endpoint: '[GET] api/Lecturers/:lecturerId' },
   { controller: 'LecturerController', endpoint: '[GET] api/Lecturers' },
@@ -182,6 +191,15 @@ function handleControllerComboboxChange(value: string) {
         </div>
       </div>
     </div>
+
+    <!-- Groups -->
+    <api-view-groups-get v-if="selectedEndpoint === '[GET] api/Groups/:groupId'" class="my-9" />
+    <api-view-groups-get-all v-if="selectedEndpoint === '[GET] api/Groups'" class="my-9" />
+    <api-view-groups-get-dependencies v-if="selectedEndpoint === '[GET] api/Groups/:groupId/dependencies'" class="my-9" />
+    <api-view-groups-get-schedule v-if="selectedEndpoint === '[GET] api/Groups/schedule/:scheduleId'" class="my-9" />
+    <api-view-groups-post v-if="selectedEndpoint === '[POST] api/Groups'" class="my-9" />
+    <api-view-groups-put v-if="selectedEndpoint === '[PUT] api/Groups'" class="my-9" />
+    <api-view-groups-delete v-if="selectedEndpoint === '[DELETE] api/Groups/:groupId'" class="my-9" />
 
     <!-- Lecturers -->
     <api-view-lecturers-get v-if="selectedEndpoint === '[GET] api/Lecturers/:lecturerId'" class="my-9" />

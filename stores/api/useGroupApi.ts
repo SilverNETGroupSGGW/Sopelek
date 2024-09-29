@@ -1,40 +1,34 @@
 import useApiRequest from '~/composables/useApiRequest'
 import { RequestTypes as Method } from '~/types'
 import type { GroupResult } from '~/types/apiResults'
-import type { ApiResponse } from '~/types/apiResults/ApiResponse'
+import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 export const useGroupApi = defineStore('groupApi', {
-  state: () => ({
-  }),
+  state: () => ({ }),
   actions: {
     async getGroups(): Promise<ApiResponse<GroupResult[]> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<GroupResult[]>(Method.GET, 'Groups')
-      return result
+      return await makeRequest<GroupResult[]>(Method.GET, 'Groups', null, null, true)
     },
     async getGroupsForSchedule(scheduleId: string): Promise<ApiResponse<GroupResult[]> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<GroupResult[]>(Method.GET, `Groups/schedule/${scheduleId}`)
-      return result
+      return await makeRequest<GroupResult[]>(Method.GET, `Groups/schedule/${scheduleId}`, null, null, true)
     },
     async getGroup(groupId: string): Promise<ApiResponse<GroupResult> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<GroupResult>(Method.GET, `Groups/${groupId}`)
-      return result
+      return await makeRequest<GroupResult>(Method.GET, `Groups/${groupId}`, null, null, true)
     },
     async createGroup(group: GroupResult): Promise<ApiResponse<GroupResult> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<GroupResult>(Method.POST, 'Groups', group)
-      return result
+      return await makeRequest<GroupResult>(Method.POST, 'Groups', group, null, true)
     },
     async updateGroup(group: GroupResult): Promise<ApiResponse<GroupResult> | null> {
       const { makeRequest } = useApiRequest()
-      const result = await makeRequest<GroupResult>(Method.PUT, 'Groups', group)
-      return result
+      return await makeRequest<GroupResult>(Method.PUT, 'Groups', group, null, true)
     },
-    async deleteGroup(groupId: string): Promise<void> {
+    async deleteGroup(groupId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
-      await makeRequest(Method.DELETE, `Groups/${groupId}`)
+      return await makeRequest(Method.DELETE, `Groups/${groupId}`, null, null, true)
     },
   },
 })
