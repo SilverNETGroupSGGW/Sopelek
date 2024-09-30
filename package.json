@@ -9,17 +9,17 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@antfu/eslint-config": "^3.6.0",
+    "@antfu/eslint-config": "^3.7.3",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.1.5",
-    "@nuxt/kit": "^3.13.1",
-    "@pinia/nuxt": "^0.5.4",
-    "@tabler/icons-vue": "^3.16.0",
-    "@vueuse/integrations": "^11.0.3",
+    "@nuxt/kit": "^3.13.2",
+    "@pinia/nuxt": "^0.5.5",
+    "@tabler/icons-vue": "^3.19.0",
+    "@vueuse/integrations": "^11.1.0",
     "axios": "^1.7.7",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "jwt-decode": "^4.0.0",
-    "pinia": "^2.2.2",
+    "pinia": "^2.2.3",
     "vue-multiselect": "^3.1.0"
   },
   "devDependencies": {
