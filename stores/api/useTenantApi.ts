@@ -7,19 +7,19 @@ export const useTenantApi = defineStore('tenantApi', {
   state: () => ({
   }),
   actions: {
-    async getTenants(): Promise<ApiResponse<TenantResult[]> | null> {
+    async getTenants(): Promise<ApiResponse<TenantResult[]>> {
       const { makeRequest } = useApiRequest()
       return await makeRequest<TenantResult[]>(Method.GET, 'tenants', null, null, true)
     },
-    async getTenant(tenantId: string): Promise<ApiResponse<TenantResult> | null> {
+    async getTenant(tenantId: string): Promise<ApiResponse<TenantResult>> {
       const { makeRequest } = useApiRequest()
       return await makeRequest<TenantResult>(Method.GET, `tenants/${tenantId}`, null, null, true)
     },
-    async createTenant(tenant: TenantResult): Promise<ApiResponse<TenantResult> | null> {
+    async createTenant(tenant: TenantResult): Promise<ApiResponse<TenantResult>> {
       const { makeRequest } = useApiRequest()
       return await makeRequest<TenantResult>(Method.POST, 'tenants', tenant, null, true)
     },
-    async updateTenant(tenant: TenantResult): Promise<ApiResponse<TenantResult> | null> {
+    async updateTenant(tenant: TenantResult): Promise<ApiResponse<TenantResult>> {
       const { makeRequest } = useApiRequest()
       return await makeRequest<TenantResult>(Method.PUT, 'tenants', tenant, null, true)
     },

@@ -8,25 +8,21 @@ export const useUserApi = defineStore('userApi', {
     users: null as ApiResponse<UserResult[]> | null,
   }),
   actions: {
-    async getUsers(paginationParam?: any): Promise<ApiResponse<UserResult[]> | null> {
+    async getUsers(paginationParam?: any): Promise<ApiResponse<UserResult[]>> {
       const { makeRequest } = useApiRequest()
-      const usersResult = await makeRequest<UserResult[]>(Method.GET, 'users', null, paginationParam, true)
-      return usersResult
+      return await makeRequest<UserResult[]>(Method.GET, 'users', null, paginationParam, true)
     },
-    async getUser(userId: string): Promise<ApiResponse<UserResult> | null> {
+    async getUser(userId: string): Promise<ApiResponse<UserResult>> {
       const { makeRequest } = useApiRequest()
-      const usersResult = await makeRequest<UserResult>(Method.GET, `users/${userId}`, null, null, true)
-      return usersResult
+      return await makeRequest<UserResult>(Method.GET, `users/${userId}`, null, null, true)
     },
-    async createUser(email: string, password: string): Promise<ApiResponse<UserResult> | null> {
+    async createUser(email: string, password: string): Promise<ApiResponse<UserResult>> {
       const { makeRequest } = useApiRequest()
-      const userResult = await makeRequest<UserResult>(Method.POST, 'users', { email, password }, null, true)
-      return userResult
+      return await makeRequest<UserResult>(Method.POST, 'users', { email, password }, null, true)
     },
-    async updateUser(user: UserResult): Promise<ApiResponse<UserResult> | null> {
+    async updateUser(user: UserResult): Promise<ApiResponse<UserResult>> {
       const { makeRequest } = useApiRequest()
-      const userResult = await makeRequest<UserResult>(Method.PUT, 'users', user, null, true)
-      return userResult
+      return await makeRequest<UserResult>(Method.PUT, 'users', user, null, true)
     },
     async deleteUser(userId: string): Promise<ApiResponse<void>> {
       const { makeRequest } = useApiRequest()
