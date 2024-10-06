@@ -1,83 +1,51 @@
-import type { BaseResponse, StudyProgram } from '~/types'
+import type { StudyProgram } from '~/types'
+import type { StudyProgramResult } from '~/types/apiResults'
+import { useStudyProgramApi } from './api/useStudyProgramApi'
 
 export const useStudyPrograms = defineStore('studyPrograms', {
   state: () => ({
     search: '',
     data: [] as StudyProgram[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<StudyProgram[]>>(`studyprogram/all`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const studyProgramApi = useStudyProgramApi()
+      const response = await studyProgramApi.getStudyPrograms()
 
-      this.data = data.value!.data.sort((a, b) => a.name.localeCompare(b.name))
+      if (!response.hasError) {
+        this.data = response.data!
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(sp => sp as StudyProgram)
+      }
     },
     async create(studyProgram: StudyProgram) {
-      const runtimeConfig = useRuntimeConfig()
-      const { studiesDegrees, studiesModes, fieldOfStudies } = useData()
+      const studyProgramApi = useStudyProgramApi()
+      const response = await studyProgramApi.createStudyProgram(studyProgram as StudyProgramResult)
 
-      studyProgram.degreeOfStudy = studiesDegrees.find(d => d.value === studyProgram.degreeOfStudy)!.type
-      studyProgram.faculty = fieldOfStudies.find(f => f.value === studyProgram.fieldOfStudy)!.department
-      studyProgram.studyMode = studiesModes.find(m => m.value === studyProgram.studyMode)!.type
-
-      const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(studyProgram),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.data.push(data.data)
+      if (!response.hasError) {
+        this.data.push(response.data!)
+      }
     },
     async update(studyProgram: StudyProgram) {
-      const runtimeConfig = useRuntimeConfig()
-      const { studiesDegrees, studiesModes, fieldOfStudies } = useData()
+      const studyProgramApi = useStudyProgramApi()
+      const response = await studyProgramApi.updateStudyProgram(studyProgram as StudyProgramResult)
 
-      studyProgram.degreeOfStudy = studiesDegrees.find(d => d.value === studyProgram.degreeOfStudy)!.type
-      studyProgram.fieldOfStudy = fieldOfStudies.find(f => f.value === studyProgram.fieldOfStudy)!.department
-      studyProgram.studyMode = studiesModes.find(m => m.value === studyProgram.studyMode)!.type
-
-      const data = await $fetch<BaseResponse<StudyProgram>>('studyprogram', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(studyProgram),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      const index = this.data.findIndex(l => l.id === data.data.id)
-      this.data[index] = data.data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === studyProgram.id)
+        this.data[index] = response.data!
+      }
     },
     async delete(studyProgram: StudyProgram) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<StudyProgram>(`studyprogram/${studyProgram.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const studyProgramApi = useStudyProgramApi()
+      const response = await studyProgramApi.deleteStudyProgram(studyProgram.id)
 
-      this.data = this.data.filter(l => l.id !== studyProgram.id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== studyProgram.id)
+      }
     },
   },
 })

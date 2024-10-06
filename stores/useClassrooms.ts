@@ -1,33 +1,23 @@
-import type { BaseResponse, Classroom } from '~/types'
+import type { Classroom } from '~/types'
+import type { ClassroomResult } from '~/types/apiResults'
+import { useClassroomApi } from './api/useClassroomApi'
 
 export const useClassrooms = defineStore('classrooms', {
   state: () => ({
     search: '',
     data: [] as Classroom[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'capacity',
-        header: 'Pojemność',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'capacity', header: 'Pojemność' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Classroom[]>>('classrooms', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-      })
+      const classroomApi = useClassroomApi()
+      const response = await classroomApi.getClassrooms()
 
-      this.data = data.value!.data.sort((a, b) => {
+      this.data = response.data!.sort((a, b) => {
         const aNumber = Number(a.name)
         const bNumber = Number(b.name)
 
@@ -38,42 +28,19 @@ export const useClassrooms = defineStore('classrooms', {
       })
     },
     async create(classroom: Classroom) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Classroom>>('classrooms', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(classroom),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.data.push(data.data)
+      const classroomApi = useClassroomApi()
+      const response = await classroomApi.createClassroom(classroom as ClassroomResult)
+      this.data.push(response.data as Classroom)
     },
     async update(classroom: Classroom) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Classroom>>('classrooms', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(classroom),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      const index = this.data.findIndex(l => l.id === data.data.id)
-      this.data[index] = data.data
+      const classroomApi = useClassroomApi()
+      const response = await classroomApi.updateClassroom(classroom as ClassroomResult)
+      const index = this.data.findIndex(l => l.id === response.data!.id)
+      this.data[index] = response.data! as Classroom
     },
     async delete(classroom: Classroom) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch(`classrooms/${classroom.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
+      const classroomApi = useClassroomApi()
+      await classroomApi.deleteClassroom(classroom.id)
       this.data = this.data.filter(l => l.id !== classroom.id)
     },
   },

@@ -1,4 +1,5 @@
-import type { BaseResponse, Role } from '~/types'
+import type { Role } from '~/types'
+import { useUserRolesApi } from './api/useUserRolesApi'
 
 export const useUserRolesDialog = defineStore('userRolesDialog', {
   state: () => ({
@@ -12,48 +13,35 @@ export const useUserRolesDialog = defineStore('userRolesDialog', {
       await this.getRoles(userId)
     },
     async getRoles(userId: string) {
-      this.userId = userId
+      const userRoleApi = useUserRolesApi()
+      const response = await userRoleApi.getUserRolesAsync(userId)
 
-      const runtimeConfig = useRuntimeConfig()
-      const response = await useFetch<BaseResponse<Role[]>>(`UsersRoles/${userId}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.roles = response.data.value?.data
+      if (!response.hasError) {
+        this.userId = userId
+        this.roles = response.data as Role[]
+      }
     },
     async assignRole(role: string) {
-      const runtimeConfig = useRuntimeConfig()
-      await useFetch(`UsersRoles/assign`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify({ role, userId: this.userId }),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const userRoleApi = useUserRolesApi()
+      const response = await userRoleApi.assignRoleToUserAsync(role, this.userId)
 
-      const assignedRole = this.roles?.find(r => r.name === role)
-      if (assignedRole)
-        assignedRole.isAssigned = true
+      if (!response.hasError) {
+        const assignedRole = this.roles?.find(r => r.name === role)
+        if (assignedRole) {
+          assignedRole.isAssigned = true
+        }
+      }
     },
     async unassignRole(role: string) {
-      const runtimeConfig = useRuntimeConfig()
-      await useFetch(`UsersRoles/remove`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        body: JSON.stringify({ role, userId: this.userId }),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const userRoleApi = useUserRolesApi()
+      const response = await userRoleApi.removeRoleFromUserAsync(role, this.userId)
 
-      const unassignedRole = this.roles?.find(r => r.name === role)
-      if (unassignedRole)
-        unassignedRole.isAssigned = false
+      if (!response.hasError) {
+        const unassignedRole = this.roles?.find(r => r.name === role)
+        if (unassignedRole) {
+          unassignedRole.isAssigned = false
+        }
+      }
     },
     async clearState() {
       this.isDialogVisible = false

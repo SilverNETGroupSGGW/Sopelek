@@ -1,75 +1,49 @@
-import type { BaseResponse, SubjectType } from '~/types'
+import type { SubjectType } from '~/types'
+import { useSubjectTypeApi } from './api/useSubjectTypeApi'
 
 export const useSubjectTypes = defineStore('subjectTypes', {
   state: () => ({
     search: '',
     data: [] as SubjectType[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'isPrimitiveType',
-        header: 'Czy typ prymitywny?',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'isPrimitiveType', header: 'Czy typ prymitywny?' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<SubjectType[]>>('SubjectTypes', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const subjectTypeApi = useSubjectTypeApi()
+      const response = await subjectTypeApi.getSubjectTypes()
 
-      this.data = data.value!.data
+      if (!response.hasError) {
+        this.data = response.data as SubjectType[]
+      }
     },
     async create(subjectType: SubjectType) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<SubjectType>>('SubjectTypes', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(subjectType),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const subjectTypeApi = useSubjectTypeApi()
+      const response = await subjectTypeApi.createSubjectType(subjectType)
 
-      this.data.push(data.data)
+      if (!response.hasError) {
+        this.data.push(response.data as SubjectType)
+      }
     },
     async update(subjectType: SubjectType) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<SubjectType>>('SubjectTypes', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(subjectType),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const subjectTypeApi = useSubjectTypeApi()
+      const response = await subjectTypeApi.updateSubjectType(subjectType)
 
-      const index = this.data.findIndex(l => l.id === data.data.id)
-      this.data[index] = data.data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === response.data!.id)
+        this.data[index] = response.data as SubjectType
+      }
     },
     async delete(subjectType: SubjectType) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<SubjectType>(`SubjectTypes/${subjectType.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const subjectTypeApi = useSubjectTypeApi()
+      const response = await subjectTypeApi.deleteSubjectType(subjectType.id)
 
-      this.data = this.data.filter(l => l.id !== subjectType.id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== subjectType.id)
+      }
     },
   },
 })

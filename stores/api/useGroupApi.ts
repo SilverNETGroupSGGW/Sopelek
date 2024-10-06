@@ -7,7 +7,7 @@ import type { GroupConflictResult } from '~/types/apiResults/groups/GroupConflic
 export const useGroupApi = defineStore('groupApi', {
   state: () => ({ }),
   actions: {
-    async getGroups(): Promise<ApiResponse<GroupResult[]> | null> {
+    async getGroups(): Promise<ApiResponse<GroupResult[]>> {
       const { makeRequest } = useApiRequest()
       return await makeRequest<GroupResult[]>(Method.GET, 'Groups', null, null, true)
     },

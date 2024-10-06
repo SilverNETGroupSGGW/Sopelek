@@ -1,72 +1,50 @@
-import type { BaseResponse, Group } from '~/types'
+import type { Group } from '~/types'
+import type { GroupResult } from '~/types/apiResults'
+import { useGroupApi } from './api/useGroupApi'
 
 export const useGroups = defineStore('groups', {
   state: () => ({
     search: '',
     data: [] as Group[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'capacity',
-        header: 'Pojemność',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'capacity', header: 'Pojemność' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get(scheduleId: string) {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Group[]>>(`groups/schedule/${scheduleId}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-      })
+      const groupApi = useGroupApi()
+      const response = await groupApi.getGroupsForSchedule(scheduleId)
 
-      this.data = data.value!.data.sort((a, b) => a.name.localeCompare(b.name))
+      if (!response.hasError) {
+        this.data = response.data!.sort((a, b) => a.name.localeCompare(b.name)) as Group[]
+      }
     },
     async create(group: Group) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Group>>('groups', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(group),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const groupApi = useGroupApi()
+      const response = await groupApi.createGroup(group as GroupResult)
 
-      this.data.push(data.data)
+      if (!response.hasError) {
+        this.data.push(response.data as Group)
+      }
     },
     async update(group: Group) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Group>>('groups', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(group),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const groupApi = useGroupApi()
+      const response = await groupApi.updateGroup(group as GroupResult)
 
-      const index = this.data.findIndex(l => l.id === data.data.id)
-      this.data[index] = data.data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === response.data!.id)
+        this.data[index] = response.data as Group
+      }
     },
     async delete(group: Group) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<Group>(`groups/${group.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const groupApi = useGroupApi()
+      const response = await groupApi.deleteGroup(group.id)
 
-      this.data = this.data.filter(l => l.id !== group.id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== group.id)
+      }
     },
   },
 })

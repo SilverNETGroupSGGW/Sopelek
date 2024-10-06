@@ -3,7 +3,7 @@ import { RequestTypes as Method } from '~/types'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 import type { ExampleTenantResult } from '~/types/apiResults/ExampleTenantResult'
 
-export const useExampleTenantFactory = defineStore('exampleTenantFactory', {
+export const useExampleTenantFactoryApi = defineStore('exampleTenantFactory', {
   state: () => ({ }),
   actions: {
     async createExampleTenant(tenantName: string): Promise<ApiResponse<ExampleTenantResult>> {

@@ -1,69 +1,48 @@
-import type { BaseResponse, Organization } from '~/types'
+import type { Organization } from '~/types'
+import { useOrganizationApi } from './api/useOrganizationsApi'
 
 export const useOrganizations = defineStore('organizations', {
   state: () => ({
     search: '',
     data: [] as Organization[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async getAll() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Organization[]>>('organizations', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-      })
+      const organizationApi = useOrganizationApi()
+      const response = await organizationApi.getOrganizations()
 
-      this.data = data.value!.data
+      if (!response.hasError) {
+        this.data = response.data!.sort((a, b) => a.name.localeCompare(b.name)) as Organization[]
+      }
     },
     async create(organization: Organization) {
-      const runtimeConfig = useRuntimeConfig()
+      const organizationApi = useOrganizationApi()
+      const response = await organizationApi.createOrganization(organization as Organization)
 
-      const data = await $fetch<BaseResponse<Organization>>('organizations', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(organization),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.data.push(data.data!)
+      if (!response.hasError) {
+        this.data.push(response.data as Organization)
+      }
     },
     async update(organization: Organization) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Organization>>('organizations', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(organization),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const organizationApi = useOrganizationApi()
+      const response = await organizationApi.updateOrganization(organization as Organization)
 
-      const index = this.data.findIndex(o => o.id === data.data.id)
-      this.data[index] = data.data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === response.data!.id)
+        this.data[index] = response.data as Organization
+      }
     },
     async delete(organization: Organization) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<Organization>(`organizations/${organization.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const organizationApi = useOrganizationApi()
+      const response = await organizationApi.deleteOrganization(organization.id)
 
-      this.data = this.data.filter(o => o.id !== organization.id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== organization.id)
+      }
     },
   },
 })

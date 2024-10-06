@@ -1,89 +1,60 @@
-import type { BaseResponse, Schedule } from '~/types'
+import type { Schedule } from '~/types'
+import type { ScheduleResult } from '~/types/apiResults'
+import { useScheduleApi } from './api/useScheduleApi'
+import { useScheduleFileGeneratorApi } from './api/useScheduleFileGeneratorApi'
 
 export const useSchedule = defineStore('schedule', {
   state: () => ({
     search: '',
     data: [] as Schedule[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Schedule[]>>('schedules', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-      })
+      const scheduleApi = useScheduleApi()
+      const response = await scheduleApi.getSchedules()
 
-      this.data = data.value!.data
+      if (!response.hasError) {
+        this.data = response.data as Schedule[]
+      }
     },
     async create(schedule: Schedule) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Schedule>>('schedules', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(schedule),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const scheduleApi = useScheduleApi()
+      const response = await scheduleApi.createSchedule(schedule as ScheduleResult)
 
-      this.data.push(data.data)
+      if (!response.hasError) {
+        this.data.push(response.data as Schedule)
+      }
     },
     async update(schedule: Schedule) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<Schedule>>('schedules', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(schedule),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const scheduleApi = useScheduleApi()
+      const response = await scheduleApi.updateSchedule(schedule as ScheduleResult)
 
-      const index = this.data.findIndex(l => l.id === data.data.id)
-      this.data[index] = data.data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === schedule.id)
+        this.data[index] = response.data as Schedule
+      }
     },
     async delete(schedule: Schedule) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<Schedule>(`schedules/${schedule.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const scheduleApi = useScheduleApi()
+      const response = await scheduleApi.deleteSchedule(schedule.id)
 
-      this.data = this.data.filter(l => l.id !== schedule.id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== schedule.id)
+      }
     },
     async download(schedule: Schedule) {
-      const runtimeConfig = useRuntimeConfig()
-      schedule.isDownloading = true
+      const scheduleGeneratorApi = useScheduleFileGeneratorApi()
+      const response = await scheduleGeneratorApi.generateScheduleFile(schedule.id)
 
-      const data = await $fetch<Blob>(`schedulegenerator/generate/${schedule.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `${schedule.name}.xlsx`)
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      if (!response.hasError) {
+        const url = window.URL.createObjectURL(response.data as Blob)
+        const { downloadFile } = useFileDownloader()
+        downloadFile(url, `${schedule.name}.xlsx`)
+      }
 
       schedule.isDownloading = false
     },

@@ -1,75 +1,46 @@
-import type { BaseResponse, ClassroomType } from '~/types'
+import type { ClassroomType } from '~/types'
+import { useClassroomTypesApi } from './api/useClassroomTypesApi'
 
 export const useClassroomTypes = defineStore('classroomTypes', {
   state: () => ({
     search: '',
     data: [] as ClassroomType[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'isPrimitiveType',
-        header: 'Czy typ prymitywny?',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'isPrimitiveType', header: 'Czy typ prymitywny?' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<ClassroomType[]>>('ClassroomTypes', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.data = data.value!.data
+      const classroomTypesApi = useClassroomTypesApi()
+      const response = await classroomTypesApi.getClassroomTypes()
+      this.data = response.data as ClassroomType[]
     },
     async create(classroomType: ClassroomType) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<ClassroomType>>('ClassroomTypes', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(classroomType),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const classroomTypesApi = useClassroomTypesApi()
+      const response = await classroomTypesApi.createClassroomType(classroomType)
 
-      this.data.push(data.data)
+      if (!response.hasError) {
+        this.data.push(response.data as ClassroomType)
+      }
     },
     async update(classroomType: ClassroomType) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<ClassroomType>>('ClassroomTypes', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(classroomType),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const classroomTypesApi = useClassroomTypesApi()
+      const response = await classroomTypesApi.updateClassroomType(classroomType)
 
-      const index = this.data.findIndex(l => l.id === data.data.id)
-      this.data[index] = data.data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === response.data!.id)
+        this.data[index] = response.data as ClassroomType
+      }
     },
     async delete(classroomType: ClassroomType) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<ClassroomType>(`ClassroomTypes/${classroomType.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
+      const classroomTypesApi = useClassroomTypesApi()
+      const response = await classroomTypesApi.deleteClassroomType(classroomType.id)
 
-      this.data = this.data.filter(l => l.id !== classroomType.id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== classroomType.id)
+      }
     },
   },
 })

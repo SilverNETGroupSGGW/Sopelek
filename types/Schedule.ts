@@ -16,14 +16,15 @@ export enum StudyMode {
 }
 
 export interface Schedule {
-  created?: string
   id: string
-  groups: Group[]
-  name: string
-  studyProgramId: string | null
-  subjects: Subject[]
+  created?: string
   updated?: string
-  year: number
+  name: string
+
+  year?: number
+  studyProgramId?: string | null
+  groups?: Group[]
+  subjects?: Subject[]
 
   /* internal */
   isDownloading?: boolean

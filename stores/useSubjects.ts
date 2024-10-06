@@ -1,4 +1,6 @@
-import type { BaseResponse, Subject, SubjectConflict } from '~/types'
+import type { Subject, SubjectConflict } from '~/types'
+import type { SubjectResult } from '~/types/apiResults'
+import { useSubjectApi } from './api/useSubjectApi'
 
 export const useSubjects = defineStore('subjects', {
   state: () => ({
@@ -6,91 +8,58 @@ export const useSubjects = defineStore('subjects', {
     data: [] as Subject[],
     conflicts: [] as SubjectConflict[],
     columns: [
-      {
-        key: 'name',
-        header: 'Nazwa',
-      },
-      {
-        key: 'lecturers',
-        header: 'Prowadzący',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'name', header: 'Nazwa' },
+      { key: 'lecturers', header: 'Prowadzący' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async get(scheduleId: string) {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<Subject[]>>(`subjects/schedule/${scheduleId}/extended`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-      })
+      const subjectApi = useSubjectApi()
+      const response = await subjectApi.getSubjectsForSchedule(scheduleId)
 
-      this.data = data.value!.data.sort((a, b) => {
-        if (a.dayOfWeek === b.dayOfWeek)
-          return a.startTime!.localeCompare(b.startTime!)
-
-        else
-          return a.dayOfWeek!.localeCompare(b.dayOfWeek!)
-      })
+      if (!response.hasError) {
+        this.data = response.data!.sort((a, b) => {
+          if (a.dayOfWeek === b.dayOfWeek)
+            return a.startTime!.localeCompare(b.startTime!)
+          else
+            return a.dayOfWeek!.localeCompare(b.dayOfWeek!)
+        }) as Subject[]
+      }
     },
     async create(subject: Subject) {
-      try {
-        const runtimeConfig = useRuntimeConfig()
-        const data = await $fetch<BaseResponse<Subject>>('subjects', {
-          baseURL: runtimeConfig.public.baseURL,
-          method: 'POST',
-          body: JSON.stringify(subject),
-          headers: {
-            Authorization: `Bearer ${useCookie('accessToken').value}`,
-          },
-        })
+      const subjectApi = useSubjectApi()
+      const response = await subjectApi.createSubject(subject as SubjectResult)
 
-        this.data.push(data.data)
+      if (!response.hasError) {
+        this.data.push(response.data! as Subject)
       }
-      catch (error) {
-        return Promise.reject(error)
+      else {
+        return Promise.reject(response.errorMessage)
       }
     },
     async update(subject: Subject) {
-      try {
-        const runtimeConfig = useRuntimeConfig()
-        const data = await $fetch<BaseResponse<Subject>>('subjects', {
-          baseURL: runtimeConfig.public.baseURL,
-          method: subject.id === 'create' ? 'POST' : 'PUT',
-          body: JSON.stringify(subject),
-          headers: {
-            Authorization: `Bearer ${useCookie('accessToken').value}`,
-          },
-        })
+      const subjectApi = useSubjectApi()
+      const response = await subjectApi.updateSubject(subject as SubjectResult)
 
-        const index = this.data.findIndex(l => l.id === data.data.id)
-        this.data[index] = data.data
-
-        return data
+      if (!response.hasError) {
+        const index = this.data.findIndex(l => l.id === subject.id)
+        this.data[index] = response.data! as Subject
       }
-      catch (error) {
-        return Promise.reject(error)
+      else {
+        return Promise.reject(response.errorMessage)
       }
     },
     async delete(id: string) {
-      const runtimeConfig = useRuntimeConfig()
-      try {
-        await $fetch<Subject>(`subjects/${id}`, {
-          baseURL: runtimeConfig.public.baseURL,
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${useCookie('accessToken').value}`,
-          },
-        })
-      }
-      catch (error) {
-        return Promise.reject(error)
-      }
+      const subjectApi = useSubjectApi()
+      const response = await subjectApi.deleteSubject(id)
 
-      this.data = this.data.filter(l => l.id !== id)
+      if (!response.hasError) {
+        this.data = this.data.filter(l => l.id !== id)
+      }
+      else {
+        return Promise.reject(response.errorMessage)
+      }
     },
   },
 })

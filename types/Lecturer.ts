@@ -13,21 +13,21 @@ enum AcademicDegree {
 }
 
 export interface Lecturer {
-  academicDegree: AcademicDegree
+  id: string
   created?: string
+  updated?: string
   email: string
   firstName: string
-  id: string
-  subjects: LecturerSubject[]
   surname: string
-  updated?: string
+  academicDegree: AcademicDegree
+  // subjects: LecturerSubject[]
 }
 
-interface LecturerSubject extends Subject {
-  schedule: Schedule
-  classroom: Classroom
-  lessons: Lesson[]
-  groups: Group[]
-}
+// interface LecturerSubject extends Subject {
+//   schedule: Schedule
+//   classroom: Classroom
+//   lessons: Lesson[]
+//   groups: Group[]
+// }
 
 export { AcademicDegree }
