@@ -9,21 +9,18 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {
       "settings": {},
       "extensions": [
-        "redhat.vscode-yaml",
-        "yzhang.markdown-all-in-one",
-        "DavidAnson.vscode-markdownlint",
         "Vue.volar",
-        "Vue.vscode-typescript-vue-plugin",
         "Nuxtr.nuxt-vscode-extentions",
-        "esbenp.prettier-vscode",
         "rvest.vs-code-prettier-eslint"
       ]
     }
+  },
+  "features": {
+    "ghcr.io/shyim/devcontainers-features/bun:0": {}
   }
   // Configure tool-specific properties.
   // "customizations": {},
