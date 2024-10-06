@@ -1,10 +1,10 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
-import axios, { AxiosError } from 'axios'
-import { useAxios } from '@vueuse/integrations/useAxios'
 import type { EasyUseAxiosReturn } from '@vueuse/integrations'
-import { RequestTypes } from '~/types/RequestType'
-import type { ServerResponse } from '~/types/apiResults/common/ServerResponse'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useAxios } from '@vueuse/integrations/useAxios'
+import axios, { AxiosError } from 'axios'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
+import type { ServerResponse } from '~/types/apiResults/common/ServerResponse'
+import { RequestTypes } from '~/types/RequestType'
 
 export default function useApiRequest() {
   const runtimeConfig = useRuntimeConfig()
