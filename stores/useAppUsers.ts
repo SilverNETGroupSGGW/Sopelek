@@ -1,70 +1,39 @@
-import type { BaseResponse, CreateUser, User } from '~/types'
+import type { CreateUser, User } from '~/types'
+import type { UserResult } from '~/types/apiResults'
+import { useUserApi } from './api/useUserApi'
 
 export const useAppUsers = defineStore('appUsers', {
   state: () => ({
     search: '',
     data: [] as User[],
     columns: [
-      {
-        key: 'email',
-        header: 'Email',
-      },
-      {
-        key: 'actions',
-        header: 'Akcje',
-      },
+      { key: 'email', header: 'Email' },
+      { key: 'actions', header: 'Akcje' },
     ],
   }),
   actions: {
     async getAll() {
-      const runtimeConfig = useRuntimeConfig()
-      const { data } = await useFetch<BaseResponse<User[]>>('users', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.data = data.value!.data
+      const userApi = useUserApi()
+      const response = await userApi.getUsers()
+      this.data = response.data as User[]
     },
     async create(user: CreateUser) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<CreateUser>>('users', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'POST',
-        body: JSON.stringify(user),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      this.data.push(data.data!)
+      const userApi = useUserApi()
+      const response = await userApi.createUser(user.email, user.password)
+      this.data.push(response.data as User)
     },
     async update(user: User) {
-      const runtimeConfig = useRuntimeConfig()
-      const data = await $fetch<BaseResponse<User>>('users', {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'PUT',
-        body: JSON.stringify(user),
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
-      const index = this.data.findIndex(o => o.id === data.data.id)
-      this.data[index] = data.data
+      const userApi = useUserApi()
+      const response = await userApi.updateUser(user as UserResult)
+      const index = this.data.findIndex(o => o.id === response.data!.id)
+      this.data[index] = response.data as User
     },
     async delete(user: User) {
-      const runtimeConfig = useRuntimeConfig()
-      await $fetch<User>(`users/${user.id}`, {
-        baseURL: runtimeConfig.public.baseURL,
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${useCookie('accessToken').value}`,
-        },
-      })
-
+      const userApi = useUserApi()
+      const response = await userApi.deleteUser(user.id)
+      if (response.hasError) {
+        return
+      }
       this.data = this.data.filter(o => o.id !== user.id)
     },
   },
