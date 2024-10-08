@@ -22,38 +22,23 @@ if (router.options.history.state?.back === '/signin') {
 
       <div class="flex flex-col gap-2">
         <div class="grid auto-rows-[1fr] grid-cols-3 gap-6">
-          <NuxtLink to="/portal/schedules" class="group w-full">
-            <div class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600">
-              <h2 class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
-                Plany zajęć
-              </h2>
-              <p class="text-gray-600 group-hover:text-white">
-                W tym miejscu możesz sprawdzić plany zajęć dla wybranych kierunków studiów.
-              </p>
-            </div>
-          </NuxtLink>
+          <utils-link-card
+            link="/portal/schedules"
+            header-text="Plany zajęć"
+            messsage-text="W tym miejscu możesz sprawdzić plany zajęć dla wybranych kierunków studiów."
+          />
 
-          <NuxtLink to="/portal/lecturers" class="group w-full">
-            <div class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600">
-              <h2 to="/portal/lecturers" class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
-                Prowadzący
-              </h2>
-              <p class="text-gray-600 group-hover:text-white">
-                W tym miejscu możesz sprawdzić prowadzących. Lista jest globalna i obejmuje Bazę Wiedzy SGGW.
-              </p>
-            </div>
-          </NuxtLink>
+          <utils-link-card
+            link="/portal/lecturers"
+            header-text="Prowadzący"
+            messsage-text="W tym miejscu możesz sprawdzić prowadzących. Lista jest globalna i obejmuje Bazę Wiedzy SGGW."
+          />
 
-          <NuxtLink to="/portal/classrooms" class="group w-full">
-            <div class="h-full cursor-pointer rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg group-hover:bg-indigo-600">
-              <h2 to="/portal/classrooms" class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 group-hover:text-white">
-                Sale
-              </h2>
-              <p class="text-gray-600 group-hover:text-white">
-                W tym miejscu możesz sprawdzić sale.
-              </p>
-            </div>
-          </NuxtLink>
+          <utils-link-card
+            link="/portal/classrooms"
+            header-text="Sale"
+            messsage-text="W tym miejscu możesz sprawdzić sale."
+          />
         </div>
       </div>
     </div>
@@ -64,32 +49,20 @@ if (router.options.history.state?.back === '/signin') {
       </h2>
 
       <div class="flex gap-6">
-        <div class="w-full rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg">
-          <p class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 hover:text-gray-900">
-            Konflikty
-          </p>
-          <p class="text-gray-600">
-            System do wykrywania konfliktów w planach zajęć, dotyczyć to będzie sal, prowadzących oraz grup.
-          </p>
-        </div>
+        <utils-link-card
+          header-text="Konflikty"
+          messsage-text="System do wykrywania konfliktów w planach zajęć, dotyczyć to będzie sal, prowadzących oraz grup."
+        />
 
-        <div class="w-full rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg">
-          <p class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 hover:text-gray-900">
-            Tryb publikacji
-          </p>
-          <p class="text-gray-600">
-            Możliwość tworzenia draftów oraz oficjalnych planów zajęć, które zarazem będą dostępne w aplikacji mobilnej.
-          </p>
-        </div>
+        <utils-link-card
+          header-text="Tryb publikacji"
+          messsage-text="Możliwość tworzenia draftów oraz oficjalnych planów zajęć, które zarazem będą dostępne w aplikacji mobilnej."
+        />
 
-        <div class="w-full rounded-lg border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg">
-          <p class="mb-2 block text-2xl font-bold text-gray-700 transition-colors duration-200 hover:text-gray-900">
-            Definiowanie zajęć
-          </p>
-          <p class="text-gray-600">
-            Możliwość definiowania zajęć przedmiotu, które będą wyświetlane w planie. Przydatne gdy zajęcia trwają np. 2 tygodnie.
-          </p>
-        </div>
+        <utils-link-card
+          header-text="Definiowanie zajęć"
+          messsage-text="Możliwość definiowania zajęć przedmiotu, które będą wyświetlane w planie. Przydatne gdy zajęcia trwają np. 2 tygodnie."
+        />
       </div>
     </div>
 
