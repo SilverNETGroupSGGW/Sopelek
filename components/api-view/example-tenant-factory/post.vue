@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useExampleTenantFactory } from '~/stores/api/useExampleTenantFactoryApi'
+import { useExampleTenantFactoryApi } from '~/stores/api/useExampleTenantFactoryApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 import type { ExampleTenantResult } from '~/types/apiResults/ExampleTenantResult'
 
-const exampleTenantFactoryApi = useExampleTenantFactory()
+const exampleTenantFactoryApi = useExampleTenantFactoryApi()
 const apiViewParameters = useApiViewRequestParameters()
 const endpoint = 'api/ExampleTenantFactory'
 const method = 'POST'
