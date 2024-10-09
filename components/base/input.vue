@@ -4,6 +4,7 @@ withDefaults(defineProps<{
   dense?: boolean
   disabled?: boolean
   icon?: /* FunctionalComponent */ any
+  autocomplete?: string
   label?: string
   modelValue: string | number
   placeholder?: string
@@ -29,6 +30,7 @@ const model = defineModel<string | number | readonly string[] | null | undefined
         v-model="model"
         :disabled="disabled"
         :placeholder="placeholder"
+        :autocomplete="autocomplete"
         :type="type"
         class="flex h-12 w-full justify-center self-stretch rounded-lg border border-gray-200 py-4 pr-6 text-gray-700 outline-none transition-colors duration-200 ease-in-out placeholder:text-gray-400 hover:transition-all hover:duration-200 hover:ease-in-out focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:transition-all focus:duration-200 focus:ease-in-out active:ring-2 active:ring-indigo-600 disabled:bg-gray-100"
         :class="[
@@ -41,6 +43,7 @@ const model = defineModel<string | number | readonly string[] | null | undefined
         v-model="model"
         :disabled="disabled"
         :placeholder="placeholder"
+        :autocomplete="autocomplete"
         :rows="multilineRowsHeight"
         class="flex w-full resize justify-center self-stretch rounded-lg border border-gray-200 p-2 pr-6 text-gray-700 outline-none transition-colors duration-200 ease-in-out placeholder:text-gray-400 hover:transition-all hover:duration-200 hover:ease-in-out focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:transition-all focus:duration-200 focus:ease-in-out active:ring-2 active:ring-indigo-600 disabled:bg-gray-100"
       />

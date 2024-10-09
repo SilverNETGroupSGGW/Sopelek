@@ -45,7 +45,7 @@ async function handleFormSubmit() {
           type="email"
           placeholder="pXXXXXX@sggw.edu.pl"
           label="Adres e-mail"
-          autocomplete="false"
+          autocomplete="email"
         />
         <base-input
           v-model="password"
@@ -53,7 +53,7 @@ async function handleFormSubmit() {
           type="password"
           placeholder="********"
           label="Hasło"
-          autocomplete="false"
+          autocomplete="off"
         />
       </div>
 

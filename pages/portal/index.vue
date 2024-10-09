@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useToast } from 'vue-toastification'
-import 'vue-toastification/dist/index.css'
 
 const router = useRouter()
 const toast = useToast()
