@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { IconEdit, IconKey, IconTrash, IconUser, IconZoom } from '@tabler/icons-vue'
+import { useToast } from 'vue-toastification'
 import type { Tenant } from '~/types'
 
 const account = useAccount()
@@ -24,11 +25,11 @@ async function onExampleTenantCreated() {
   isSubmitting.value = false
 }
 
-const toasts = useToasts()
+const toasts = useToast()
 
 function onTenantSwitchClicked(tenant: Tenant) {
   tenants.switchTenant(tenant.id!)
-  toasts.addToast({ type: 'success', message: `Aktywowano tenant: ${tenant.name}` })
+  toasts.success(`Aktywowano tenant: ${tenant.name}`)
 }
 </script>
 

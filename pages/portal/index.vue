@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+
 const router = useRouter()
-const toasts = useToasts()
+const toast = useToast()
 
 if (router.options.history.state?.back === '/signin') {
-  toasts.addToast({
-    type: 'success',
-    message: 'Witamy w aplikacji!',
-  })
+  toast.success('Witamy w aplikacji!')
 }
 </script>
 
