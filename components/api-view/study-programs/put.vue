@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useStudyProgramApi } from '~/stores/api/useStudyProgramApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { StudyProgramResult } from '~/types/apiResults'
@@ -6,6 +7,8 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const studyProgramApi = useStudyProgramApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/StudyProgram'
 const method = 'PUT'
 
@@ -43,7 +46,7 @@ async function handleExecute() {
     response.value = await studyProgramApi.updateStudyProgram(studyProgram)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

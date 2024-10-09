@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { IconKey } from '@tabler/icons-vue'
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
+import { useToast } from 'vue-toastification'
 import { useUserRolesApi } from '~/stores/api/useUserRolesApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const userRolesApi = useUserRolesApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/UsersRoles/assign-multiple'
 
 interface RequestParameters {
@@ -36,7 +39,7 @@ async function handleExecute() {
     )
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

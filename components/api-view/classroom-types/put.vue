@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useClassroomTypesApi } from '~/stores/api/useClassroomTypesApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ClassroomTypeResult } from '~/types/apiResults'
@@ -6,6 +7,8 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const classroomTypesApi = useClassroomTypesApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/ClassroomTypes/:id'
 const method = 'PUT'
 
@@ -39,7 +42,7 @@ async function handleExecute() {
     response.value = await classroomTypesApi.updateClassroomType(classroomType)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

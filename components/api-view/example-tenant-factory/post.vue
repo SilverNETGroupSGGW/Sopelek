@@ -6,6 +6,7 @@ import type { ExampleTenantResult } from '~/types/apiResults/ExampleTenantResult
 
 const exampleTenantFactoryApi = useExampleTenantFactoryApi()
 const apiViewParameters = useApiViewRequestParameters()
+
 const endpoint = 'api/ExampleTenantFactory'
 const method = 'POST'
 
@@ -27,12 +28,7 @@ watch(requestParams.value, () => {
 })
 
 async function handleExecute() {
-  try {
-    response.value = await exampleTenantFactoryApi.createExampleTenant(requestParams.value.tenantName)
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await exampleTenantFactoryApi.createExampleTenant(requestParams.value.tenantName)
 }
 
 async function handleClear() {

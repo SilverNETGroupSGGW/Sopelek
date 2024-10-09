@@ -5,6 +5,7 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const scheduleGeneratorApi = useScheduleFileGeneratorApi()
 const apiViewParameters = useApiViewRequestParameters()
+
 const endpoint = 'api/schedules'
 const method = 'POST'
 
@@ -27,12 +28,7 @@ watch(requestParams.value, () => {
 const response = ref<ApiResponse<Blob> | null>(null)
 
 async function handleExecute() {
-  try {
-    response.value = await scheduleGeneratorApi.generateScheduleFile(requestParams.value.scheduleId)
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await scheduleGeneratorApi.generateScheduleFile(requestParams.value.scheduleId)
 }
 
 async function handleClear() {

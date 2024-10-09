@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useGroupApi } from '~/stores/api/useGroupApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { GroupResult, LecturerResult } from '~/types/apiResults'
@@ -6,6 +7,8 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const groupApi = useGroupApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/Lecturers'
 const method = 'PUT'
 
@@ -39,7 +42,7 @@ async function handleExecute() {
     response.value = await groupApi.updateGroup(group)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

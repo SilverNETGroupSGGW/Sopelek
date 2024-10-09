@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useApiViewRequestData } from '~/stores/api-view/useApiViewRequestData'
 import { useApiViewSettings } from '~/stores/api-view/useApiViewSettings'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
@@ -14,6 +15,7 @@ const params = defineProps<{
 
 const apiViewSettings = useApiViewSettings()
 const apiViewRequestData = useApiViewRequestData()
+const toast = useToast()
 
 const storeKey = `${params.method} ${params.endpoint}`
 
@@ -36,6 +38,10 @@ async function handleExecute() {
   isLoading.value = false
 
   apiViewRequestData.storeRequest(storeKey, params.response!)
+
+  if (response.value!.hasError) {
+    toast.error(`Wystąpił błąd podczas zapytania API\r\n${response.value?.errorMessage}`)
+  }
 }
 
 async function handleClear() {

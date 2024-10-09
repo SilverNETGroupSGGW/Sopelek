@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useLessonApi } from '~/stores/api/useLessonApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { LessonResult } from '~/types/apiResults'
@@ -6,6 +7,8 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const lessonApi = useLessonApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/Lessons'
 const method = 'POST'
 
@@ -40,7 +43,7 @@ async function handleExecute() {
     response.value = await lessonApi.createLesson(lesson)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

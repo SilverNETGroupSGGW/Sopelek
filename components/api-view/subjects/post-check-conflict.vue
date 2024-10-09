@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useSubjectApi } from '~/stores/api/useSubjectApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
@@ -7,6 +8,8 @@ import type { SubjectConflictsResult } from '~/types/apiResults/subjects/Subject
 
 const subjectApi = useSubjectApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const method = 'POST'
 const endpoint = 'api/Subjects/check-conflict'
 
@@ -42,7 +45,7 @@ async function handleExecute() {
     response.value = await subjectApi.checkSubjectConflicts(query)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

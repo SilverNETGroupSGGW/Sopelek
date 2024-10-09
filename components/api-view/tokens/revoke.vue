@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useAuthApi } from '~/stores/api/useAuthApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const authApi = useAuthApi()
@@ -25,12 +25,7 @@ watch(requestParams.value, () => {
 })
 
 async function handleExecute() {
-  try {
-    response.value = await authApi.revokeTokenAsync(requestParams.value.refreshToken)
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await authApi.revokeTokenAsync(requestParams.value.refreshToken)
 }
 
 async function handleClear() {

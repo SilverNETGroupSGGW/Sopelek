@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
+import { useToast } from 'vue-toastification'
 import { useScheduleApi } from '~/stores/api/useScheduleApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ScheduleResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
@@ -13,6 +14,8 @@ const bodyTemplate = {
 
 const scheduleApi = useScheduleApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/schedules'
 
 interface RequestParameters {
@@ -39,7 +42,7 @@ async function handleExecute() {
     response.value = await scheduleApi.updateSchedule(schedule)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

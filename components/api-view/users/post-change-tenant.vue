@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IconKey } from '@tabler/icons-vue'
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useUserApi } from '~/stores/api/useUserApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const userApi = useUserApi()

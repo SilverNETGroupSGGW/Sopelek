@@ -14,7 +14,7 @@ withDefaults(defineProps<{
   type: 'text',
 })
 
-const model = defineModel<string | number | readonly string[] | null | undefined>()
+const model = defineModel<string | number | readonly string[] | null | undefined | (string | null)>()
 </script>
 
 <template>

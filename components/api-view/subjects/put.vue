@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useSubjectApi } from '~/stores/api/useSubjectApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { SubjectResult } from '~/types/apiResults'
@@ -6,6 +7,8 @@ import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const subjectApi = useSubjectApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const method = 'PUT'
 const endpoint = 'api/Subjects'
 
@@ -55,7 +58,7 @@ async function handleExecute() {
     response.value = await subjectApi.updateSubject(subject)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

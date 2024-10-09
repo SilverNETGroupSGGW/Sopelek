@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useUserApi } from '~/stores/api/useUserApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { UserResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
@@ -29,15 +29,10 @@ watch(requestParams.value, () => {
 const response = ref<ApiResponse<UserResult> | null>(null)
 
 async function handleExecute() {
-  try {
-    response.value = await userApi.createUser(
-      requestParams.value.email,
-      requestParams.value.password,
-    )
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await userApi.createUser(
+    requestParams.value.email,
+    requestParams.value.password,
+  )
 }
 
 async function handleClear() {

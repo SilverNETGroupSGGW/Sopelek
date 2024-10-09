@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useStudySemesterApi } from '~/stores/api/useStudySemesterApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
@@ -6,6 +7,8 @@ import type { StudySemesterResult } from '~/types/apiResults/studySemester/Study
 
 const studySemesterApi = useStudySemesterApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const method = 'POST'
 const endpoint = 'api/StudyProgram'
 
@@ -40,7 +43,7 @@ async function handleExecute() {
     response.value = await studySemesterApi.createStudySemester(studySemester)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import { useUserRolesApi } from '~/stores/api/useUserRolesApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const userRolesApi = useUserRolesApi()
@@ -28,15 +28,10 @@ watch(requestParams.value, () => {
 const response = ref<ApiResponse<void> | null>(null)
 
 async function handleExecute() {
-  try {
-    response.value = await userRolesApi.removeRoleFromUserAsync(
-      requestParams.value.roleName,
-      requestParams.value.userId,
-    )
-  }
-  catch (error) {
-    // Notification todo
-  }
+  response.value = await userRolesApi.removeRoleFromUserAsync(
+    requestParams.value.roleName,
+    requestParams.value.userId,
+  )
 }
 
 async function handleClear() {

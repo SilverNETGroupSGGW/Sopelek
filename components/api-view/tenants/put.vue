@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
+import { useToast } from 'vue-toastification'
 import { useTenantApi } from '~/stores/api/useTenantApi'
+import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
 import type { TenantResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const tenantsApi = useTenantApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/Tenants'
 
 const bodyTemplate = {
@@ -39,7 +42,7 @@ async function handleExecute() {
     response.value = await tenantsApi.updateTenant(tenant)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 

@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import { useToast } from 'vue-toastification'
 import { useLecturerApi } from '~/stores/api/useLecturerApi'
 import { useApiViewRequestParameters } from '~/stores/api-view/useApiViewRequestParameters'
-import type { LecturerResult, LessonResult } from '~/types/apiResults'
+import type { LecturerResult } from '~/types/apiResults'
 import type { ApiResponse } from '~/types/apiResults/common/ApiResponse'
 
 const lecturerApi = useLecturerApi()
 const apiViewParameters = useApiViewRequestParameters()
+const toast = useToast()
+
 const endpoint = 'api/Lecturers'
 const method = 'POST'
 
@@ -40,7 +43,7 @@ async function handleExecute() {
     response.value = await lecturerApi.createLecturer(lecturer)
   }
   catch (error) {
-    // Notification todo
+    toast.error(`Błąd parsowania danych wejściowych zapytania API\r\n${error}`)
   }
 }
 
