@@ -11,11 +11,11 @@ export const useScheduleApi = defineStore('scheduleApi', {
   actions: {
     async getSchedules(): Promise<ApiResponse<ScheduleResult[]>> {
       const { makeRequest } = useApiRequest()
-      return await makeRequest<ScheduleResult[]>(Method.GET, 'Schedules', null, null, false, true)
+      return await makeRequest<ScheduleResult[]>(Method.GET, 'Schedules', null, null, true, true)
     },
     async getSchedule(scheduleId: string): Promise<ApiResponse<ScheduleResult>> {
       const { makeRequest } = useApiRequest()
-      return await makeRequest<ScheduleResult>(Method.GET, `Schedules/${scheduleId}`, null, null, false, true)
+      return await makeRequest<ScheduleResult>(Method.GET, `Schedules/${scheduleId}`, null, null, true, true)
     },
     async createSchedule(schedule: ScheduleResult): Promise<ApiResponse<ScheduleResult>> {
       const { makeRequest } = useApiRequest()
