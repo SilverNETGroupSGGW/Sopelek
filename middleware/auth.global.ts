@@ -1,46 +1,40 @@
-import { jwtDecode } from 'jwt-decode'
-import type { UserTokens } from '~/types'
+import { useToast } from 'vue-toastification'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const accessToken = useCookie('accessToken').value
-  const refreshToken = useCookie('refreshToken').value
+  const session = useSession()
+  const toast = useToast()
 
   // If user is in portal and there is no access token, redirect to signin
   if (from.path.startsWith('/portal') && to.path.startsWith('/portal')) {
-    if (!accessToken || !refreshToken) {
-      // TODO: toastr message 'user was logout, please signin again'
+    if (!session.isSessionActive) {
+      toast.error('Twoja sesja wygasła, zaloguj się ponownie')
       return navigateTo('/signin')
     }
-    else {
-      try {
-        let decoded = jwtDecode(accessToken!)
-        let expires = new Date(decoded.exp! * 1000)
+    else if (session.isSessionActive && await session.isRefreshTokenExpired()) {
+      toast.error('Twoja sesja wygasła, zaloguj się ponownie')
+      return navigateTo('/signin')
+    }
+    else if (session.isSessionActive && await session.isAccessTokenExpired()) {
+      const refreshResponse = await session.refreshSession()
 
-        // If token is expired, try to refresh it
-        if (expires < new Date()) {
-          const runtimeConfig = useRuntimeConfig()
-          const { data } = await useFetch<UserTokens>('/Tokens/refresh', {
-            baseURL: runtimeConfig.public.baseURL,
-            method: 'POST',
-            body: JSON.stringify({ refreshToken }),
-          })
-
-          const tokens: UserTokens = data.value!
-
-          if (tokens) {
-            useCookie('accessToken').value = tokens.accessToken
-            useCookie('refreshToken').value = tokens.refreshToken
-          }
-
-          decoded = jwtDecode(tokens.accessToken)
-          expires = new Date(decoded.exp! * 1000)
-        }
-      }
-      catch (err) {
-        useCookie('accessToken').value = null
-        useCookie('refreshToken').value = null
+      if (refreshResponse.status === 'error') {
+        toast.error('Twoja sesja wygasła, zaloguj się ponownie (error)')
         return navigateTo('/signin')
       }
+      else if (refreshResponse.status === 'no session to refresh') {
+        toast.error('Twoja sesja wygasła, zaloguj się ponownie (no session to refresh)')
+        return navigateTo('/signin')
+      }
+      else if (refreshResponse.status === 'refresh token expired') {
+        toast.error('Twoja sesja wygasła, zaloguj się ponownie (refresh token expired)')
+        return navigateTo('/signin')
+      }
+      else {
+        toast.success('Sesja odświeżona')
+      }
+    }
+    else {
+      toast.success('Sesja aktywna')
     }
   }
 })

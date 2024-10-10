@@ -2,8 +2,9 @@
 import { IconCalendar, IconChalkboard, IconChartArrows, IconHome, IconLogout, IconSquareKey, IconTableColumn, IconTerminal2, IconUser, IconUsersGroup } from '@tabler/icons-vue'
 
 const route = useRoute()
-
+const session = useSession()
 const account = useAccount()
+
 await account.get()
 
 const tabs = reactive([
@@ -67,8 +68,7 @@ const tabs = reactive([
     icon: IconLogout,
     label: 'Wyloguj',
     onClick: async () => {
-      useCookie('accessToken').value = null
-      useCookie('refreshToken').value = null
+      session.closeSession()
       await navigateTo({ path: '/signin' })
     },
   },

@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { useToast } from 'vue-toastification'
-
-const router = useRouter()
-const toast = useToast()
-
-if (router.options.history.state?.back === '/signin') {
-  toast.success('Witamy w aplikacji!')
-}
 </script>
 
 <template>

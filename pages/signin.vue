@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { IconAt, IconKey } from '@tabler/icons-vue'
-import { useAuthApi } from '~/stores/api/useAuthApi'
+import { useToast } from 'vue-toastification'
 
 definePageMeta({
   layout: 'user',
 })
 
-const authApi = useAuthApi()
+const session = useSession()
+const toast = useToast()
 
 const email = ref<string>('')
 const password = ref<string>('')
@@ -14,16 +15,15 @@ const isSubmitting = ref<boolean>(false)
 
 async function handleFormSubmit() {
   isSubmitting.value = true
-  const response = await authApi.getTokensAsync(email.value, password.value)
+  const createSessionResult = await session.createSession(email.value, password.value)
   isSubmitting.value = false
 
-  if (response.hasError) {
-    return Promise.reject(response.errorMessage)
+  if (createSessionResult.status === 'not created') {
+    toast.error(`Próba logowania nie powiodła się`)
+    return Promise.reject(createSessionResult.notCreatedReason)
   }
 
-  useCookie('accessToken').value = response.data?.accessToken
-  useCookie('refreshToken').value = response.data?.refreshToken
-
+  toast.success(`Zalogowano pomyślnie`)
   await navigateTo('/portal/')
 }
 </script>
