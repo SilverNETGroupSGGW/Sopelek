@@ -18,7 +18,7 @@ const topBarLinks = [
         >
           <logo color="gray" class="mr-2" />
 
-          Plan Creator
+          Silver Planner
         </a>
       </div>
       <ul v-for="link in topBarLinks" :key="link.name" class="hidden items-center gap-x-8 lg:flex">

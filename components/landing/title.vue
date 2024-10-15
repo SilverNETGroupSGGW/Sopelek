@@ -8,11 +8,11 @@
       <div class="mx-auto flex max-w-7xl flex-col gap-16 px-4 sm:gap-y-24 sm:px-6 lg:px-8">
         <div class="mt-24 text-center">
           <h1 class="text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl dark:text-white">
-            Plan Creator
+            Silver Planner
           </h1>
 
-          <p class="mt-6 text-lg tracking-tight text-gray-600 dark:text-gray-300">
-            Nowoczesne narzędzie do tworzenia planów zajęć dla uczelni wyższych!
+          <p class="mt-6 text-lg tracking-tight text-gray-900 dark:text-gray-300">
+            Nowoczesne narzędzie do tworzenia planów zajęć dla uczelni wyższych
           </p>
 
           <div class="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-3">
@@ -21,7 +21,14 @@
           </div>
         </div>
 
-        <div class="absolute inset-0 z-[-1] bg-gradient-to-r from-neutral-50 to-gray-200" />
+        <div class="absolute inset-0 z-[-1] bg-gray-400">
+          <TresCanvas
+            clear-color="#c5c5c5"
+            class="size-full"
+          >
+            <tres-background-lines />
+          </TresCanvas>
+        </div>
       </div>
     </div>
   </main>
