@@ -32,7 +32,7 @@ onMounted(() => {
     :look-at="[1, 1, 1]"
   />
   <TresMesh ref="boxRef">
-    <TresBoxGeometry :args="[9, 9, 9]" />
+    <TresBoxGeometry :args="[10, 10, 10]" />
     <TresMeshBasicMaterial color="white" :wireframe="true" />
   </TresMesh>
 
