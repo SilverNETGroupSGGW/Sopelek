@@ -29,4 +29,7 @@ export default defineNuxtConfig({
       baseURL: import.meta.env.API_URL,
     },
   },
+  build: {
+    transpile: ['vue-toastification'],
+  },
 })
