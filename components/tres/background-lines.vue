@@ -31,13 +31,10 @@ onMounted(() => {
     :position="[4, 4, 6]"
     :look-at="[1, 1, 1]"
   />
-  <TresMesh ref="boxRef">
-    <TresBoxGeometry :args="[10, 10, 10]" />
-    <TresMeshBasicMaterial color="white" :wireframe="true" />
-  </TresMesh>
 
-  <TresMesh>
-    <TresLine3 :points="[[0, 0, 0], [1, 1, 1]]" color="red" />
+  <TresMesh ref="boxRef">
+    <TresDodecahedronGeometry :args="[10]" />
+    <TresMeshBasicMaterial color="white" :wireframe="true" />
   </TresMesh>
 
   <TresAmbientLight :intensity="1" />
