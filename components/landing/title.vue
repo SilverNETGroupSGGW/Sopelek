@@ -21,9 +21,9 @@
           </div>
         </div>
 
-        <div class="absolute inset-0 z-[-1] bg-gray-400">
+        <div class="absolute inset-0 z-[-1] bg-indigo-600">
           <TresCanvas
-            clear-color="#c5c5c5"
+            clear-color="#4f46e5"
             class="size-full"
           >
             <tres-background-lines />
