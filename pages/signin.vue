@@ -1,80 +1,65 @@
 <script setup lang="ts">
-import { IconAt, IconKey } from '@tabler/icons-vue'
-import { useToast } from 'vue-toastification'
+import { useActivateAccount } from '~/stores/signin/useActivateAccount'
+import { useAuthNavigation } from '~/stores/signin/useAuthNavigation'
 
 definePageMeta({
   layout: 'user',
 })
 
-const session = useSession()
-const toast = useToast()
+const route = useRoute()
+const authNavigation = useAuthNavigation()
+const activateAccount = useActivateAccount()
 
-const email = ref<string>('')
-const password = ref<string>('')
-const isSubmitting = ref<boolean>(false)
+if (route.query.page) {
+  const page = route.query.page as string
+  await authNavigation.navigateToByString(page)
+}
 
-async function handleFormSubmit() {
-  isSubmitting.value = true
-  const createSessionResult = await session.createSession(email.value, password.value)
-  isSubmitting.value = false
-
-  if (createSessionResult.status === 'not created') {
-    toast.error(`Próba logowania nie powiodła się`)
-    return Promise.reject(createSessionResult.notCreatedReason)
-  }
-
-  toast.success(`Zalogowano pomyślnie`)
-  await navigateTo('/portal/')
+if (route.query.email && route.query.code) {
+  const email = route.query.email as string
+  const code = route.query.code as string
+  await activateAccount.handleAccountActivation(email, code)
 }
 </script>
 
 <template>
-  <div class="flex h-full flex-col justify-center bg-white px-16">
-    <h1 class="mb-2 text-left text-3xl font-bold text-gray-900">
-      Witamy!
-    </h1>
-    <p class="mb-6 text-balance text-left text-gray-700">
-      Zaloguj się za pomocą swojego maila.
-    </p>
+  <div
+    v-if="authNavigation.isSignInMode"
+    class="flex h-full flex-col justify-center bg-white px-16"
+  >
+    <signin-partial-header text="Witamy!" />
+    <signin-partial-description text="Zaloguj się za pomocą swojego adresu email." />
 
-    <form class="w-full" @submit.prevent="handleFormSubmit">
-      <div class="mb-8 space-y-5">
-        <base-input
-          v-model="email"
-          :icon="IconAt"
-          type="email"
-          placeholder="pXXXXXX@sggw.edu.pl"
-          label="Adres e-mail"
-          autocomplete="email"
-        />
-        <base-input
-          v-model="password"
-          :icon="IconKey"
-          type="password"
-          placeholder="********"
-          label="Hasło"
-          autocomplete="off"
-        />
-      </div>
+    <signin-login-form />
+  </div>
 
-      <div class="flex w-full justify-end">
-        <base-button
-          class="mr-2"
-          variant="secondary"
-          :disabled="isSubmitting"
-          :loading="isSubmitting" to="/"
-        >
-          Powrót
-        </base-button>
-        <base-button
-          variant="primary"
-          type="submit"
-          :disabled="isSubmitting"
-          :loading="isSubmitting"
-        >
-          Zaloguj się
-        </base-button>
-      </div>
-    </form>
+  <div
+    v-else-if="authNavigation.isSignUpMode"
+    class="flex h-full flex-col justify-center bg-white px-16"
+  >
+    <signin-partial-header text="Tworzenie Konta" />
+    <signin-partial-description text="Zarejestruj się za pomocą swojego maila." />
+
+    <signin-register-form />
+  </div>
+
+  <div
+    v-else-if="authNavigation.isForgotPasswordMode"
+    class="flex h-full flex-col justify-center bg-white px-16"
+  >
+    <signin-partial-header text="Zresetuj hasło" />
+    <signin-partial-description text="Wyślij wiadomość email z linkiem do resetu hasła na adres konta." />
+
+    <signin-forgot-password-form />
+  </div>
+
+  <div
+    v-else-if="authNavigation.isActivateResetPasswordMode"
+    class="flex h-full flex-col justify-center bg-white px-16"
+  >
+    <signin-partial-header text="Hasło zostało zresetowane" />
+    <signin-partial-description text="Na twój adres email została wysłana wiadomość z kodem i linkiem do resetu hasła." />
+
+    <signin-activate-reset-password-form />
   </div>
 </template>

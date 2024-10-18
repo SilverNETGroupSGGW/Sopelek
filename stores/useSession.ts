@@ -53,7 +53,7 @@ export const useSession = defineStore('session', {
         this.sessionOwner = null
 
         result.status = 'not created'
-        result.notCreatedReason = response.errorMessage
+        result.notCreatedReason = response.data! as string
       }
 
       return result
