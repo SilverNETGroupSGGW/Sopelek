@@ -13,7 +13,7 @@ const sections = [
   {
     name: 'Grzegorz Perun',
     role: 'Developer',
-    photo: 'avatar.png',
+    photo: 'GrzegorzPerun.png',
   },
   {
     name: 'Kuba Orchowski',
@@ -23,7 +23,7 @@ const sections = [
   {
     name: 'Bartek Kwaśny',
     role: 'Developer',
-    photo: 'avatar.png',
+    photo: 'BartekKwasny.jpg',
   },
   {
     name: 'Konrad Maleńczak',
