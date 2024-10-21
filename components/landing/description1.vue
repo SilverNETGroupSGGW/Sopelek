@@ -21,7 +21,7 @@ const sections = [
 </script>
 
 <template>
-  <div class="py-24 sm:py-32">
+  <div id="descriptionSection" class="py-24 sm:py-32">
     <div class="mx-auto grid max-w-7xl gap-16 px-4 sm:gap-y-24 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
       <div>
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">

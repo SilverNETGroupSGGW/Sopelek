@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <main class="min-h-[calc(100vh-var(3.5rem))]">
+  <main id="titleSection" class="min-h-[calc(100vh-var(3.5rem))]">
     <div class="relative py-24 sm:py-32 md:py-40">
       <div class="mx-auto flex max-w-7xl flex-col gap-16 px-4 sm:gap-y-24 sm:px-6 lg:px-8">
         <div class="mt-24 text-center">

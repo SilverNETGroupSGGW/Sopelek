@@ -34,7 +34,7 @@ const sections = [
 </script>
 
 <template>
-  <div class="py-24 sm:py-32">
+  <div id="teamSection" class="py-24 sm:py-32">
     <h2 class="mb-10  items-center text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
       Nasz Zespół
     </h2>
