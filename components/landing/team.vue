@@ -8,7 +8,7 @@ const sections = [
   {
     name: 'Bartosz Matyjasiak',
     role: 'Developer',
-    photo: 'avatar.png',
+    photo: 'BartoszMatyjsiak.jpg',
   },
   {
     name: 'Grzegorz Perun',
