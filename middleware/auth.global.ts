@@ -30,11 +30,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return navigateTo('/signin')
       }
       else {
-        toast.success('Sesja odświeżona')
+        // toast.success('Sesja odświeżona')
       }
     }
     else {
-      toast.success('Sesja aktywna')
+      // toast.success('Sesja aktywna')
     }
   }
 })
