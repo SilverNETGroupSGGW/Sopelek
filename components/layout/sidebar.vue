@@ -68,7 +68,7 @@ const tabs = reactive([
     icon: IconLogout,
     label: 'Wyloguj',
     onClick: async () => {
-      session.closeSession()
+      await session.closeSession()
       await navigateTo({ path: '/signin' })
     },
   },
