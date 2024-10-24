@@ -16,7 +16,6 @@ const mouse = useMouse()
 // Data
 const scheduler = useScheduler()
 const subjects = useSubjects()
-const { lessonTypes } = useData()
 
 // Utils
 function calculateEndTime() {
@@ -87,7 +86,7 @@ async function handleDelete() {
       {{ name }}
     </p>
     <small class="mb-2 text-xs text-gray-700">
-      {{ lessonTypes.find(x => x.value === type)?.label }}
+      <!-- {{ lessonTypes.find(x => x.value === type)?.label }} -->
     </small>
 
     <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
