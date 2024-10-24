@@ -45,7 +45,6 @@ const signIn = useSignIn()
         class="mr-2"
         variant="secondary"
         :disabled="authNavigation.isSubmitting"
-        :loading="authNavigation.isSubmitting"
         to="/"
       >
         Strona Główna
