@@ -5,25 +5,45 @@ import type { RefreshSessionResult } from '~/types/session/RefreshSessionResult'
 import { useAuthApi } from './api/useAuthApi'
 
 export const useSession = defineStore('session', {
-  state: () => ({
-    isSessionActive: false as boolean,
-    lastSessionRefresh: null as Date | null,
-    sessionCreated: null as Date | null,
-    sessionOwner: null as string | null,
-  }),
+  state: () => ({}),
   getters: {
     accessToken: () => useCookie('accessToken').value,
     refreshToken: () => useCookie('refreshToken').value,
-    accessTokenExpiresIn: () => {
+    accessTokenExpiresIn: (): Date | null => {
       return useCookie('accessToken').value
         ? new Date(jwtDecode(useCookie('accessToken').value!).exp! * 1000)
         : null
     },
-    refreshTokenExpiresIn: () => {
+    refreshTokenExpiresIn: (): Date | null => {
       return useCookie('refreshToken').value
         ? new Date(jwtDecode(useCookie('refreshToken').value!).exp! * 1000)
         : null
     },
+    isSessionActive: (): boolean => {
+      if (!useCookie('accessToken').value || !useCookie('refreshToken').value) {
+        return false
+      }
+
+      const refreshTokenExpDate = new Date(jwtDecode(useCookie('refreshToken').value!).exp! * 1000)
+      if (refreshTokenExpDate! < new Date()) {
+        return false
+      }
+
+      const expDate = new Date(jwtDecode(useCookie('accessToken').value!).exp! * 1000)
+      if (expDate! < new Date()) {
+        return false
+      }
+
+      return true
+    },
+    lastSessionRefresh: (): Date | null => {
+      if (!useCookie('accessToken').value || !useCookie('refreshToken').value) {
+        return null
+      }
+
+      return new Date(jwtDecode(useCookie('accessToken').value!).nbf! * 1000)
+    },
+
   },
   actions: {
     async createSession(email: string, password: string): Promise<CreateSessionResult> {
@@ -36,10 +56,6 @@ export const useSession = defineStore('session', {
       const response = await tokensApi.getTokensAsync(email, password)
 
       if (!response.hasError) {
-        this.isSessionActive = true
-        this.sessionCreated = new Date()
-        this.sessionOwner = email
-
         useCookie('accessToken').value = response.data!.accessToken
         useCookie('refreshToken').value = response.data!.refreshToken
 
@@ -48,10 +64,6 @@ export const useSession = defineStore('session', {
         result.refreshToken = response.data!.refreshToken
       }
       else {
-        this.isSessionActive = false
-        this.sessionCreated = null
-        this.sessionOwner = null
-
         result.status = 'not created'
         result.notCreatedReason = response.data! as string
       }
@@ -77,8 +89,6 @@ export const useSession = defineStore('session', {
       const response = await tokensApi.refreshTokenAsync(this.refreshToken!)
 
       if (!response.hasError) {
-        this.lastSessionRefresh = new Date()
-
         useCookie('accessToken').value = response.data!.accessToken
         useCookie('refreshToken').value = response.data!.refreshToken
 
@@ -106,10 +116,6 @@ export const useSession = defineStore('session', {
       const response = await tokensApi.revokeTokenAsync(this.refreshToken!)
 
       if (!response.hasError) {
-        this.isSessionActive = false
-        this.sessionCreated = null
-        this.sessionOwner = null
-
         useCookie('accessToken').value = ''
         useCookie('refreshToken').value = ''
 
