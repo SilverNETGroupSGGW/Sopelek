@@ -8,7 +8,7 @@
       <div class="flex items-center gap-1.5 lg:flex-1">
         <NuxtLink
           aria-current="page"
-          href="/"
+          href="/#home"
           class="flex shrink-0 items-end gap-1.5 text-xl font-bold text-gray-900 dark:text-white"
           aria-label="Nuxt UI Pro"
         >
@@ -20,7 +20,7 @@
         <li class="relative">
           <NuxtLink
             class="flex items-center gap-1 text-sm/6 font-semibold hover:text-sky-700"
-            href="/"
+            href="/#home"
           >
             Home
           </NuxtLink>
