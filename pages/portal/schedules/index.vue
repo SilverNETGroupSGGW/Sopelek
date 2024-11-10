@@ -34,7 +34,7 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     <template #name="{ cell }">
       <span class="text-base font-medium text-gray-900">{{ cell.name }}</span>
       <br>
-      <span class="text-base text-gray-700">Start od {{ new Date(cell.year).toLocaleDateString('pl-PL') }}</span>
+      <!-- <span class="text-base text-gray-700">Start od {{ new Date(cell.year).toLocaleDateString('pl-PL') }}</span> -->
     </template>
 
     <template #actions="{ cell }">

@@ -1,7 +1,10 @@
 import type { Subject } from '~/types'
 
 export default function useSubject() {
-  const runtimeConfig = useRuntimeConfig()
+  // Constants for calculating position of a subject
+  const edgeThreshold = 16 // resize and drag bounds
+  const intervalHeight = 160 // height of a group cell,
+  const intervalWidth = 24 // width of 5 minutes interval cell
 
   function calculatePosition(subject: Subject, groups: string[]) {
     const startTime = new Date(`1970-01-01T${subject.startTime}`)
@@ -13,10 +16,10 @@ export default function useSubject() {
     const durationInMilliseconds = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000
     const endTime = new Date(startTime.getTime() + durationInMilliseconds)
 
-    const x = ((startTime.getHours() - 8) * 60 + startTime.getMinutes()) * (runtimeConfig.public.intervalWidth / 5)
-    const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * runtimeConfig.public.intervalHeight
+    const x = ((startTime.getHours() - 8) * 60 + startTime.getMinutes()) * (intervalWidth / 5)
+    const y = groups.findIndex(group => subject.groups!.some(subjectGroup => subjectGroup.name === group)) * intervalHeight
 
-    const height = subject.groups!.length * runtimeConfig.public.intervalHeight
+    const height = subject.groups!.length * intervalHeight
     const width = ((endTime.getHours() * 60 + endTime.getMinutes()) - (startTime.getHours() * 60 + startTime.getMinutes())) * 4.8
 
     return { x, y, width, height }
@@ -26,7 +29,7 @@ export default function useSubject() {
     const baseTime = new Date()
     baseTime.setHours(8, 0, 0, 0)
 
-    const minutesFromBase = (subject.x! / runtimeConfig.public.intervalWidth) * 5
+    const minutesFromBase = (subject.x! / intervalWidth) * 5
     const newTime = new Date(baseTime.getTime() + minutesFromBase * 60000)
     const hours = newTime.getHours() < 10 ? `0${newTime.getHours()}` : newTime.getHours()
     const minutes = newTime.getMinutes() < 10 ? `0${newTime.getMinutes()}` : newTime.getMinutes()
@@ -34,8 +37,8 @@ export default function useSubject() {
   }
 
   function calculateGroups(subject: Subject) {
-    const currentGroupIndex = subject.y! / runtimeConfig.public.intervalHeight
-    const newGroupCount = subject.height! / runtimeConfig.public.intervalHeight
+    const currentGroupIndex = subject.y! / intervalHeight
+    const newGroupCount = subject.height! / intervalHeight
     subject.groups = subject.groups!.slice(currentGroupIndex, currentGroupIndex + newGroupCount)
   }
 
