@@ -7,12 +7,9 @@ const creator = useCreator()
 <template>
   <div :style="{ position: 'relative' }">
     <creator-subject-card
-      v-for="(subjectPosition, index) in creator.subjectsPositions"
-      :key="index.toString() + subjectPosition.x + subjectPosition.y + subjectPosition.width + subjectPosition.height"
-      :x="subjectPosition.x"
-      :y="subjectPosition.y"
-      :width="subjectPosition.width"
-      :height="subjectPosition.height"
+      v-for="(subject, index) in creator.subjectsPositions"
+      :key="index.toString() + subject.x + subject.y + subject.width + subject.height"
+      :subject="subject"
       :z-index="1"
     />
   </div>

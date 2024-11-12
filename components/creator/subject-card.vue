@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import { IconTrash } from '@tabler/icons-vue'
 import { useCreator } from '~/stores/creator/useCreator'
-import type { Subject } from '~/types'
+import type { CreatorSubject } from '~/types/creator/SubjectPosition'
 
 const props = defineProps<{
-  subject?: Subject
+  subject: CreatorSubject
 
   hasConflict?: boolean
   conflictMessage?: string
   translucent?: boolean
-  height?: number
-  width?: number
-  x?: number
-  y?: number
   zIndex?: number
 }>()
 
@@ -22,8 +18,6 @@ defineEmits<{
 
 // Hooks
 const mouse = useMouse()
-
-// Data
 const creator = useCreator()
 
 // Utils
@@ -78,9 +72,9 @@ async function handleDelete() {
   <div
     :id="subject?.id"
     :style="{
-      width: `${width!}px`,
-      height: `${height!}px`,
-      transform: `translate(${x}px, ${y}px)`,
+      width: `${subject.width!}px`,
+      height: `${subject.height!}px`,
+      transform: `translate(${subject.x}px, ${subject.y}px)`,
       backgroundColor: stringToColor(subject?.name ?? '').backgroundColor,
       borderColor: stringToColor(subject?.name ?? '').borderColor,
       position: 'absolute',
@@ -95,7 +89,7 @@ async function handleDelete() {
     }"
     :class="[mouse.cursor, translucent && 'opacity-50']"
   >
-    <!-- <div class="flex w-full flex-wrap items-center justify-between gap-x-2">
+    <div class="flex w-full flex-wrap items-center justify-between gap-x-2">
       <small v-if="subject.startTime && subject.duration" class="text-xs text-gray-600">
         {{ subject.startTime.slice(0, -3) }} - {{ calculateEndTime() }}
       </small>
@@ -108,19 +102,16 @@ async function handleDelete() {
           Usuń
         </button>
       </div>
-    </div> -->
+    </div>
 
-    <!-- <p class="text-left text-sm font-bold text-gray-900">
-      {{ name }}
-    </p> -->
-    <small class="mb-2 text-xs text-gray-700">
-      <!-- {{ lessonTypes.find(x => x.value === type)?.label }} -->
-    </small>
+    <p class="text-left text-sm font-bold text-gray-900">
+      {{ subject.name }}
+    </p>
 
     <!-- <small v-if="lecturers && lecturers.length > 0" class="text-xs text-gray-700">
       <b>{{ lecturers[0].academicDegree }} {{ lecturers[0].firstName }} {{ lecturers[0].surname }}</b>
-    </small>
-    <small v-if="classroom" class="text-xs text-gray-700">
+    </small> -->
+    <!-- <small v-if="subject.classroom" class="text-xs text-gray-700">
       <b>Sala: </b> b. {{ classroom?.building }}, p. {{ classroom?.floor }}, s. {{ classroom?.name }}
     </small>
     <small v-if="groups" class="text-xs text-gray-700">
@@ -131,27 +122,18 @@ async function handleDelete() {
     </small>
     <small v-if="isConditional" class="text-xs text-gray-700">
       <b>Zajęcia warunkowe</b>
+    </small> -->
+    <small v-if="subject.comment" class="text-xs text-gray-700">
+      <b>Komentarz: </b> {{ subject.comment }}
     </small>
-    <small v-if="comment" class="text-xs text-gray-700">
-      <b>Komentarz: </b> {{ comment }}
-    </small>
-    <small v-if="conflict" class="text-xs text-red-600">
+    <!-- <small v-if="conflict" class="text-xs text-red-600">
       <b>Konflikt: </b> {{ conflictMessage }}
     </small> -->
   </div>
 
-  <base-dialog v-model="deleteDialog" title="Usuń zajęcia" :icon="IconTrash">
-    <p class="text-base text-gray-700">
-      Czy na pewno chcesz usunąć zajęcia?
-    </p>
-
-    <div class="mt-6 flex justify-end gap-4">
-      <base-button variant="secondary" @click="deleteDialog = false">
-        Zamknij
-      </base-button>
-      <base-button variant="danger" :loading="isDeleting" @click="handleDelete">
-        Usuń
-      </base-button>
-    </div>
-  </base-dialog>
+  <dialog-creator-delete-subject
+    v-model="deleteDialog"
+    @canceled="deleteDialog = false"
+    @confirmed="handleDelete"
+  />
 </template>
