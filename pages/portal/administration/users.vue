@@ -55,15 +55,27 @@ const userRolesDialog = useUserRolesDialog()
     </template>
 
     <template #actions="{ cell }">
-      <div class="flex flex-wrap gap-4">
-        <base-button variant="secondary" @click="handleDialogOpen('update', cell.id!)">
+      <div class="flex flex-wrap">
+        <base-button
+          class="rounded-r-none"
+          variant="secondary"
+          @click="handleDialogOpen('update', cell.id!)"
+        >
           Edytuj
         </base-button>
-        <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
-          Usuń
-        </base-button>
-        <base-button variant="primary" @click="userRolesDialog.showDialog(cell.id)">
+        <base-button
+          class="rounded-none"
+          variant="primary"
+          @click="userRolesDialog.showDialog(cell.id)"
+        >
           Role
+        </base-button>
+        <base-button
+          class="rounded-l-none"
+          variant="danger"
+          @click="handleDialogOpen('delete', cell.id!)"
+        >
+          Usuń
         </base-button>
       </div>
     </template>

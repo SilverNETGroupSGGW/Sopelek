@@ -65,17 +65,26 @@ function onTenantSwitchClicked(tenant: Tenant) {
     </template>
 
     <template #actions="{ cell }">
-      <div class="flex flex-wrap gap-4">
+      <div class="flex flex-wrap">
         <base-button
+          class="rounded-r-none"
           variant="primary"
           @click="onTenantSwitchClicked(cell)"
         >
           Aktywuj
         </base-button>
-        <base-button variant="secondary" @click="handleDialogOpen('update', cell.id!)">
+        <base-button
+          class="rounded-none"
+          variant="secondary"
+          @click="handleDialogOpen('update', cell.id!)"
+        >
           Edytuj
         </base-button>
-        <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
+        <base-button
+          class="rounded-l-none"
+          variant="danger"
+          @click="handleDialogOpen('delete', cell.id!)"
+        >
           Usuń
         </base-button>
       </div>

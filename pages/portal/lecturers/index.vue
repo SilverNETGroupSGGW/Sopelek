@@ -20,7 +20,7 @@ watchEffect(() => {
   <div class="flex w-full flex-wrap justify-between gap-4 border-b border-b-gray-200 px-12 py-9">
     <div>
       <h1 class="text-2xl font-bold leading-9 text-gray-900">
-        Wykładowcy<br>
+        Wykładowcy
       </h1>
       <p class="text-base font-normal leading-normal text-gray-700">
         Dane pochodzą z
@@ -44,11 +44,19 @@ watchEffect(() => {
     </template>
 
     <template #actions="{ cell }">
-      <div class="flex gap-4">
-        <base-button variant="primary" @click="handleDialogOpen('update', cell.id!)">
+      <div class="flex">
+        <base-button
+          class="rounded-r-none"
+          variant="primary"
+          @click="handleDialogOpen('update', cell.id!)"
+        >
           Edytuj
         </base-button>
-        <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
+        <base-button
+          class="rounded-l-none"
+          variant="danger"
+          @click="handleDialogOpen('delete', cell.id!)"
+        >
           Usuń
         </base-button>
       </div>

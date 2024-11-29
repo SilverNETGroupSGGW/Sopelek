@@ -38,25 +38,51 @@ const { currentItem, createDialog, deleteDialog, handleCreate, handleDelete, han
     </template>
 
     <template #actions="{ cell }">
-      <div class="flex flex-wrap gap-4">
-        <base-button variant="primary" :disabled="cell.isDownloading" :loading="cell.isDownloading" @click="schedules.download(cell)">
+      <div class="flex flex-wrap">
+        <base-button
+          class="rounded-r-none"
+          variant="primary"
+          :disabled="cell.isDownloading"
+          :loading="cell.isDownloading"
+          @click="schedules.download(cell)"
+        >
           Pobierz plan
         </base-button>
-        <base-button variant="primary" :to="`/portal/schedules/${cell.id}?day=${DayOfWeek.Monday}`">
+        <base-button
+          class="rounded-none"
+          variant="primary"
+          :to="`/portal/schedules/${cell.id}?day=${DayOfWeek.Monday}`"
+        >
           Kreator
         </base-button>
 
-        <base-button variant="secondary" :to="`/portal/schedules/${cell.id}/subjects/list`">
+        <base-button
+          class="rounded-none"
+          variant="secondary"
+          :to="`/portal/schedules/${cell.id}/subjects/list`"
+        >
           Przedmioty
         </base-button>
-        <base-button variant="secondary" :to="`/portal/schedules/${cell.id}/groups`">
+        <base-button
+          class="rounded-none"
+          variant="secondary"
+          :to="`/portal/schedules/${cell.id}/groups`"
+        >
           Grupy
         </base-button>
 
-        <base-button variant="secondary" @click="handleDialogOpen('update', cell.id!)">
+        <base-button
+          class="rounded-none"
+          variant="secondary"
+          @click="handleDialogOpen('update', cell.id!)"
+        >
           Edytuj
         </base-button>
-        <base-button variant="danger" @click="handleDialogOpen('delete', cell.id!)">
+        <base-button
+          class="rounded-l-none"
+          variant="danger"
+          @click="handleDialogOpen('delete', cell.id!)"
+        >
           Usuń
         </base-button>
       </div>

@@ -46,11 +46,19 @@ watchEffect(() => {
     </template>
 
     <template #actions="{ cell }">
-      <div class="flex gap-4">
-        <base-button variant="primary" @click="handleDialogOpen('update', cell.id)">
+      <div class="flex">
+        <base-button
+          class="rounded-r-none"
+          variant="primary"
+          @click="handleDialogOpen('update', cell.id)"
+        >
           Edytuj
         </base-button>
-        <base-button variant="danger" @click="handleDialogOpen('delete', cell.id)">
+        <base-button
+          class="rounded-l-none"
+          variant="danger"
+          @click="handleDialogOpen('delete', cell.id)"
+        >
           Usuń
         </base-button>
       </div>
