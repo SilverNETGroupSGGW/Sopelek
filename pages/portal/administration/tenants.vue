@@ -130,15 +130,24 @@ function onTenantSwitchClicked(tenant: Tenant) {
     <form class="flex flex-col gap-4" @submit.prevent="handleUpdate(currentItem, async () => await tenants.update(currentItem))">
       <base-input v-model="currentItem.id" :icon="IconKey" label="ID" disabled />
       <base-input v-model="currentItem.name" :icon="IconUser" label="Nazwa" />
-      <base-input v-model="currentItem.ownerId" :icon="IconUser" label="Id Właściciela Tenanta" />
-      <base-input v-model="currentItem.organizationId" :icon="IconUser" label="Id Organizacji" />
+      <complex-user-search
+        :user-id="currentItem.ownerId"
+        label="Właściciel Tenanta"
+        @user-selected="(selectedItem) => { currentItem.ownerId = selectedItem.id }"
+      />
 
-      <div class="mt-6 flex justify-end gap-4">
-        <base-button variant="secondary" type="button" @click="updateDialog = false">
+      <complex-organization-search
+        :organization-id="currentItem.organizationId"
+        label="Organizacja"
+        @organization-selected="(selectedItem) => { currentItem.organizationId = selectedItem.id }"
+      />
+
+      <div class="mb-4 mt-24 flex justify-end">
+        <base-button class="rounded-r-none" variant="secondary" type="button" @click="updateDialog = false">
           Zamknij
         </base-button>
-        <base-button variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
-          Zapisz zmiany
+        <base-button class="rounded-l-none" variant="primary" type="submit" :disabled="isSubmitting" :loading="isSubmitting">
+          Zapisz
         </base-button>
       </div>
     </form>
