@@ -56,8 +56,8 @@ export const useSession = defineStore('session', {
       const response = await tokensApi.getTokensAsync(email, password)
 
       if (!response.hasError) {
-        useCookie('accessToken').value = response.data!.accessToken
-        useCookie('refreshToken').value = response.data!.refreshToken
+        useCookie('accessToken', { sameSite: 'strict', secure: true }).value = response.data!.accessToken
+        useCookie('refreshToken', { sameSite: 'strict', secure: true }).value = response.data!.refreshToken
 
         result.status = 'created'
         result.accessToken = response.data!.accessToken
@@ -89,8 +89,8 @@ export const useSession = defineStore('session', {
       const response = await tokensApi.refreshTokenAsync(this.refreshToken!)
 
       if (!response.hasError) {
-        useCookie('accessToken').value = response.data!.accessToken
-        useCookie('refreshToken').value = response.data!.refreshToken
+        useCookie('accessToken', { sameSite: 'strict', secure: true }).value = response.data!.accessToken
+        useCookie('refreshToken', { sameSite: 'strict', secure: true }).value = response.data!.refreshToken
 
         result.status = 'refreshed'
         result.accessToken = response.data!.accessToken
@@ -116,8 +116,8 @@ export const useSession = defineStore('session', {
       const response = await tokensApi.revokeTokenAsync(this.refreshToken!)
 
       if (!response.hasError) {
-        useCookie('accessToken').value = ''
-        useCookie('refreshToken').value = ''
+        useCookie('accessToken', { sameSite: 'strict', secure: true }).value = ''
+        useCookie('refreshToken', { sameSite: 'strict', secure: true }).value = ''
 
         result.status = 'closed'
       }
